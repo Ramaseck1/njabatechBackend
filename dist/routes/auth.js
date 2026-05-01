@@ -1,0 +1,21 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const authController_1 = require("../controllers/authController");
+const auth_1 = require("../middleware/auth");
+const passwordValidation_1 = require("../middleware/passwordValidation");
+const router = (0, express_1.Router)();
+router.post('/admin/login', authController_1.AuthController.loginAdmin);
+router.post('/gie/login', authController_1.AuthController.loginGIE);
+router.post('/client/login', authController_1.AuthController.loginClient);
+router.post('/client/register', passwordValidation_1.PasswordValidationMiddleware.validateRegistrationMiddleware, authController_1.AuthController.registerClient);
+router.post('/verify-token', authController_1.AuthController.verifyToken);
+router.post('/admin/register', auth_1.authenticateToken, auth_1.requireSuperAdmin, authController_1.AuthController.registerAdmin);
+router.post('/gie/register', auth_1.authenticateToken, auth_1.requireAdmin, authController_1.AuthController.registerGIE);
+router.post('/reset-password-phone', authController_1.AuthController.resetPasswordByPhone);
+router.post('/reset-password-email', authController_1.AuthController.resetPasswordByEmail);
+router.post('/change-password', auth_1.authenticateToken, authController_1.AuthController.changePassword);
+router.get('/me', auth_1.authenticateToken, authController_1.AuthController.getUser);
+router.patch('/me', auth_1.authenticateToken, authController_1.AuthController.updateUser);
+exports.default = router;
+//# sourceMappingURL=auth.js.map

@@ -1,0 +1,63 @@
+{
+  "name": "gie-backend",
+  "version": "1.0.0",
+  "description": "Backend API pour la gestion des GIE (Groupement d'Intérêt Économique)",
+  "main": "dist/index.js",
+  "type": "commonjs",
+  "prisma": {
+    "schema": "./prisma/schema.prisma"
+  },
+  "scripts": {
+    "build": "npx tsc --noEmitOnError false",
+
+    "start": "node dist/index.js",
+    "postinstall": "echo 'skip prisma'",
+    "dev": "nodemon src/index.ts",
+    "db:generate": "prisma generate",
+    "db:push": "prisma db push",
+    "db:migrate": "prisma migrate deploy",
+    "db:studio": "prisma studio",
+    "db:seed": "ts-node src/seed.ts",
+    "seed": "node dist/seed.js"
+  },
+  "keywords": [
+    "gie",
+    "backend",
+    "api",
+    "nodejs",
+    "typescript",
+    "prisma"
+  ],
+  "dependencies": {
+    "@prisma/client": "^5.22.0",
+    "@prisma/extension-accelerate": "^3.0.1",
+    "axios": "^1.10.0",
+    "bcryptjs": "^2.4.3",
+    "cloudinary": "^1.41.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "form-data": "^4.0.4",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^1.4.5-lts.1",
+    "multer-storage-cloudinary": "^4.0.0",
+    "prisma": "^5.22.0",
+    "swagger-ui-express": "^5.0.0",
+    "twilio": "^4.23.0",
+    "uuid": "^11.1.0",
+    "yamljs": "^0.3.0"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/jsonwebtoken": "^9.0.5",
+    "@types/multer": "^1.4.13",
+    "@types/node": "^20.10.5",
+    "@types/swagger-ui-express": "^4.1.6",
+    "@types/yamljs": "0.2.34",
+    "nodemon": "^3.0.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.2"
+  }
+}
