@@ -1,7 +1,6 @@
-import { PrismaClient } from '@prisma/client';
-import { IRegion, CreateRegionDto, UpdateRegionDto } from '../types';
+ import { IRegion, CreateRegionDto, UpdateRegionDto } from '../types';
 
-const prisma = new PrismaClient();
+import { prisma } from '../config/database';
 
 export class RegionService {
   // Créer une nouvelle région

@@ -1,10 +1,10 @@
-import { PrismaClient } from '@prisma/client';
-import bcrypt from 'bcryptjs';
+ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { ILivreur, CreateLivreurDto, UpdateLivreurDto, LoginLivreurDto, StatutLivreur } from '../types';
+import { prisma } from '../config/database';
 
-const prisma = new PrismaClient();
 
+ 
 export class LivreurService {
   // Créer un nouveau livreur
   static async create(data: CreateLivreurDto): Promise<ILivreur> {

@@ -1,9 +1,10 @@
-import { PrismaClient, GIE, StatutGIE } from '@prisma/client';
+import {  GIE, StatutGIE } from '@prisma/client';
 import { CreateGIEDto } from '../types';
 import { AuthUtils } from '../utils/auth';
+import { prisma } from '../config/database';
 
-const prisma = new PrismaClient();
 
+ 
 export class GIEService {
   // Créer un GIE (réservé aux admins)
   static async create(data: CreateGIEDto, administrateurId: string): Promise<GIE> {

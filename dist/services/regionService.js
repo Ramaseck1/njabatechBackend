@@ -1,12 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.RegionService = void 0;
-const client_1 = require("@prisma/client");
-const prisma = new client_1.PrismaClient();
+const database_1 = require("../config/database");
 class RegionService {
     static async create(data) {
         try {
-            const region = await prisma.regions.create({
+            const region = await database_1.prisma.regions.create({
                 data: {
                     id: `reg_${Date.now()}`,
                     nom: data.nom,
@@ -24,7 +23,7 @@ class RegionService {
     }
     static async findById(id) {
         try {
-            const region = await prisma.regions.findUnique({
+            const region = await database_1.prisma.regions.findUnique({
                 where: { id },
                 include: {
                     gies: true,
@@ -40,7 +39,7 @@ class RegionService {
     }
     static async findByName(nom) {
         try {
-            const region = await prisma.regions.findUnique({
+            const region = await database_1.prisma.regions.findUnique({
                 where: { nom },
                 include: {
                     gies: true,
@@ -56,7 +55,7 @@ class RegionService {
     }
     static async findAll() {
         try {
-            const regions = await prisma.regions.findMany({
+            const regions = await database_1.prisma.regions.findMany({
                 include: {
                     gies: true,
                     commandes: true,
@@ -72,7 +71,7 @@ class RegionService {
     }
     static async update(id, data) {
         try {
-            const region = await prisma.regions.update({
+            const region = await database_1.prisma.regions.update({
                 where: { id },
                 data: {
                     nom: data.nom,
@@ -94,7 +93,7 @@ class RegionService {
     }
     static async delete(id) {
         try {
-            await prisma.regions.delete({
+            await database_1.prisma.regions.delete({
                 where: { id },
             });
         }
@@ -104,10 +103,10 @@ class RegionService {
     }
     static async calculateFraisLivraison(regionSourceId, regionDestinationId) {
         try {
-            const regionSource = await prisma.regions.findUnique({
+            const regionSource = await database_1.prisma.regions.findUnique({
                 where: { id: regionSourceId },
             });
-            const regionDestination = await prisma.regions.findUnique({
+            const regionDestination = await database_1.prisma.regions.findUnique({
                 where: { id: regionDestinationId },
             });
             if (!regionSource || !regionDestination) {
@@ -145,11 +144,11 @@ class RegionService {
                 },
             ];
             for (const regionData of defaultRegions) {
-                const existingRegion = await prisma.regions.findUnique({
+                const existingRegion = await database_1.prisma.regions.findUnique({
                     where: { nom: regionData.nom },
                 });
                 if (!existingRegion) {
-                    await prisma.regions.create({
+                    await database_1.prisma.regions.create({
                         data: {
                             id: `reg_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
                             ...regionData,

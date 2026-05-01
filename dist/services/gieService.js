@@ -1,13 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GIEService = void 0;
-const client_1 = require("@prisma/client");
 const auth_1 = require("../utils/auth");
-const prisma = new client_1.PrismaClient();
+const database_1 = require("../config/database");
 class GIEService {
     static async create(data, administrateurId) {
         if (data.telephone) {
-            const existingGIEByPhone = await prisma.gIE.findFirst({
+            const existingGIEByPhone = await database_1.prisma.gIE.findFirst({
                 where: { telephone: data.telephone }
             });
             if (existingGIEByPhone) {
@@ -16,7 +15,7 @@ class GIEService {
         }
         const hashedPassword = await auth_1.AuthUtils.hashPassword(data.password);
         const { regionId, ...cleanData } = data;
-        const gie = await prisma.gIE.create({
+        const gie = await database_1.prisma.gIE.create({
             data: {
                 ...cleanData,
                 password: hashedPassword,
@@ -41,14 +40,14 @@ class GIEService {
         return gie;
     }
     static async findByPhone(telephone) {
-        const gie = await prisma.gIE.findFirst({
+        const gie = await database_1.prisma.gIE.findFirst({
             where: { telephone }
         });
         return gie;
     }
     static async resetPassword(id, newPassword) { }
     static async authenticate(emailOrPhone, password) {
-        const gie = await prisma.gIE.findFirst({
+        const gie = await database_1.prisma.gIE.findFirst({
             where: {
                 OR: [
                     { email: emailOrPhone },
@@ -78,7 +77,7 @@ class GIEService {
             ]
         } : {};
         const [gies, total] = await Promise.all([
-            prisma.gIE.findMany({
+            database_1.prisma.gIE.findMany({
                 where,
                 skip,
                 take: limit,
@@ -99,7 +98,7 @@ class GIEService {
                     }
                 }
             }),
-            prisma.gIE.count({ where })
+            database_1.prisma.gIE.count({ where })
         ]);
         return {
             gies,
@@ -112,7 +111,7 @@ class GIEService {
         };
     }
     static async findById(id) {
-        return await prisma.gIE.findUnique({
+        return await database_1.prisma.gIE.findUnique({
             where: { id },
             include: {
                 administrateur: {
@@ -137,18 +136,18 @@ class GIEService {
         if (data.password) {
             updateData.password = await auth_1.AuthUtils.hashPassword(data.password);
         }
-        return await prisma.gIE.update({
+        return await database_1.prisma.gIE.update({
             where: { id },
             data: updateData
         });
     }
     static async delete(id) {
-        await prisma.gIE.delete({
+        await database_1.prisma.gIE.delete({
             where: { id }
         });
     }
     static async updateStatus(id, statut) {
-        return await prisma.gIE.update({
+        return await database_1.prisma.gIE.update({
             where: { id },
             data: { statut }
         });
@@ -158,7 +157,7 @@ class GIEService {
     }
     static async validatePassword(gieId, password) {
         try {
-            const gie = await prisma.gIE.findUnique({
+            const gie = await database_1.prisma.gIE.findUnique({
                 where: { id: gieId }
             });
             if (!gie) {
@@ -182,7 +181,7 @@ class GIEService {
                 throw new Error('Le nouveau mot de passe doit contenir au moins 6 caractères');
             }
             const hashedNewPassword = await auth_1.AuthUtils.hashPassword(newPassword);
-            await prisma.gIE.update({
+            await database_1.prisma.gIE.update({
                 where: { id: gieId },
                 data: { password: hashedNewPassword }
             });
@@ -193,7 +192,7 @@ class GIEService {
         }
     }
     static async getStats(id) {
-        const gie = await prisma.gIE.findUnique({
+        const gie = await database_1.prisma.gIE.findUnique({
             where: { id },
             include: {
                 _count: {

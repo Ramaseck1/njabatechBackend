@@ -1,12 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AdresseService = void 0;
-const client_1 = require("@prisma/client");
-const prisma = new client_1.PrismaClient();
+const database_1 = require("../config/database");
 class AdresseService {
     static async create(data) {
         try {
-            const adresse = await prisma.adresses.create({
+            const adresse = await database_1.prisma.adresses.create({
                 data: {
                     id: `addr_${Date.now()}`,
                     nom: data.nom,
@@ -28,7 +27,7 @@ class AdresseService {
     }
     static async findById(id) {
         try {
-            const adresse = await prisma.adresses.findUnique({
+            const adresse = await database_1.prisma.adresses.findUnique({
                 where: { id },
                 include: {
                     regions: true,
@@ -42,7 +41,7 @@ class AdresseService {
     }
     static async findAll() {
         try {
-            const adresses = await prisma.adresses.findMany({
+            const adresses = await database_1.prisma.adresses.findMany({
                 include: {
                     regions: true,
                 },
@@ -56,7 +55,7 @@ class AdresseService {
     }
     static async findByRegion(regionId) {
         try {
-            const adresses = await prisma.adresses.findMany({
+            const adresses = await database_1.prisma.adresses.findMany({
                 where: { regionId },
                 include: {
                     regions: true,
@@ -71,7 +70,7 @@ class AdresseService {
     }
     static async update(id, data) {
         try {
-            const adresse = await prisma.adresses.update({
+            const adresse = await database_1.prisma.adresses.update({
                 where: { id },
                 data: {
                     nom: data.nom,
@@ -92,7 +91,7 @@ class AdresseService {
     }
     static async delete(id) {
         try {
-            await prisma.adresses.delete({
+            await database_1.prisma.adresses.delete({
                 where: { id },
             });
         }
@@ -102,7 +101,7 @@ class AdresseService {
     }
     static async createDefaultAdresses() {
         try {
-            const regions = await prisma.regions.findMany();
+            const regions = await database_1.prisma.regions.findMany();
             for (const region of regions) {
                 const defaultAdresses = [
                     {
@@ -128,14 +127,14 @@ class AdresseService {
                     },
                 ];
                 for (const adresseData of defaultAdresses) {
-                    const existingAdresse = await prisma.adresses.findFirst({
+                    const existingAdresse = await database_1.prisma.adresses.findFirst({
                         where: {
                             nom: adresseData.nom,
                             regionId: region.id,
                         },
                     });
                     if (!existingAdresse) {
-                        await prisma.adresses.create({
+                        await database_1.prisma.adresses.create({
                             data: {
                                 id: `addr_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
                                 ...adresseData,

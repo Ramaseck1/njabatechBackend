@@ -4,14 +4,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.LivreurService = void 0;
-const client_1 = require("@prisma/client");
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const types_1 = require("../types");
-const prisma = new client_1.PrismaClient();
+const database_1 = require("../config/database");
 class LivreurService {
     static async create(data) {
-        const existingLivreur = await prisma.livreurs.findUnique({
+        const existingLivreur = await database_1.prisma.livreurs.findUnique({
             where: { email: data.email }
         });
         if (existingLivreur) {
@@ -19,14 +18,14 @@ class LivreurService {
         }
         const hashedPassword = await bcryptjs_1.default.hash(data.password, 10);
         if (data.regionId) {
-            const region = await prisma.regions.findUnique({
+            const region = await database_1.prisma.regions.findUnique({
                 where: { id: data.regionId }
             });
             if (!region) {
                 throw new Error('Région introuvable');
             }
         }
-        const livreur = await prisma.livreurs.create({
+        const livreur = await database_1.prisma.livreurs.create({
             data: {
                 id: `liv_${Date.now()}`,
                 ...data,
@@ -42,7 +41,7 @@ class LivreurService {
     static async findAll(page = 1, limit = 20) {
         const skip = (page - 1) * limit;
         const [livreurs, total] = await Promise.all([
-            prisma.livreurs.findMany({
+            database_1.prisma.livreurs.findMany({
                 skip,
                 take: limit,
                 include: {
@@ -53,7 +52,7 @@ class LivreurService {
                 },
                 orderBy: { createdAt: 'desc' }
             }),
-            prisma.livreurs.count()
+            database_1.prisma.livreurs.count()
         ]);
         return {
             livreurs: livreurs,
@@ -62,7 +61,7 @@ class LivreurService {
         };
     }
     static async findById(id) {
-        const livreur = await prisma.livreurs.findUnique({
+        const livreur = await database_1.prisma.livreurs.findUnique({
             where: { id },
             include: {
                 regions: true,
@@ -94,21 +93,21 @@ class LivreurService {
         return livreur;
     }
     static async update(id, data) {
-        const livreur = await prisma.livreurs.findUnique({
+        const livreur = await database_1.prisma.livreurs.findUnique({
             where: { id }
         });
         if (!livreur) {
             throw new Error('Livreur introuvable');
         }
         if (data.regionId) {
-            const region = await prisma.regions.findUnique({
+            const region = await database_1.prisma.regions.findUnique({
                 where: { id: data.regionId }
             });
             if (!region) {
                 throw new Error('Région introuvable');
             }
         }
-        const updatedLivreur = await prisma.livreurs.update({
+        const updatedLivreur = await database_1.prisma.livreurs.update({
             where: { id },
             data,
             include: {
@@ -118,18 +117,18 @@ class LivreurService {
         return updatedLivreur;
     }
     static async delete(id) {
-        const livreur = await prisma.livreurs.findUnique({
+        const livreur = await database_1.prisma.livreurs.findUnique({
             where: { id }
         });
         if (!livreur) {
             throw new Error('Livreur introuvable');
         }
-        await prisma.livreurs.delete({
+        await database_1.prisma.livreurs.delete({
             where: { id }
         });
     }
     static async login(credentials) {
-        const livreur = await prisma.livreurs.findUnique({
+        const livreur = await database_1.prisma.livreurs.findUnique({
             where: { email: credentials.email },
             include: {
                 regions: true
@@ -162,7 +161,7 @@ class LivreurService {
             whereClause.livreurId = id;
         }
         const [commandes, total] = await Promise.all([
-            prisma.commande.findMany({
+            database_1.prisma.commande.findMany({
                 where: whereClause,
                 include: {
                     client: true,
@@ -185,7 +184,7 @@ class LivreurService {
                 },
                 orderBy: { createdAt: 'desc' }
             }),
-            prisma.commande.count({
+            database_1.prisma.commande.count({
                 where: whereClause
             })
         ]);
@@ -204,7 +203,7 @@ class LivreurService {
             whereClause.regionLivraisonId = regionId;
         }
         const [commandes, total] = await Promise.all([
-            prisma.commande.findMany({
+            database_1.prisma.commande.findMany({
                 where: whereClause,
                 skip,
                 take: limit,
@@ -228,7 +227,7 @@ class LivreurService {
                 },
                 orderBy: { createdAt: 'desc' }
             }),
-            prisma.commande.count({
+            database_1.prisma.commande.count({
                 where: whereClause
             })
         ]);
@@ -240,8 +239,8 @@ class LivreurService {
     }
     static async assignerCommande(livreurId, commandeId) {
         const [livreur, commande] = await Promise.all([
-            prisma.livreurs.findUnique({ where: { id: livreurId } }),
-            prisma.commande.findUnique({ where: { id: commandeId } })
+            database_1.prisma.livreurs.findUnique({ where: { id: livreurId } }),
+            database_1.prisma.commande.findUnique({ where: { id: commandeId } })
         ]);
         if (!livreur) {
             throw new Error('Livreur introuvable');
@@ -255,18 +254,18 @@ class LivreurService {
         if (livreur.statut !== types_1.StatutLivreur.DISPONIBLE) {
             throw new Error('Le livreur n\'est pas disponible');
         }
-        await prisma.commande.update({
+        await database_1.prisma.commande.update({
             where: { id: commandeId },
             data: { livreurId }
         });
-        await prisma.livreurs.update({
+        await database_1.prisma.livreurs.update({
             where: { id: livreurId },
             data: { statut: types_1.StatutLivreur.EN_LIVRAISON }
         });
     }
     static async marquerLivrees(livreurId, commandeId) {
         try {
-            const commande = await prisma.commande.findUnique({
+            const commande = await database_1.prisma.commande.findUnique({
                 where: { id: commandeId }
             });
             if (!commande) {
@@ -275,7 +274,7 @@ class LivreurService {
             if (commande.statut === 'LIVREE') {
                 throw new Error('Cette commande est déjà marquée comme livrée');
             }
-            const livreur = await prisma.livreurs.findUnique({
+            const livreur = await database_1.prisma.livreurs.findUnique({
                 where: { id: livreurId }
             });
             if (!livreur) {
@@ -284,7 +283,7 @@ class LivreurService {
             if (livreur.statut === types_1.StatutLivreur.BLOQUE) {
                 throw new Error('Livreur bloqué, impossible de livrer');
             }
-            await prisma.commande.update({
+            await database_1.prisma.commande.update({
                 where: { id: commandeId },
                 data: {
                     statut: 'LIVREE',

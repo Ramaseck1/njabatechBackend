@@ -1,7 +1,6 @@
-import { PrismaClient } from '@prisma/client';
-import { IAdresse, CreateAdresseDto, UpdateAdresseDto } from '../types';
+ import { IAdresse, CreateAdresseDto, UpdateAdresseDto } from '../types';
 
-const prisma = new PrismaClient();
+import { prisma } from '../config/database';
 
 export class AdresseService {
   // Créer une nouvelle adresse

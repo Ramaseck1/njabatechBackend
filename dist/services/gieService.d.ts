@@ -25,7 +25,7 @@ export declare class GIEService {
             createdAt: Date;
             updatedAt: Date;
             adresse: string | null;
-            statut: import(".prisma/client").$Enums.StatutGIE;
+            statut: import("@/generated/prisma").$Enums.StatutGIE;
             administrateurId: string;
             description: string | null;
             logo: string | null;
@@ -66,7 +66,7 @@ export declare class GIEService {
             createdAt: Date;
             updatedAt: Date;
             adresse: string | null;
-            statut: import(".prisma/client").$Enums.StatutGIE;
+            statut: import("@/generated/prisma").$Enums.StatutGIE;
             administrateurId: string;
             description: string | null;
             logo: string | null;
