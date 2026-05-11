@@ -2,6 +2,10 @@ import { Request, Response } from 'express';
 import { GIEService } from '../services/gieService';
 import { CreateGIEDto } from '../types';
 
+import { EmailService } from '../utils/emailService';
+import { ResetCodeStore } from '../utils/resetCodeStore';
+
+
 export class GIEController {
   // Créer un nouveau GIE
 static async create(req: Request, res: Response): Promise<void> {

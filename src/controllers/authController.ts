@@ -4,6 +4,8 @@ import { AdministrateurService } from '../services/administrateurService';
 import { ClientService } from '../services/clientService';
 import { GIEService } from '../services/gieService';
 import { CreateAdministrateurDto, CreateClientDto, CreateGIEDto } from '../types';
+import { EmailService } from '../utils/emailService';
+import { ResetCodeStore } from '../utils/resetCodeStore';
 
 export class AuthController {
   // Connexion administrateur
@@ -528,6 +530,121 @@ export class AuthController {
     }
   }
 
+
+  static async forgotPasswordGIE(req: Request, res: Response): Promise<void> {
+  try {
+    const { email } = req.body;
+
+    if (!email) {
+      res.status(400).json({ success: false, message: 'Email requis' });
+      return;
+    }
+
+    // On répond toujours 200 pour ne pas révéler si l'email existe
+    const gie = await GIEService.findByEmail(email);
+    if (gie) {
+      const code = ResetCodeStore.create(gie.id, email);
+      await EmailService.sendResetCode(email, gie.nom, code);
+    }
+
+    res.json({
+      success: true,
+      message: 'Si un compte GIE correspond à cet email, un code de vérification a été envoyé.',
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: "Erreur lors de l'envoi du code",
+      error: process.env.NODE_ENV === 'development' ? error.message : undefined,
+    });
+  }
+}
+
+// ─── ÉTAPE 2 : Vérification du code ──────────────────────────────────────────
+static async verifyResetCodeGIE(req: Request, res: Response): Promise<void> {
+  try {
+    const { email, code } = req.body;
+
+    if (!email || !code) {
+      res.status(400).json({ success: false, message: 'Email et code requis' });
+      return;
+    }
+
+    const entry = ResetCodeStore.verify(email, code);
+    if (!entry) {
+      res.status(400).json({
+        success: false,
+        message: 'Code invalide ou expiré. Veuillez faire une nouvelle demande.',
+      });
+      return;
+    }
+
+    res.json({
+      success: true,
+      message: 'Code vérifié. Vous pouvez maintenant définir votre nouveau mot de passe.',
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: 'Erreur lors de la vérification du code',
+      error: process.env.NODE_ENV === 'development' ? error.message : undefined,
+    });
+  }
+}
+
+// ─── ÉTAPE 3 : Définition du nouveau mot de passe ────────────────────────────
+static async resetPasswordGIE(req: Request, res: Response): Promise<void> {
+  try {
+    const { email, newPassword, confirmPassword } = req.body;
+
+    if (!email || !newPassword || !confirmPassword) {
+      res.status(400).json({
+        success: false,
+        message: 'Email, nouveau mot de passe et confirmation requis',
+      });
+      return;
+    }
+
+    if (newPassword !== confirmPassword) {
+      res.status(400).json({
+        success: false,
+        message: 'Les mots de passe ne correspondent pas',
+      });
+      return;
+    }
+
+    if (newPassword.length < 6) {
+      res.status(400).json({
+        success: false,
+        message: 'Le mot de passe doit contenir au moins 6 caractères',
+      });
+      return;
+    }
+
+    const entry = ResetCodeStore.canReset(email);
+    if (!entry) {
+      res.status(400).json({
+        success: false,
+        message: 'Session expirée ou code non vérifié. Veuillez recommencer.',
+      });
+      return;
+    }
+
+    await GIEService.resetPassword(entry.gieId, newPassword);
+    ResetCodeStore.delete(email); // Invalider le code après usage
+
+    res.json({
+      success: true,
+      message: 'Mot de passe réinitialisé avec succès. Vous pouvez vous connecter.',
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: 'Erreur lors de la réinitialisation du mot de passe',
+      error: process.env.NODE_ENV === 'development' ? error.message : undefined,
+    });
+  }
+}
   static async getUser(req: Request, res: Response): Promise<void> {
     try {
       const userId = (req as any).user.id;

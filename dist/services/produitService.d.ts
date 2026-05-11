@@ -9,8 +9,8 @@ export declare class ProduitService {
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        rating: number;
         clientId: string;
+        rating: number;
         produitId: string;
     }>;
     static getByAvisProduit(produitId: string): Promise<{
@@ -24,8 +24,8 @@ export declare class ProduitService {
             id: string;
             createdAt: Date;
             updatedAt: Date;
-            rating: number;
             clientId: string;
+            rating: number;
             produitId: string;
         })[];
         moyenne: number;
@@ -34,8 +34,8 @@ export declare class ProduitService {
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        rating: number;
         clientId: string;
+        rating: number;
         produitId: string;
     } | null>;
     static findById(id: string): Promise<IProduit | null>;

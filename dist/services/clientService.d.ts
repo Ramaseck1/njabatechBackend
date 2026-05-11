@@ -15,9 +15,9 @@ export declare class ClientService {
         nom: string | null;
         createdAt: Date;
         updatedAt: Date;
+        clientId: string;
         rating: number;
         comment: string | null;
-        clientId: string;
     }>;
     static findByClientAvis(clientId: string): Promise<({
         client: {
@@ -29,9 +29,9 @@ export declare class ClientService {
         nom: string | null;
         createdAt: Date;
         updatedAt: Date;
+        clientId: string;
         rating: number;
         comment: string | null;
-        clientId: string;
     })[]>;
     static findAllAvis(): Promise<({
         client: {
@@ -45,9 +45,9 @@ export declare class ClientService {
         nom: string | null;
         createdAt: Date;
         updatedAt: Date;
+        clientId: string;
         rating: number;
         comment: string | null;
-        clientId: string;
     })[]>;
     static deleteAvis(id: string): Promise<void>;
     static findByEmail(email: string): Promise<{
@@ -92,11 +92,11 @@ export declare class ClientService {
             telephone: string;
             createdAt: Date;
             updatedAt: Date;
+            adresse: string | null;
+            statut: import("@/generated/prisma").$Enums.StatutClient;
             _count: {
                 commandes: number;
             };
-            adresse: string | null;
-            statut: import("@/generated/prisma").$Enums.StatutClient;
         }[];
         pagination: {
             page: number;
@@ -146,11 +146,11 @@ export declare class ClientService {
             telephone: string;
             createdAt: Date;
             updatedAt: Date;
+            adresse: string | null;
+            statut: import("@/generated/prisma").$Enums.StatutClient;
             _count: {
                 commandes: number;
             };
-            adresse: string | null;
-            statut: import("@/generated/prisma").$Enums.StatutClient;
         }[];
         pagination: {
             page: number;

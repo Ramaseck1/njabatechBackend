@@ -58,8 +58,9 @@ static async findByPhone(telephone: string): Promise<GIE | null> {
   
   return gie; // Retourne GIE | null
   // Rechercher un GIE par numéro de téléphone
-}static async resetPassword(id: number, newPassword: string) { /* ... */ }
-  // Authentifier un GIE
+}
+
+   // Authentifier un GIE
   static async authenticate(emailOrPhone: string, password: string): Promise<GIE> {
     // Recherche par email ou téléphone
     const gie = await prisma.gIE.findFirst({
@@ -214,6 +215,23 @@ static async findByPhone(telephone: string): Promise<GIE | null> {
     }
   }
 
+
+  static async findByEmail(email: string) {
+  return prisma.gIE.findFirst({
+    where: { email: email.toLowerCase() },
+  });
+}
+
+static async resetPassword(id: string, newPassword: string): Promise<void> {
+  if (newPassword.length < 6) {
+    throw new Error('Le mot de passe doit contenir au moins 6 caractères');
+  }
+  const hashed = await AuthUtils.hashPassword(newPassword);
+  await prisma.gIE.update({
+    where: { id },
+    data: { password: hashed },
+  });
+}
   // CORRECTION: Changer le mot de passe d'un GIE en utilisant AuthUtils
   static async changePassword(gieId: string, currentPassword: string, newPassword: string): Promise<void> {
     try {
