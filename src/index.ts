@@ -13,8 +13,8 @@ const app = express();
 const PORT = Number(process.env.PORT) || 3000;
 
 // Charger le fichier Swagger
-const swaggerDocument = YAML.load(path.join(__dirname, '../swagger.yaml'));
-
+/* const swaggerDocument = YAML.load(path.join(__dirname, '../swagger.yaml'));
+ */
 // Middleware
 app.use(cors({
   origin: '*',
