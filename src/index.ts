@@ -1,108 +1,12 @@
-import express, { Request, Response, NextFunction } from 'express';
-import cors from 'cors';
-import * as dotenv from "dotenv";
-import swaggerUi from 'swagger-ui-express';
-import YAML from 'yamljs';
-import path from 'path';
-import routes from './routes';
-
-// Charger les variables d'environnement
-dotenv.config();
+import express from "express";
 
 const app = express();
+
 const PORT = Number(process.env.PORT) || 3000;
-
-// Middleware
-app.use(cors({
-  origin: '*',
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-}));
-
-app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({ extended: true, limit: '10mb' }));
-
-// Middleware de logging
-app.use((req: Request, res: Response, next: NextFunction) => {
-  console.log(`${new Date().toISOString()} - ${req.method} ${req.path}`);
-  next();
+app.get("/", (req, res) => {
+  res.send("API fonctionne !");
 });
 
-// Charger Swagger avec protection
-let swaggerDocument: any = {};
-try {
-  swaggerDocument = YAML.load(path.join(__dirname, '../swagger.yaml'));
-  console.log('✅ swagger.yaml chargé');
-} catch (e) {
-  console.warn('⚠️ swagger.yaml non trouvé, documentation désactivée');
-}
-
-// Configuration Swagger (seulement si chargé)
-if (Object.keys(swaggerDocument).length > 0) {
-  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, {
-    customCss: '.swagger-ui .topbar { display: none }',
-    customSiteTitle: 'GIE Backend API Documentation',
-    swaggerOptions: {
-      docExpansion: 'list',
-      filter: true,
-      showRequestHeaders: true,
-      tryItOutEnabled: true
-    }
-  }));
-
-  app.get('/swagger.yaml', (req: Request, res: Response) => {
-    res.setHeader('Content-Type', 'application/yaml');
-    res.setHeader('Content-Disposition', 'attachment; filename=swagger.yaml');
-    res.sendFile(path.join(__dirname, '../swagger.yaml'));
-  });
-}
-
-// Routes
-app.use('/api', routes);
-
-// Middleware de gestion d'erreurs
-app.use((err: any, req: Request, res: Response, next: NextFunction) => {
-  console.error('Erreur:', err);
-  res.status(err.status || 500).json({
-    success: false,
-    message: err.message || 'Erreur interne du serveur',
-    ...(process.env.NODE_ENV === 'development' && { stack: err.stack })
-  });
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`Server running on ${PORT}`);
 });
-
-// 404 pour les routes API
-app.use('/api/*', (req: Request, res: Response) => {
-  res.status(404).json({
-    success: false,
-    message: `Route API non trouvée: ${req.originalUrl}`
-  });
-});
-
-// 404 pour le reste
-app.use('*', (req: Request, res: Response) => {
-  res.status(404).json({
-    success: false,
-    message: 'Route non trouvée'
-  });
-});
-
-// ✅ CORRECTION HOSTINGER : écoute sur 0.0.0.0
-app.listen(PORT, '0.0.0.0', () => {
-  console.log(`🚀 Serveur démarré sur le port ${PORT}`);
-  console.log(`📊 Environnement: ${process.env.NODE_ENV || 'development'}`);
-  console.log(`🔗 API: http://localhost:${PORT}/api`);
-  console.log(`💚 Health check: http://localhost:${PORT}/api/health`);
-});
-
-// Gestion de l'arrêt gracieux
-process.on('SIGTERM', () => {
-  console.log('SIGTERM reçu, arrêt gracieux...');
-  process.exit(0);
-});
-
-process.on('SIGINT', () => {
-  console.log('SIGINT reçu, arrêt gracieux...');
-  process.exit(0);
-});
-
-export default app;
