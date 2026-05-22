@@ -8,7 +8,7 @@
     "schema": "./prisma/schema.prisma"
   },
   "scripts": {
-    "build": "./node_modules/.bin/tsc --noEmitOnError false",
+   "build": "./node_modules/.bin/tsc --noEmitOnError false && cp -r src/generated dist/",
     "start": "node dist/index.js",
     "postinstall": "./node_modules/.bin/prisma generate --schema=./prisma/schema.prisma",
     "dev": "nodemon src/index.ts",
