@@ -7,18 +7,18 @@
   "prisma": {
     "schema": "./prisma/schema.prisma"
   },
-  "scripts": {
-    "build": "npx tsc --noEmitOnError false",
-    "start": "node dist/index.js",
-    "postinstall": "echo 'skip prisma'",
-    "dev": "nodemon src/index.ts",
-    "db:generate": "prisma generate",
-    "db:push": "prisma db push",
-    "db:migrate": "prisma migrate deploy",
-    "db:studio": "prisma studio",
-    "db:seed": "ts-node src/seed.ts",
-    "seed": "node dist/seed.js"
-  },
+"scripts": {
+  "build": "./node_modules/.bin/tsc --noEmitOnError false",
+  "start": "node dist/index.js",
+  "postinstall": "prisma generate",
+  "dev": "nodemon src/index.ts",
+  "db:generate": "prisma generate",
+  "db:push": "prisma db push",
+  "db:migrate": "prisma migrate deploy",
+  "db:studio": "prisma studio",
+  "db:seed": "ts-node src/seed.ts",
+  "seed": "node dist/seed.js"
+},
   "keywords": [
     "gie",
     "backend",
@@ -62,6 +62,6 @@
     "nodemon": "^3.0.2",
     "prisma": "^7.8.0",
     "ts-node": "^10.9.2",
-    "typescript": "^5.9.2"
+    "typescript": "^5.9.3"
   }
 }
