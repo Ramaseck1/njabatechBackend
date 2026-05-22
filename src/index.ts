@@ -32,7 +32,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 });
 
 // Configuration Swagger
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, {
+/* app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, {
   customCss: '.swagger-ui .topbar { display: none }',
   customSiteTitle: 'GIE Backend API Documentation',
   customfavIcon: '/favicon.ico',
@@ -42,7 +42,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, {
     showRequestHeaders: true,
     tryItOutEnabled: true
   }
-}));
+})); */
 
 // Route pour télécharger le fichier Swagger YAML
 app.get('/swagger.yaml', (req: Request, res: Response) => {
