@@ -12,9 +12,6 @@ dotenv.config();
 const app = express();
 const PORT = Number(process.env.PORT) || 3000;
 
-// Charger le fichier Swagger
-const swaggerDocument = YAML.load(path.join(__dirname, '../swagger.yaml'));
-
 // Middleware
 app.use(cors({
   origin: '*',
@@ -31,25 +28,34 @@ app.use((req: Request, res: Response, next: NextFunction) => {
   next();
 });
 
-// Configuration Swagger
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, {
-  customCss: '.swagger-ui .topbar { display: none }',
-  customSiteTitle: 'GIE Backend API Documentation',
-  customfavIcon: '/favicon.ico',
-  swaggerOptions: {
-    docExpansion: 'list',
-    filter: true,
-    showRequestHeaders: true,
-    tryItOutEnabled: true
-  }
-}));
+// Charger Swagger avec protection
+let swaggerDocument: any = {};
+try {
+  swaggerDocument = YAML.load(path.join(__dirname, '../swagger.yaml'));
+  console.log('✅ swagger.yaml chargé');
+} catch (e) {
+  console.warn('⚠️ swagger.yaml non trouvé, documentation désactivée');
+}
 
-// Route pour télécharger le fichier Swagger YAML
-app.get('/swagger.yaml', (req: Request, res: Response) => {
-  res.setHeader('Content-Type', 'application/yaml');
-  res.setHeader('Content-Disposition', 'attachment; filename=swagger.yaml');
-  res.sendFile(path.join(__dirname, '../swagger.yaml'));
-});
+// Configuration Swagger (seulement si chargé)
+if (Object.keys(swaggerDocument).length > 0) {
+  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, {
+    customCss: '.swagger-ui .topbar { display: none }',
+    customSiteTitle: 'GIE Backend API Documentation',
+    swaggerOptions: {
+      docExpansion: 'list',
+      filter: true,
+      showRequestHeaders: true,
+      tryItOutEnabled: true
+    }
+  }));
+
+  app.get('/swagger.yaml', (req: Request, res: Response) => {
+    res.setHeader('Content-Type', 'application/yaml');
+    res.setHeader('Content-Disposition', 'attachment; filename=swagger.yaml');
+    res.sendFile(path.join(__dirname, '../swagger.yaml'));
+  });
+}
 
 // Routes
 app.use('/api', routes);
@@ -84,8 +90,7 @@ app.use('*', (req: Request, res: Response) => {
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`🚀 Serveur démarré sur le port ${PORT}`);
   console.log(`📊 Environnement: ${process.env.NODE_ENV || 'development'}`);
-  console.log(`🔗 API disponible sur: http://localhost:${PORT}/api`);
-  console.log(`📚 Documentation Swagger: http://localhost:${PORT}/api-docs`);
+  console.log(`🔗 API: http://localhost:${PORT}/api`);
   console.log(`💚 Health check: http://localhost:${PORT}/api/health`);
 });
 
