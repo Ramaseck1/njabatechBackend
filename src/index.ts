@@ -13,8 +13,8 @@ const app = express();
 const PORT = Number(process.env.PORT) || 3000;
 
 // Charger le fichier Swagger
-/* const swaggerDocument = YAML.load(path.join(__dirname, '../swagger.yaml'));
- */
+const swaggerDocument = YAML.load(path.join(__dirname, '../swagger.yaml'));
+
 // Middleware
 app.use(cors({
   origin: '*',
@@ -32,7 +32,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 });
 
 // Configuration Swagger
-/* app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, {
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, {
   customCss: '.swagger-ui .topbar { display: none }',
   customSiteTitle: 'GIE Backend API Documentation',
   customfavIcon: '/favicon.ico',
@@ -42,7 +42,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
     showRequestHeaders: true,
     tryItOutEnabled: true
   }
-})); */
+}));
 
 // Route pour télécharger le fichier Swagger YAML
 app.get('/swagger.yaml', (req: Request, res: Response) => {
