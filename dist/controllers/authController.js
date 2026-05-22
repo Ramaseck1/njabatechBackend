@@ -5,6 +5,8 @@ const auth_1 = require("../utils/auth");
 const administrateurService_1 = require("../services/administrateurService");
 const clientService_1 = require("../services/clientService");
 const gieService_1 = require("../services/gieService");
+const emailService_1 = require("../utils/emailService");
+const resetCodeStore_1 = require("../utils/resetCodeStore");
 class AuthController {
     static async loginAdmin(req, res) {
         try {
@@ -460,6 +462,106 @@ class AuthController {
                 success: false,
                 message: errorMessage,
                 ...(process.env.NODE_ENV === 'development' && { error: error.message })
+            });
+        }
+    }
+    static async forgotPasswordGIE(req, res) {
+        try {
+            const { email } = req.body;
+            if (!email) {
+                res.status(400).json({ success: false, message: 'Email requis' });
+                return;
+            }
+            const gie = await gieService_1.GIEService.findByEmail(email);
+            if (gie) {
+                const code = resetCodeStore_1.ResetCodeStore.create(gie.id, email);
+                await emailService_1.EmailService.sendResetCode(email, gie.nom, code);
+            }
+            res.json({
+                success: true,
+                message: 'Si un compte GIE correspond à cet email, un code de vérification a été envoyé.',
+            });
+        }
+        catch (error) {
+            res.status(500).json({
+                success: false,
+                message: "Erreur lors de l'envoi du code",
+                error: process.env.NODE_ENV === 'development' ? error.message : undefined,
+            });
+        }
+    }
+    static async verifyResetCodeGIE(req, res) {
+        try {
+            const { email, code } = req.body;
+            if (!email || !code) {
+                res.status(400).json({ success: false, message: 'Email et code requis' });
+                return;
+            }
+            const entry = resetCodeStore_1.ResetCodeStore.verify(email, code);
+            if (!entry) {
+                res.status(400).json({
+                    success: false,
+                    message: 'Code invalide ou expiré. Veuillez faire une nouvelle demande.',
+                });
+                return;
+            }
+            res.json({
+                success: true,
+                message: 'Code vérifié. Vous pouvez maintenant définir votre nouveau mot de passe.',
+            });
+        }
+        catch (error) {
+            res.status(500).json({
+                success: false,
+                message: 'Erreur lors de la vérification du code',
+                error: process.env.NODE_ENV === 'development' ? error.message : undefined,
+            });
+        }
+    }
+    static async resetPasswordGIE(req, res) {
+        try {
+            const { email, newPassword, confirmPassword } = req.body;
+            if (!email || !newPassword || !confirmPassword) {
+                res.status(400).json({
+                    success: false,
+                    message: 'Email, nouveau mot de passe et confirmation requis',
+                });
+                return;
+            }
+            if (newPassword !== confirmPassword) {
+                res.status(400).json({
+                    success: false,
+                    message: 'Les mots de passe ne correspondent pas',
+                });
+                return;
+            }
+            if (newPassword.length < 6) {
+                res.status(400).json({
+                    success: false,
+                    message: 'Le mot de passe doit contenir au moins 6 caractères',
+                });
+                return;
+            }
+            const entry = resetCodeStore_1.ResetCodeStore.canReset(email);
+            if (!entry) {
+                res.status(400).json({
+                    success: false,
+                    message: 'Session expirée ou code non vérifié. Veuillez recommencer.',
+                });
+                return;
+            }
+            await gieService_1.GIEService.resetPassword(entry.gieId, newPassword);
+            resetCodeStore_1.ResetCodeStore.delete(email);
+            res.json({
+                success: true,
+                message: 'Mot de passe réinitialisé avec succès. Vous pouvez vous connecter.',
+            });
+        }
+        catch (error) {
+            res.status(500).json({
+                success: false,
+                message: 'Erreur lors de la réinitialisation du mot de passe',
+                error: process.env.NODE_ENV === 'development' ? error.message : undefined,
             });
         }
     }

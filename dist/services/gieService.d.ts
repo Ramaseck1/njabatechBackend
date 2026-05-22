@@ -1,9 +1,8 @@
-import { GIE, StatutGIE } from '@prisma/client';
+import { GIE, StatutGIE } from '../generated/prisma';
 import { CreateGIEDto } from '../types';
 export declare class GIEService {
     static create(data: CreateGIEDto, administrateurId: string): Promise<GIE>;
     static findByPhone(telephone: string): Promise<GIE | null>;
-    static resetPassword(id: number, newPassword: string): Promise<void>;
     static authenticate(emailOrPhone: string, password: string): Promise<GIE>;
     static findAll(page?: number, limit?: number, search?: string): Promise<{
         gies: ({
@@ -25,7 +24,7 @@ export declare class GIEService {
             createdAt: Date;
             updatedAt: Date;
             adresse: string | null;
-            statut: import("@/generated/prisma").$Enums.StatutGIE;
+            statut: import("../generated/prisma").$Enums.StatutGIE;
             administrateurId: string;
             description: string | null;
             logo: string | null;
@@ -66,7 +65,7 @@ export declare class GIEService {
             createdAt: Date;
             updatedAt: Date;
             adresse: string | null;
-            statut: import("@/generated/prisma").$Enums.StatutGIE;
+            statut: import("../generated/prisma").$Enums.StatutGIE;
             administrateurId: string;
             description: string | null;
             logo: string | null;
@@ -84,6 +83,26 @@ export declare class GIEService {
         };
     }>;
     static validatePassword(gieId: string, password: string): Promise<boolean>;
+    static findByEmail(email: string): Promise<{
+        id: string;
+        email: string | null;
+        password: string;
+        nom: string;
+        telephone: string | null;
+        createdAt: Date;
+        updatedAt: Date;
+        adresse: string | null;
+        statut: import("../generated/prisma").$Enums.StatutGIE;
+        administrateurId: string;
+        description: string | null;
+        logo: string | null;
+        url: string | null;
+        membre: number | null;
+        Annee: Date | null;
+        specialite: number | null;
+        regionId: string | null;
+    } | null>;
+    static resetPassword(id: string, newPassword: string): Promise<void>;
     static changePassword(gieId: string, currentPassword: string, newPassword: string): Promise<void>;
     static getStats(id: string): Promise<{
         totalProduits: number;

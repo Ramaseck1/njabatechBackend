@@ -45,7 +45,6 @@ class GIEService {
         });
         return gie;
     }
-    static async resetPassword(id, newPassword) { }
     static async authenticate(emailOrPhone, password) {
         const gie = await database_1.prisma.gIE.findFirst({
             where: {
@@ -170,6 +169,21 @@ class GIEService {
             console.error('Erreur lors de la validation du mot de passe GIE:', error);
             return false;
         }
+    }
+    static async findByEmail(email) {
+        return database_1.prisma.gIE.findFirst({
+            where: { email: email.toLowerCase() },
+        });
+    }
+    static async resetPassword(id, newPassword) {
+        if (newPassword.length < 6) {
+            throw new Error('Le mot de passe doit contenir au moins 6 caractères');
+        }
+        const hashed = await auth_1.AuthUtils.hashPassword(newPassword);
+        await database_1.prisma.gIE.update({
+            where: { id },
+            data: { password: hashed },
+        });
     }
     static async changePassword(gieId, currentPassword, newPassword) {
         try {

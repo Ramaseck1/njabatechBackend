@@ -45,8 +45,7 @@ const path_1 = __importDefault(require("path"));
 const routes_1 = __importDefault(require("./routes"));
 dotenv.config();
 const app = (0, express_1.default)();
-const PORT = process.env.PORT || 3002;
-const swaggerDocument = yamljs_1.default.load(path_1.default.join(__dirname, '../swagger.yaml'));
+const PORT = Number(process.env.PORT) || 3000;
 app.use((0, cors_1.default)({
     origin: '*',
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
@@ -58,22 +57,31 @@ app.use((req, res, next) => {
     console.log(`${new Date().toISOString()} - ${req.method} ${req.path}`);
     next();
 });
-app.use('/api-docs', swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(swaggerDocument, {
-    customCss: '.swagger-ui .topbar { display: none }',
-    customSiteTitle: 'GIE Backend API Documentation',
-    customfavIcon: '/favicon.ico',
-    swaggerOptions: {
-        docExpansion: 'list',
-        filter: true,
-        showRequestHeaders: true,
-        tryItOutEnabled: true
-    }
-}));
-app.get('/swagger.yaml', (req, res) => {
-    res.setHeader('Content-Type', 'application/yaml');
-    res.setHeader('Content-Disposition', 'attachment; filename=swagger.yaml');
-    res.sendFile(path_1.default.join(__dirname, '../swagger.yaml'));
-});
+let swaggerDocument = {};
+try {
+    swaggerDocument = yamljs_1.default.load(path_1.default.join(__dirname, '../swagger.yaml'));
+    console.log('✅ swagger.yaml chargé');
+}
+catch (e) {
+    console.warn('⚠️ swagger.yaml non trouvé, documentation désactivée');
+}
+if (Object.keys(swaggerDocument).length > 0) {
+    app.use('/api-docs', swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(swaggerDocument, {
+        customCss: '.swagger-ui .topbar { display: none }',
+        customSiteTitle: 'GIE Backend API Documentation',
+        swaggerOptions: {
+            docExpansion: 'list',
+            filter: true,
+            showRequestHeaders: true,
+            tryItOutEnabled: true
+        }
+    }));
+    app.get('/swagger.yaml', (req, res) => {
+        res.setHeader('Content-Type', 'application/yaml');
+        res.setHeader('Content-Disposition', 'attachment; filename=swagger.yaml');
+        res.sendFile(path_1.default.join(__dirname, '../swagger.yaml'));
+    });
+}
 app.use('/api', routes_1.default);
 app.use((err, req, res, next) => {
     console.error('Erreur:', err);
@@ -95,14 +103,11 @@ app.use('*', (req, res) => {
         message: 'Route non trouvée'
     });
 });
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
     console.log(`🚀 Serveur démarré sur le port ${PORT}`);
     console.log(`📊 Environnement: ${process.env.NODE_ENV || 'development'}`);
-    console.log(`🔗 API disponible sur: http://localhost:${PORT}/api`);
-    console.log(`📚 Documentation Swagger: http://localhost:${PORT}/api-docs`);
-    console.log(`📄 Fichier Swagger YAML: http://localhost:${PORT}/swagger.yaml`);
+    console.log(`🔗 API: http://localhost:${PORT}/api`);
     console.log(`💚 Health check: http://localhost:${PORT}/api/health`);
-    console.log('JWT_SECRET:', process.env.JWT_SECRET);
 });
 process.on('SIGTERM', () => {
     console.log('SIGTERM reçu, arrêt gracieux...');
