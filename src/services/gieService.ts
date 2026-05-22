@@ -1,4 +1,4 @@
-import {  GIE, StatutGIE } from '@prisma/client';
+import { GIE, StatutGIE } from '../generated/prisma';
 import { CreateGIEDto } from '../types';
 import { AuthUtils } from '../utils/auth';
 import { prisma } from '../config/database';

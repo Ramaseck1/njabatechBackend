@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import prisma from '../config/database';
-import { Prisma, StatutPaiement } from '@prisma/client';
+import { Prisma, StatutPaiement } from '../generated/prisma';
 
 export class PaiementController {
   static async getAll(req: Request, res: Response): Promise<void> {
