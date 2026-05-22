@@ -10,16 +10,16 @@ import routes from './routes';
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 3002; // Changé de 3000 à 3003
+const PORT = Number(process.env.PORT) || 3000;
 
 // Charger le fichier Swagger
 const swaggerDocument = YAML.load(path.join(__dirname, '../swagger.yaml'));
 
 // Middleware
 app.use(cors({
-   origin: '*', // Autorise toutes les origines (à restreindre en prod)
+  origin: '*',
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'], 
+  allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 
 app.use(express.json({ limit: '10mb' }));
@@ -57,7 +57,6 @@ app.use('/api', routes);
 // Middleware de gestion d'erreurs
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   console.error('Erreur:', err);
-  
   res.status(err.status || 500).json({
     success: false,
     message: err.message || 'Erreur interne du serveur',
@@ -81,15 +80,13 @@ app.use('*', (req: Request, res: Response) => {
   });
 });
 
-// Démarrer le serveur
-app.listen(PORT, () => {
+// ✅ CORRECTION HOSTINGER : écoute sur 0.0.0.0
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`🚀 Serveur démarré sur le port ${PORT}`);
   console.log(`📊 Environnement: ${process.env.NODE_ENV || 'development'}`);
   console.log(`🔗 API disponible sur: http://localhost:${PORT}/api`);
   console.log(`📚 Documentation Swagger: http://localhost:${PORT}/api-docs`);
-  console.log(`📄 Fichier Swagger YAML: http://localhost:${PORT}/swagger.yaml`);
   console.log(`💚 Health check: http://localhost:${PORT}/api/health`);
-  console.log('JWT_SECRET:', process.env.JWT_SECRET);
 });
 
 // Gestion de l'arrêt gracieux
@@ -103,4 +100,4 @@ process.on('SIGINT', () => {
   process.exit(0);
 });
 
-export default app; 
+export default app;
