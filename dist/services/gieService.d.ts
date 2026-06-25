@@ -16,6 +16,7 @@ export declare class GIEService {
                 produits: number;
             };
         } & {
+            url: string | null;
             id: string;
             email: string | null;
             password: string;
@@ -28,7 +29,6 @@ export declare class GIEService {
             administrateurId: string;
             description: string | null;
             logo: string | null;
-            url: string | null;
             membre: number | null;
             Annee: Date | null;
             specialite: number | null;
@@ -57,6 +57,7 @@ export declare class GIEService {
                 produits: number;
             };
         } & {
+            url: string | null;
             id: string;
             email: string | null;
             password: string;
@@ -69,7 +70,6 @@ export declare class GIEService {
             administrateurId: string;
             description: string | null;
             logo: string | null;
-            url: string | null;
             membre: number | null;
             Annee: Date | null;
             specialite: number | null;
@@ -84,6 +84,7 @@ export declare class GIEService {
     }>;
     static validatePassword(gieId: string, password: string): Promise<boolean>;
     static findByEmail(email: string): Promise<{
+        url: string | null;
         id: string;
         email: string | null;
         password: string;
@@ -96,7 +97,6 @@ export declare class GIEService {
         administrateurId: string;
         description: string | null;
         logo: string | null;
-        url: string | null;
         membre: number | null;
         Annee: Date | null;
         specialite: number | null;

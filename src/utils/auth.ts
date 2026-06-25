@@ -14,24 +14,22 @@ export class AuthUtils {
 
    static generateTokenclient(payload: { id: string; telephone: string;role: string }): string {
     const secret = process.env.JWT_SECRET;
-    const expiresIn = process.env.JWT_EXPIRES_IN || '7d';
-
+ 
     if (!secret) {
       throw new Error('JWT_SECRET is not defined');
     }
 
-    return (jwt as any).sign(payload, secret, { expiresIn });
+  return (jwt as any).sign(payload, secret);
   }
-  static generateToken(payload: { id: string; email:string; role: string }): string {
-    const secret = process.env.JWT_SECRET;
-    const expiresIn = process.env.JWT_EXPIRES_IN || '7d';
+ static generateToken(payload: { id: string; email: string; role: string }): string {
+  const secret = process.env.JWT_SECRET;
 
-    if (!secret) {
-      throw new Error('JWT_SECRET is not defined');
-    }
-
-    return (jwt as any).sign(payload, secret, { expiresIn });
+  if (!secret) {
+    throw new Error('JWT_SECRET is not defined');
   }
+
+  return (jwt as any).sign(payload, secret);  
+}
 
   static verifyToken(token: string): any {
     const secret = process.env.JWT_SECRET;
