@@ -93,11 +93,14 @@ static async findAllAvis() {
       where: { email }
     });
   }
-    static async findByTel(telephone: string) {
-    return prisma.client.findFirst({
-      where: { telephone }
-    });
-  }
+  static async findByTel(telephone: string) {
+  // ✅ Nettoyer avant de chercher en BDD
+  const cleanPhone = telephone.replace(/[\s\-\(\)]/g, '');
+  
+  return prisma.client.findFirst({
+    where: { telephone: cleanPhone }
+  });
+}
 
   // Trouver un client par ID
   static async findById(id: string): Promise<IClient | null> {
@@ -224,22 +227,25 @@ static async findAllAvis() {
   }
 
   // Authentifier un client
-  static async authenticate(identifiant: string, password: string) {
-  const client = await this.findByEmail(identifiant) || await this.findByTel(identifiant);
-    
-    if (!client) {
-    throw new Error('Email/téléphone ou mot de passe incorrect');
-    }
+ static async authenticate(identifiant: string, password: string) {
+  // ✅ Nettoyer l'identifiant (supprimer espaces, tirets, parenthèses)
+  const cleanIdentifiant = identifiant.replace(/[\s\-\(\)]/g, '');
 
-    const isValidPassword = await AuthUtils.comparePassword(password, client.password);
+  const client = await this.findByEmail(cleanIdentifiant) || await this.findByTel(cleanIdentifiant);
     
-    if (!isValidPassword) {
+  if (!client) {
     throw new Error('Email/téléphone ou mot de passe incorrect');
-    }
-
-    const { password: _, ...clientWithoutPassword } = client;
-    return clientWithoutPassword;
   }
+
+  const isValidPassword = await AuthUtils.comparePassword(password, client.password);
+    
+  if (!isValidPassword) {
+    throw new Error('Email/téléphone ou mot de passe incorrect');
+  }
+
+  const { password: _, ...clientWithoutPassword } = client;
+  return clientWithoutPassword;
+}
 
   // Récupérer les statistiques d'un client
   static async getStats(id: string) {

@@ -218,14 +218,18 @@ export class AuthController {
       }
 
       // Vérification téléphone (toujours obligatoire)
-      const existingClientTel = await ClientService.findByTel(data.telephone);
-      if (existingClientTel) {
-        res.status(400).json({
-          success: false,
-          message: 'Un client avec ce téléphone existe déjà'
-        });
-        return;
-      }
+      const cleanTelephone = data.telephone.replace(/[\s\-\(\)]/g, ''); // ✅ Nettoyer
+const existingClientTel = await ClientService.findByTel(cleanTelephone);
+if (existingClientTel) {
+  res.status(400).json({
+    success: false,
+    message: 'Un client avec ce téléphone existe déjà'
+  });
+  return;
+}
+
+// ✅ Stocker le numéro nettoyé (sans espaces)
+data.telephone = cleanTelephone;
 
       const defaultAdmin = await AdministrateurService.findByEmail('admin@gie.com');
       if (!defaultAdmin) {

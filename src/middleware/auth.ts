@@ -9,9 +9,11 @@ export interface AuthenticatedUser {
   role: 'ADMIN' | 'SUPER_ADMIN' | 'GIE' | 'CLIENT' | 'livreur';
 }
 
+
 // Middleware d'authentification général
 export const authenticateToken = (req: AuthRequest, res: Response, next: NextFunction): void => {
   try {
+    
     const authHeader = req.headers.authorization;
     const token = AuthUtils.extractTokenFromHeader(authHeader);
 
