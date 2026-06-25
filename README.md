@@ -313,11 +313,4 @@ curl -X POST http://localhost:3000/api/auth/client/register \
 
 ## 🎯 Comptes de test
 
-Après avoir exécuté `npm run db:seed`, vous aurez accès aux comptes suivants :
-
-- **👑 Super Admin** : `superadmin@gie.com` / `admin123`
-- **👨‍💼 Admin** : `admin@gie.com` / `admin123`
-- **🏢 GIE Agricole** : `contact@gie-agricole-nord.com` / `gie123`
-- **🏢 GIE Artisanat** : `contact@gie-artisanat.com` / `gie123`
-- **👤 Client 1** : `client1@example.com` / `client123`
-- **👤 Client 2** : `client2@example.com` / `client123` 
+  
