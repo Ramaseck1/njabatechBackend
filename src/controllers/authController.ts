@@ -212,16 +212,19 @@ export class AuthController {
         });
         return;
       }
+      if (data.email && data.email.trim() !== '') {
+  const existingClient = await ClientService.findByEmail(data.email);
+  if (existingClient) {
+    res.status(400).json({
+      success: false,
+      message: 'Un client avec cet email existe déjà'
+    });
+    return;
+  }
+}
 
-      const existingClient = await ClientService.findByEmail(data.email);
-      const existingClienttel = await ClientService.findByTel(data.telephone);
-      if (existingClient) {
-        res.status(400).json({
-          success: false,
-          message: 'Un client avec cet email existe déjà'
-        });
-        return;
-      }
+ const existingClienttel = await ClientService.findByTel(data.telephone);
+      
        if (existingClienttel) {
         res.status(400).json({
           success: false,
