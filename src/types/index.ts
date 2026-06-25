@@ -59,6 +59,7 @@ export interface ICategorie {
 export interface IProduit {
   id: string;
   nom: string;
+  quantite: string; // ✅ Ajouter cette ligne
   description?: string;
   prix: number;
   stock: number;
