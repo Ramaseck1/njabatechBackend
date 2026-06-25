@@ -31,16 +31,10 @@ export class AuthController {
       res.json({
         success: true,
         message: 'Connexion réussie',
-        data: {
-          administrateur,
-          token
-        }
+        data: { administrateur, token }
       });
     } catch (error: any) {
-      res.status(401).json({
-        success: false,
-        message: error.message
-      });
+      res.status(401).json({ success: false, message: error.message });
     }
   }
 
@@ -79,10 +73,7 @@ export class AuthController {
         }
       });
     } catch (error: any) {
-      res.status(401).json({
-        success: false,
-        message: error.message
-      });
+      res.status(401).json({ success: false, message: error.message });
     }
   }
 
@@ -110,7 +101,7 @@ export class AuthController {
         success: true,
         message: 'Connexion réussie',
         data: {
-          client:{
+          client: {
             nom: client.nom,
             email: client.email,
             telephone: client.telephone,
@@ -120,14 +111,11 @@ export class AuthController {
         }
       });
     } catch (error: any) {
-      res.status(401).json({
-        success: false,
-        message: error.message
-      });
+      res.status(401).json({ success: false, message: error.message });
     }
   }
 
-  // Inscription administrateur (réservé aux super admins)
+  // Inscription administrateur
   static async registerAdmin(req: Request, res: Response): Promise<void> {
     try {
       const data: CreateAdministrateurDto = req.body;
@@ -159,13 +147,13 @@ export class AuthController {
     } catch (error: any) {
       res.status(500).json({
         success: false,
-        message: 'Erreur lors de la création de l\'administrateur',
+        message: "Erreur lors de la création de l'administrateur",
         error: error.message
       });
     }
   }
 
-  // Créer un compte GIE (réservé aux admins)
+  // Créer un compte GIE
   static async registerGIE(req: Request, res: Response): Promise<void> {
     try {
       const data: CreateGIEDto = req.body;
@@ -205,30 +193,36 @@ export class AuthController {
     try {
       const data: CreateClientDto = req.body;
 
-      if ( !data.password || !data.nom || !data.prenom || !data.telephone) {
+      // Champs obligatoires
+      if (!data.password || !data.nom || !data.prenom || !data.telephone) {
         res.status(400).json({
           success: false,
           message: 'Tous les champs obligatoires doivent être remplis'
         });
         return;
       }
-      if (data.email && data.email.trim() !== '') {
-  const existingClient = await ClientService.findByEmail(data.email);
-  if (existingClient) {
-    res.status(400).json({
-      success: false,
-      message: 'Un client avec cet email existe déjà'
-    });
-    return;
-  }
-}
 
- const existingClienttel = await ClientService.findByTel(data.telephone);
-      
-       if (existingClienttel) {
+      // ✅ Vérification email UNIQUEMENT s'il est fourni
+      if (data.email && data.email.trim() !== '') {
+        const existingClient = await ClientService.findByEmail(data.email);
+        if (existingClient) {
+          res.status(400).json({
+            success: false,
+            message: 'Un client avec cet email existe déjà'
+          });
+          return;
+        }
+      } else {
+        // ✅ Si email vide/absent, on le force à null pour éviter les conflits en BDD
+        data.email = null as any;
+      }
+
+      // Vérification téléphone (toujours obligatoire)
+      const existingClientTel = await ClientService.findByTel(data.telephone);
+      if (existingClientTel) {
         res.status(400).json({
           success: false,
-          message: 'Un client avec cet telephone existe déjà'
+          message: 'Un client avec ce téléphone existe déjà'
         });
         return;
       }
@@ -259,7 +253,7 @@ export class AuthController {
       res.status(500).json({
         success: false,
         message: 'Erreur lors de la création du compte client',
-        error: error.message
+        error: error.message  // ← affiché pour déboguer, à retirer en prod
       });
     }
   }
@@ -271,29 +265,18 @@ export class AuthController {
       const token = AuthUtils.extractTokenFromHeader(authHeader);
 
       if (!token) {
-        res.status(401).json({
-          success: false,
-          message: 'Token requis'
-        });
+        res.status(401).json({ success: false, message: 'Token requis' });
         return;
       }
 
       const decoded = AuthUtils.verifyToken(token);
-
-      res.json({
-        success: true,
-        message: 'Token valide',
-        data: decoded
-      });
+      res.json({ success: true, message: 'Token valide', data: decoded });
     } catch (error: any) {
-      res.status(401).json({
-        success: false,
-        message: 'Token invalide'
-      });
+      res.status(401).json({ success: false, message: 'Token invalide' });
     }
   }
 
-  // NOUVELLE MÉTHODE : Réinitialiser le mot de passe par téléphone (GIE uniquement)
+  // Réinitialiser le mot de passe par téléphone (GIE)
   static async resetPasswordByPhone(req: Request, res: Response): Promise<void> {
     try {
       const { telephone, currentPassword, newPassword } = req.body;
@@ -306,7 +289,6 @@ export class AuthController {
         return;
       }
 
-      // Validation du nouveau mot de passe
       if (newPassword.length < 6) {
         res.status(400).json({
           success: false,
@@ -315,9 +297,7 @@ export class AuthController {
         return;
       }
 
-      // Rechercher l'utilisateur GIE par téléphone
       const gie = await GIEService.findByPhone(telephone);
-      
       if (!gie) {
         res.status(404).json({
           success: false,
@@ -326,17 +306,13 @@ export class AuthController {
         return;
       }
 
-      // Changer le mot de passe en vérifiant l'ancien
       await GIEService.changePassword(gie.id, currentPassword, newPassword);
 
       res.json({
         success: true,
         message: 'Mot de passe modifié avec succès',
-        data: {
-          message: 'Vous pouvez maintenant vous connecter avec votre nouveau mot de passe'
-        }
+        data: { message: 'Vous pouvez maintenant vous connecter avec votre nouveau mot de passe' }
       });
-
     } catch (error: any) {
       let errorMessage = 'Erreur lors de la modification du mot de passe';
       let statusCode = 500;
@@ -357,7 +333,7 @@ export class AuthController {
     }
   }
 
-  // NOUVELLE MÉTHODE : Réinitialiser le mot de passe par email (Admin et Client)
+  // Réinitialiser le mot de passe par email (Admin et Client)
   static async resetPasswordByEmail(req: Request, res: Response): Promise<void> {
     try {
       const { email, currentPassword, newPassword, userType } = req.body;
@@ -365,12 +341,11 @@ export class AuthController {
       if (!email || !currentPassword || !newPassword || !userType) {
         res.status(400).json({
           success: false,
-          message: 'Email, ancien mot de passe, nouveau mot de passe et type d\'utilisateur requis'
+          message: "Email, ancien mot de passe, nouveau mot de passe et type d'utilisateur requis"
         });
         return;
       }
 
-      // Validation du nouveau mot de passe
       if (newPassword.length < 6) {
         res.status(400).json({
           success: false,
@@ -385,44 +360,32 @@ export class AuthController {
         case 'ADMIN':
         case 'ADMINISTRATEUR':
           user = await AdministrateurService.findByEmail(email);
-          if (user) {
-            // Utiliser changePassword qui vérifie l'ancien mot de passe
-            await AdministrateurService.changePassword(user.id, currentPassword, newPassword);
-          }
+          if (user) await AdministrateurService.changePassword(user.id, currentPassword, newPassword);
           break;
 
         case 'CLIENT':
           user = await ClientService.findByEmail(email);
-          if (user) {
-            // Utiliser changePassword qui vérifie l'ancien mot de passe
-            await ClientService.changePassword(user.id, currentPassword, newPassword);
-          }
+          if (user) await ClientService.changePassword(user.id, currentPassword, newPassword);
           break;
 
         default:
           res.status(400).json({
             success: false,
-            message: 'Type d\'utilisateur non valide. Utilisez ADMIN ou CLIENT'
+            message: "Type d'utilisateur non valide. Utilisez ADMIN ou CLIENT"
           });
           return;
       }
 
       if (!user) {
-        res.status(404).json({
-          success: false,
-          message: 'Aucun utilisateur trouvé avec cet email'
-        });
+        res.status(404).json({ success: false, message: 'Aucun utilisateur trouvé avec cet email' });
         return;
       }
 
       res.json({
         success: true,
         message: 'Mot de passe modifié avec succès',
-        data: {
-          message: 'Vous pouvez maintenant vous connecter avec votre nouveau mot de passe'
-        }
+        data: { message: 'Vous pouvez maintenant vous connecter avec votre nouveau mot de passe' }
       });
-
     } catch (error: any) {
       let errorMessage = 'Erreur lors de la modification du mot de passe';
       let statusCode = 500;
@@ -463,53 +426,28 @@ export class AuthController {
         case 'ADMIN':
         case 'SUPER_ADMIN':
           user = await AdministrateurService.findById(userId);
-          if (!user) {
-            res.status(404).json({
-              success: false,
-              message: 'Administrateur non trouvé'
-            });
-            return;
-          }
+          if (!user) { res.status(404).json({ success: false, message: 'Administrateur non trouvé' }); return; }
           await AdministrateurService.changePassword(userId, currentPassword, newPassword);
           break;
-          
+
         case 'GIE':
           user = await GIEService.findById(userId);
-          if (!user) {
-            res.status(404).json({
-              success: false,
-              message: 'GIE non trouvé'
-            });
-            return;
-          }
+          if (!user) { res.status(404).json({ success: false, message: 'GIE non trouvé' }); return; }
           await GIEService.changePassword(userId, currentPassword, newPassword);
           break;
-          
+
         case 'CLIENT':
           user = await ClientService.findById(userId);
-          if (!user) {
-            res.status(404).json({
-              success: false,
-              message: 'Client non trouvé'
-            });
-            return;
-          }
+          if (!user) { res.status(404).json({ success: false, message: 'Client non trouvé' }); return; }
           await ClientService.changePassword(userId, currentPassword, newPassword);
           break;
-          
+
         default:
-          res.status(400).json({
-            success: false,
-            message: 'Type d\'utilisateur non reconnu'
-          });
+          res.status(400).json({ success: false, message: "Type d'utilisateur non reconnu" });
           return;
       }
 
-      res.json({
-        success: true,
-        message: 'Mot de passe modifié avec succès'
-      });
-      
+      res.json({ success: true, message: 'Mot de passe modifié avec succès' });
     } catch (error: any) {
       let errorMessage = 'Erreur lors de la modification du mot de passe';
       let statusCode = 500;
@@ -533,121 +471,118 @@ export class AuthController {
     }
   }
 
-
+  // Forgot password GIE - Étape 1
   static async forgotPasswordGIE(req: Request, res: Response): Promise<void> {
-  try {
-    const { email } = req.body;
+    try {
+      const { email } = req.body;
 
-    if (!email) {
-      res.status(400).json({ success: false, message: 'Email requis' });
-      return;
+      if (!email) {
+        res.status(400).json({ success: false, message: 'Email requis' });
+        return;
+      }
+
+      const gie = await GIEService.findByEmail(email);
+      if (gie) {
+        const code = ResetCodeStore.create(gie.id, email);
+        await EmailService.sendResetCode(email, gie.nom, code);
+      }
+
+      res.json({
+        success: true,
+        message: 'Si un compte GIE correspond à cet email, un code de vérification a été envoyé.'
+      });
+    } catch (error: any) {
+      res.status(500).json({
+        success: false,
+        message: "Erreur lors de l'envoi du code",
+        error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      });
     }
-
-    // On répond toujours 200 pour ne pas révéler si l'email existe
-    const gie = await GIEService.findByEmail(email);
-    if (gie) {
-      const code = ResetCodeStore.create(gie.id, email);
-      await EmailService.sendResetCode(email, gie.nom, code);
-    }
-
-    res.json({
-      success: true,
-      message: 'Si un compte GIE correspond à cet email, un code de vérification a été envoyé.',
-    });
-  } catch (error: any) {
-    res.status(500).json({
-      success: false,
-      message: "Erreur lors de l'envoi du code",
-      error: process.env.NODE_ENV === 'development' ? error.message : undefined,
-    });
   }
-}
 
-// ─── ÉTAPE 2 : Vérification du code ──────────────────────────────────────────
-static async verifyResetCodeGIE(req: Request, res: Response): Promise<void> {
-  try {
-    const { email, code } = req.body;
+  // Vérification du code - Étape 2
+  static async verifyResetCodeGIE(req: Request, res: Response): Promise<void> {
+    try {
+      const { email, code } = req.body;
 
-    if (!email || !code) {
-      res.status(400).json({ success: false, message: 'Email et code requis' });
-      return;
-    }
+      if (!email || !code) {
+        res.status(400).json({ success: false, message: 'Email et code requis' });
+        return;
+      }
 
-    const entry = ResetCodeStore.verify(email, code);
-    if (!entry) {
-      res.status(400).json({
-        success: false,
-        message: 'Code invalide ou expiré. Veuillez faire une nouvelle demande.',
+      const entry = ResetCodeStore.verify(email, code);
+      if (!entry) {
+        res.status(400).json({
+          success: false,
+          message: 'Code invalide ou expiré. Veuillez faire une nouvelle demande.'
+        });
+        return;
+      }
+
+      res.json({
+        success: true,
+        message: 'Code vérifié. Vous pouvez maintenant définir votre nouveau mot de passe.'
       });
-      return;
+    } catch (error: any) {
+      res.status(500).json({
+        success: false,
+        message: 'Erreur lors de la vérification du code',
+        error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      });
     }
-
-    res.json({
-      success: true,
-      message: 'Code vérifié. Vous pouvez maintenant définir votre nouveau mot de passe.',
-    });
-  } catch (error: any) {
-    res.status(500).json({
-      success: false,
-      message: 'Erreur lors de la vérification du code',
-      error: process.env.NODE_ENV === 'development' ? error.message : undefined,
-    });
   }
-}
 
-// ─── ÉTAPE 3 : Définition du nouveau mot de passe ────────────────────────────
-static async resetPasswordGIE(req: Request, res: Response): Promise<void> {
-  try {
-    const { email, newPassword, confirmPassword } = req.body;
+  // Définition du nouveau mot de passe - Étape 3
+  static async resetPasswordGIE(req: Request, res: Response): Promise<void> {
+    try {
+      const { email, newPassword, confirmPassword } = req.body;
 
-    if (!email || !newPassword || !confirmPassword) {
-      res.status(400).json({
-        success: false,
-        message: 'Email, nouveau mot de passe et confirmation requis',
+      if (!email || !newPassword || !confirmPassword) {
+        res.status(400).json({
+          success: false,
+          message: 'Email, nouveau mot de passe et confirmation requis'
+        });
+        return;
+      }
+
+      if (newPassword !== confirmPassword) {
+        res.status(400).json({ success: false, message: 'Les mots de passe ne correspondent pas' });
+        return;
+      }
+
+      if (newPassword.length < 6) {
+        res.status(400).json({
+          success: false,
+          message: 'Le mot de passe doit contenir au moins 6 caractères'
+        });
+        return;
+      }
+
+      const entry = ResetCodeStore.canReset(email);
+      if (!entry) {
+        res.status(400).json({
+          success: false,
+          message: 'Session expirée ou code non vérifié. Veuillez recommencer.'
+        });
+        return;
+      }
+
+      await GIEService.resetPassword(entry.gieId, newPassword);
+      ResetCodeStore.delete(email);
+
+      res.json({
+        success: true,
+        message: 'Mot de passe réinitialisé avec succès. Vous pouvez vous connecter.'
       });
-      return;
-    }
-
-    if (newPassword !== confirmPassword) {
-      res.status(400).json({
+    } catch (error: any) {
+      res.status(500).json({
         success: false,
-        message: 'Les mots de passe ne correspondent pas',
+        message: 'Erreur lors de la réinitialisation du mot de passe',
+        error: process.env.NODE_ENV === 'development' ? error.message : undefined
       });
-      return;
     }
-
-    if (newPassword.length < 6) {
-      res.status(400).json({
-        success: false,
-        message: 'Le mot de passe doit contenir au moins 6 caractères',
-      });
-      return;
-    }
-
-    const entry = ResetCodeStore.canReset(email);
-    if (!entry) {
-      res.status(400).json({
-        success: false,
-        message: 'Session expirée ou code non vérifié. Veuillez recommencer.',
-      });
-      return;
-    }
-
-    await GIEService.resetPassword(entry.gieId, newPassword);
-    ResetCodeStore.delete(email); // Invalider le code après usage
-
-    res.json({
-      success: true,
-      message: 'Mot de passe réinitialisé avec succès. Vous pouvez vous connecter.',
-    });
-  } catch (error: any) {
-    res.status(500).json({
-      success: false,
-      message: 'Erreur lors de la réinitialisation du mot de passe',
-      error: process.env.NODE_ENV === 'development' ? error.message : undefined,
-    });
   }
-}
+
   static async getUser(req: Request, res: Response): Promise<void> {
     try {
       const userId = (req as any).user.id;
@@ -677,10 +612,10 @@ static async resetPasswordGIE(req: Request, res: Response): Promise<void> {
 
       res.json({ success: true, data: user });
     } catch (error: any) {
-      res.status(500).json({ 
-        success: false, 
-        message: 'Erreur lors de la récupération de l\'utilisateur', 
-        error: process.env.NODE_ENV === 'development' ? error.message : undefined 
+      res.status(500).json({
+        success: false,
+        message: "Erreur lors de la récupération de l'utilisateur",
+        error: process.env.NODE_ENV === 'development' ? error.message : undefined
       });
     }
   }
@@ -712,10 +647,7 @@ static async resetPasswordGIE(req: Request, res: Response): Promise<void> {
           user = await ClientService.update(userId, data);
           break;
         default:
-          res.status(400).json({
-            success: false,
-            message: 'Rôle utilisateur inconnu'
-          });
+          res.status(400).json({ success: false, message: 'Rôle utilisateur inconnu' });
           return;
       }
 
@@ -730,10 +662,10 @@ static async resetPasswordGIE(req: Request, res: Response): Promise<void> {
         data: user
       });
     } catch (error: any) {
-      console.error("Erreur updateUser:", error);
+      console.error('Erreur updateUser:', error);
       res.status(500).json({
         success: false,
-        message: 'Erreur lors de la mise à jour de l\'utilisateur',
+        message: "Erreur lors de la mise à jour de l'utilisateur",
         error: process.env.NODE_ENV === 'development' ? error.message : undefined
       });
     }
