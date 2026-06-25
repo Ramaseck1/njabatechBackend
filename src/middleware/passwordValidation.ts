@@ -238,7 +238,7 @@ export class PasswordValidationMiddleware {
     const { nom, prenom, email, password, telephone } = req.body;
 
     // Validation des champs requis
-    if (!nom || !prenom || !email || !password || !telephone) {
+    if (!nom || !prenom  || !password || !telephone) {
       res.status(400).json({
         success: false,
         message: 'Tous les champs sont requis',
