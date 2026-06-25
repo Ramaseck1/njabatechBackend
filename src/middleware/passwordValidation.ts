@@ -269,15 +269,14 @@ export class PasswordValidationMiddleware {
 
     // Validation email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
- /*    if (!emailRegex.test(email)) {
-      res.status(400).json({
-        success: false,
-        message: 'Email invalide',
-        errors: ['Veuillez fournir une adresse email valide']
-      });
-      return;
-    } */
-
+if (email && !emailRegex.test(email)) {
+  res.status(400).json({
+    success: false,
+    message: 'Email invalide',
+    errors: ['Veuillez fournir une adresse email valide']
+  });
+  return;
+}
     // Validation mot de passe
     const passwordValidation = PasswordValidationMiddleware.validatePassword(password);
     if (!passwordValidation.isValid) {
