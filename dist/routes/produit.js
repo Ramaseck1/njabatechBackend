@@ -1,0 +1,21 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const produitController_1 = require("../controllers/produitController");
+const auth_1 = require("../middleware/auth");
+const router = (0, express_1.Router)();
+router.get('/public', produitController_1.ProduitController.getAll);
+router.get('/search', produitController_1.ProduitController.search);
+router.get('/avis/:produitId', produitController_1.ProduitController.getByAvisProduit);
+router.get('/', produitController_1.ProduitController.getAll);
+router.get('/mes-produits', auth_1.authenticateToken, auth_1.requireGIE, produitController_1.ProduitController.getMyProducts);
+router.get('/category/:categorieId', auth_1.authenticateToken, produitController_1.ProduitController.getByCategory);
+router.get('/out-of-stock', auth_1.authenticateToken, auth_1.requireAdmin, produitController_1.ProduitController.getOutOfStock);
+router.post('/avis-produit', auth_1.authenticateToken, produitController_1.ProduitController.createAvis);
+router.post('/', auth_1.authenticateToken, auth_1.requireGIE, produitController_1.upload.single('image'), produitController_1.ProduitController.create);
+router.put('/:id', auth_1.authenticateToken, auth_1.requireGIE, produitController_1.upload.single('image'), produitController_1.ProduitController.update);
+router.patch('/:id/stock', auth_1.authenticateToken, auth_1.requireGIE, produitController_1.ProduitController.updateStock);
+router.delete('/:id', auth_1.authenticateToken, auth_1.requireGIE, produitController_1.ProduitController.delete);
+router.get('/:id', produitController_1.ProduitController.getById);
+exports.default = router;
+//# sourceMappingURL=produit.js.map

@@ -1,0 +1,26 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const commandeController_1 = require("../controllers/commandeController");
+const auth_1 = require("../middleware/auth");
+const router = (0, express_1.Router)();
+router.use(auth_1.authenticateToken);
+router.get('/', commandeController_1.CommandeController.getAll);
+router.post('/', commandeController_1.CommandeController.create);
+router.post('/compay', commandeController_1.CommandeController.createcomPayement);
+router.get('/mes-commandes', auth_1.requireGIE, commandeController_1.CommandeController.getMyCommandes);
+router.get('/mes-commandes/:commandeId', auth_1.requireGIE, commandeController_1.CommandeController.getMyCommandeById);
+router.get('/mes-commandes-client', auth_1.requireClient, commandeController_1.CommandeController.getMyClientCommandes);
+router.get('/mes-commandes-stats', auth_1.requireGIE, commandeController_1.CommandeController.getMyStats);
+router.get('/:id', commandeController_1.CommandeController.getById);
+router.patch('/:id/statut', commandeController_1.CommandeController.updateStatut);
+router.patch('/:id/annuler', commandeController_1.CommandeController.annulerCommande);
+router.patch('/:id/confirmer', commandeController_1.CommandeController.confirmerCommande);
+router.post('/fix-negative-stocks', auth_1.requireGIE, commandeController_1.CommandeController.fixNegativeStocks);
+router.get('/mes-commandes-details', auth_1.requireGIE, commandeController_1.CommandeController.getMyCommandesWithDetails);
+router.get('/stats-gie', auth_1.requireGIE, commandeController_1.CommandeController.getGIEStats);
+router.patch('/produit/:panierProduitId/en-preparation', auth_1.requireGIE, commandeController_1.CommandeController.marquerEnPreparation);
+router.patch('/produit/:panierProduitId/pret', auth_1.requireGIE, commandeController_1.CommandeController.marquerPret);
+router.patch('/produit/:panierProduitId/annuler', auth_1.requireGIE, commandeController_1.CommandeController.annulerProduit);
+exports.default = router;
+//# sourceMappingURL=commande.js.map

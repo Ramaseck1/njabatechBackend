@@ -62,7 +62,7 @@ export class ProduitController {
   static async getAll(req: Request, res: Response): Promise<void> {
     try {
       const page = parseInt(req.query.page as string) || 1;
-      const limit = parseInt(req.query.limit as string) || 10;
+      const limit = parseInt(req.query.limit as string) || 50;
       const gieId = req.query.gieId as string;
 
       const result = await ProduitService.findAll(page, limit, gieId);
@@ -298,7 +298,7 @@ static async updateStock(req: Request, res: Response): Promise<void> {
     try {
       const { q } = req.query;
       const page = parseInt(req.query.page as string) || 1;
-      const limit = parseInt(req.query.limit as string) || 10;
+      const limit = parseInt(req.query.limit as string) || 50;
 
       if (!q) {
         res.status(400).json({
@@ -363,7 +363,7 @@ static async createAvis(req: Request, res: Response) {
     try {
       const { categorieId } = req.params;
       const page = parseInt(req.query.page as string) || 1;
-      const limit = parseInt(req.query.limit as string) || 10;
+      const limit = parseInt(req.query.limit as string) || 50;
 
       const result = await ProduitService.getByCategory(categorieId, page, limit);
 
@@ -385,7 +385,7 @@ static async createAvis(req: Request, res: Response) {
   static async getOutOfStock(req: Request, res: Response): Promise<void> {
     try {
       const page = parseInt(req.query.page as string) || 1;
-      const limit = parseInt(req.query.limit as string) || 10;
+      const limit = parseInt(req.query.limit as string) || 50;
 
       const result = await ProduitService.getOutOfStock(page, limit);
 
