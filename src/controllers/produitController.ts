@@ -62,7 +62,7 @@ export class ProduitController {
   static async getAll(req: Request, res: Response): Promise<void> {
     try {
       const page = parseInt(req.query.page as string) || 1;
-      const limit = parseInt(req.query.limit as string) || 50;
+      const limit = parseInt(req.query.limit as string) || 100000000;
       const gieId = req.query.gieId as string;
 
       const result = await ProduitService.findAll(page, limit, gieId);
@@ -298,7 +298,7 @@ static async updateStock(req: Request, res: Response): Promise<void> {
     try {
       const { q } = req.query;
       const page = parseInt(req.query.page as string) || 1;
-      const limit = parseInt(req.query.limit as string) || 50;
+      const limit = parseInt(req.query.limit as string) || 100000;
 
       if (!q) {
         res.status(400).json({
@@ -439,4 +439,52 @@ static async createAvis(req: Request, res: Response) {
       });
     }
   }
+
+
+  static async getTopAchetes(req: Request, res: Response): Promise<void> {
+  try {
+    const limit = parseInt(req.query.limit as string) || 10;
+    const produits = await ProduitService.getTopAchetes(limit);
+    res.json({
+      success: true,
+      message: 'Top produits les plus achetés',
+      data: produits
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: 'Erreur lors de la récupération',
+      error: error.message
+    });
+  }
+}
+
+static async getTopCliques(req: Request, res: Response): Promise<void> {
+  try {
+    const limit = parseInt(req.query.limit as string) || 10;
+    const produits = await ProduitService.getTopCliques(limit);
+    res.json({
+      success: true,
+      message: 'Top produits les plus cliqués',
+      data: produits
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: 'Erreur lors de la récupération',
+      error: error.message
+    });
+  }
+}
+
+static async incrementerVues(req: Request, res: Response): Promise<void> {
+  try {
+    const { id } = req.params;
+    await ProduitService.incrementerVues(id);
+    res.json({ success: true, message: 'Vue enregistrée' });
+  } catch (error: any) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+}
 } 
+

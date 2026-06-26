@@ -40,4 +40,8 @@ router.delete('/:id', authenticateToken, requireGIE, ProduitController.delete);
 // ⚠️ IMPORTANT: Placée en dernier pour éviter de capturer les autres routes
 router.get('/:id', ProduitController.getById);
 
+router.get('/top/achetes', ProduitController.getTopAchetes);
+router.get('/top/cliques', ProduitController.getTopCliques);
+router.post('/:id/vues', ProduitController.incrementerVues);
+
 export default router;

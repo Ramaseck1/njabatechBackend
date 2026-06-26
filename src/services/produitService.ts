@@ -119,6 +119,60 @@ static async createAvis(data: { clientId: string, produitId: string, rating: num
     };
   }
 
+
+static async getTopAchetes(limit: number = 10) {
+  const topProduits = await prisma.panierProduit.groupBy({
+    by: ['produitId'],
+    _sum: { quantite: true },
+    orderBy: { _sum: { quantite: 'desc' } },
+    take: limit
+  });
+
+  const produits = await Promise.all(
+    topProduits.map(async (item: { produitId: string; _sum: { quantite: number | null } }) => {
+      const produit = await prisma.produit.findUnique({
+        where: { id: item.produitId },
+        include: {
+          gie: { select: { id: true, nom: true, email: true } },
+          categorie: true
+        }
+      });
+      return produit ? { ...produit, totalAchats: item._sum.quantite ?? 0 } : null;
+    })
+  );
+
+  return produits.filter((p): p is NonNullable<typeof p> => p !== null);
+}
+
+static async getTopCliques(limit: number = 10) {
+  const topProduitIds = await prisma.panierProduit.groupBy({
+    by: ['produitId'],
+    _count: { produitId: true },
+    orderBy: { _count: { produitId: 'desc' } },
+    take: limit
+  });
+
+  const produits = await Promise.all(
+    topProduitIds.map(async (item: { produitId: string; _count: { produitId: number } }) => {
+      const produit = await prisma.produit.findUnique({
+        where: { id: item.produitId },
+        include: {
+          gie: { select: { id: true, nom: true, email: true } },
+          categorie: true
+        }
+      });
+      return produit ? { ...produit, vues: item._count.produitId } : null;
+    })
+  );
+
+  return produits.filter((p): p is NonNullable<typeof p> => p !== null);
+}
+
+static async incrementerVues(_id: string): Promise<void> {
+  // Colonne vues supprimée — les vues sont déduites via getTopCliques
+}
+
+ 
   // Mettre à jour un produit
   static async update(id: string, data: Partial<CreateProduitDto>): Promise<IProduit | null> {
     // Récupérer le produit existant pour comparer les images
