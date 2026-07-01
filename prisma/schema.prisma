@@ -5,6 +5,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+  
  }
 
 model Administrateur {
@@ -120,6 +121,8 @@ model Produit {
   prix           Float
   stock          Int             @default(0)
   image          String?
+  vues           Int              @default(0)
+
   statut         StatutProduit   @default(DISPONIBLE)
   createdAt      DateTime        @default(now())
   updatedAt      DateTime        @updatedAt

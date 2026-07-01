@@ -6,6 +6,4 @@ uploads/
 uploads/temp/
 
 /generated/prisma
-
-
-
+.env
