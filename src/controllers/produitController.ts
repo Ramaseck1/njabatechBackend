@@ -359,28 +359,28 @@ static async createAvis(req: Request, res: Response) {
   }
 
   // Récupérer les produits par catégorie
-  static async getByCategory(req: Request, res: Response): Promise<void> {
-    try {
-      const { categorieId } = req.params;
-      const page = parseInt(req.query.page as string) || 1;
-      const limit = parseInt(req.query.limit as string) || 50;
+ static async getByCategory(req: Request, res: Response): Promise<void> {
+  try {
+    const { categorieId } = req.params;
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 50;
+    const excludeId = req.query.excludeId as string | undefined;
 
-      const result = await ProduitService.getByCategory(categorieId, page, limit);
+    const result = await ProduitService.getByCategory(categorieId, page, limit, excludeId);
 
-      res.json({
-        success: true,
-        message: 'Produits récupérés avec succès',
-        data: result
-      });
-    } catch (error: any) {
-      res.status(500).json({
-        success: false,
-        message: 'Erreur lors de la récupération des produits',
-        error: error.message
-      });
-    }
+    res.json({
+      success: true,
+      message: 'Produits récupérés avec succès',
+      data: result
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: 'Erreur lors de la récupération des produits',
+      error: error.message
+    });
   }
-
+}
   // Récupérer les produits en rupture de stock
   static async getOutOfStock(req: Request, res: Response): Promise<void> {
     try {
@@ -457,6 +457,7 @@ static async getTopAchetes(req: Request, res: Response): Promise<void> {
     });
   }
 }
+
 
 static async incrementerVues(req: Request, res: Response): Promise<void> {
   try {

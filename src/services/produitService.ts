@@ -156,6 +156,7 @@ static async getTopAchetes(limit: number = 5) {
   return produits.filter((p): p is NonNullable<typeof p> => p !== null);
 }
 
+
 static async incrementerVues(_id: string): Promise<void> {
   // Colonne vues supprimée — les vues sont déduites via getTopCliques
 }
@@ -279,42 +280,43 @@ static async incrementerVues(_id: string): Promise<void> {
     };
   }
 
-  // Récupérer les produits par catégorie
-  static async getByCategory(categorieId: string, page: number = 1, limit: number = 10) {
-    const skip = (page - 1) * limit;
-
-    const [produits, total] = await Promise.all([
-      prisma.produit.findMany({
-        where: { categorieId },
-        skip,
-        take: limit,
-        include: {
-          gie: {
-            select: {
-              id: true,
-              nom: true,
-              email: true
-            }
-          },
-          categorie: true
-        },
-        orderBy: { createdAt: 'desc' }
-      }),
-      prisma.produit.count({
-        where: { categorieId }
-      })
-    ]);
-
-    return {
-      produits: produits as IProduit[],
-      pagination: {
-        page,
-        limit,
-        total,
-        pages: Math.ceil(total / limit)
-      }
-    };
+ static async getByCategory(categorieId: string, page: number = 1, limit: number = 10, excludeId?: string) {
+  const skip = (page - 1) * limit;
+  const where: any = { categorieId };
+  if (excludeId) {
+    where.id = { not: excludeId };
   }
+
+  const [produits, total] = await Promise.all([
+    prisma.produit.findMany({
+      where,
+      skip,
+      take: limit,
+      include: {
+        gie: {
+          select: {
+            id: true,
+            nom: true,
+            email: true
+          }
+        },
+        categorie: true
+      },
+      orderBy: { createdAt: 'desc' }
+    }),
+    prisma.produit.count({ where })
+  ]);
+
+  return {
+    produits: produits as IProduit[],
+    pagination: {
+      page,
+      limit,
+      total,
+      pages: Math.ceil(total / limit)
+    }
+  };
+}
 
   // Récupérer les produits en rupture de stock
   static async getOutOfStock(page: number = 1, limit: number = 10) {
