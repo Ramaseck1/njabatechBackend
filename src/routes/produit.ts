@@ -9,8 +9,7 @@ router.get('/avis/:produitId', ProduitController.getByAvisProduit);
 
 // ✅ Top produits AVANT /:id
 router.get('/top/achetes', ProduitController.getTopAchetes);
-router.get('/top/cliques', ProduitController.getTopCliques);
-
+ 
 router.get('/', ProduitController.getAll);
 
 // ============================================

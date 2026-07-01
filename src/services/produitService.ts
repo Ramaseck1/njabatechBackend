@@ -118,18 +118,24 @@ static async createAvis(data: { clientId: string, produitId: string, rating: num
       }
     };
   }
-
-
-static async getTopAchetes(limit: number = 10) {
+static async getTopAchetes(limit: number = 5) {
   const topProduits = await prisma.panierProduit.groupBy({
     by: ['produitId'],
     _sum: { quantite: true },
+    _count: { produitId: true },
+    having: {
+      produitId: {
+        _count: {
+          gte: 2 // au moins 2 commandes distinctes pour ce produit
+        }
+      }
+    },
     orderBy: { _sum: { quantite: 'desc' } },
     take: limit
   });
 
   const produits = await Promise.all(
-    topProduits.map(async (item: { produitId: string; _sum: { quantite: number | null } }) => {
+    topProduits.map(async (item) => {
       const produit = await prisma.produit.findUnique({
         where: { id: item.produitId },
         include: {
@@ -137,31 +143,13 @@ static async getTopAchetes(limit: number = 10) {
           categorie: true
         }
       });
-      return produit ? { ...produit, totalAchats: item._sum.quantite ?? 0 } : null;
-    })
-  );
-
-  return produits.filter((p): p is NonNullable<typeof p> => p !== null);
-}
-
-static async getTopCliques(limit: number = 10) {
-  const topProduitIds = await prisma.panierProduit.groupBy({
-    by: ['produitId'],
-    _count: { produitId: true },
-    orderBy: { _count: { produitId: 'desc' } },
-    take: limit
-  });
-
-  const produits = await Promise.all(
-    topProduitIds.map(async (item: { produitId: string; _count: { produitId: number } }) => {
-      const produit = await prisma.produit.findUnique({
-        where: { id: item.produitId },
-        include: {
-          gie: { select: { id: true, nom: true, email: true } },
-          categorie: true
-        }
-      });
-      return produit ? { ...produit, vues: item._count.produitId } : null;
+      return produit
+        ? {
+            ...produit,
+            totalAchats: item._sum.quantite ?? 0,
+            nombreCommandes: item._count.produitId
+          }
+        : null;
     })
   );
 

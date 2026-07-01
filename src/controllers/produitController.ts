@@ -440,32 +440,13 @@ static async createAvis(req: Request, res: Response) {
     }
   }
 
-
-  static async getTopAchetes(req: Request, res: Response): Promise<void> {
+static async getTopAchetes(req: Request, res: Response): Promise<void> {
   try {
-    const limit = parseInt(req.query.limit as string) || 10;
+    const limit = parseInt(req.query.limit as string) || 5;
     const produits = await ProduitService.getTopAchetes(limit);
     res.json({
       success: true,
-      message: 'Top produits les plus achetés',
-      data: produits
-    });
-  } catch (error: any) {
-    res.status(500).json({
-      success: false,
-      message: 'Erreur lors de la récupération',
-      error: error.message
-    });
-  }
-}
-
-static async getTopCliques(req: Request, res: Response): Promise<void> {
-  try {
-    const limit = parseInt(req.query.limit as string) || 10;
-    const produits = await ProduitService.getTopCliques(limit);
-    res.json({
-      success: true,
-      message: 'Top produits les plus cliqués',
+      message: 'Top produits les plus achetés (min. 2 commandes)',
       data: produits
     });
   } catch (error: any) {
