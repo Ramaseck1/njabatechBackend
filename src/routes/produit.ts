@@ -16,7 +16,7 @@ router.get('/', ProduitController.getAll);
 // 🔒 ROUTES PROTÉGÉES
 // ============================================
 router.get('/mes-produits', authenticateToken, requireGIE, ProduitController.getMyProducts);
-router.get('/categorie/:categorieId',authenticateToken, ProduitController.getByCategory);
+router.get('/categorie/:categorieId', ProduitController.getByCategory);
 router.get('/out-of-stock', authenticateToken, requireAdmin, ProduitController.getOutOfStock);
 
 router.post('/avis-produit', authenticateToken, ProduitController.createAvis);
