@@ -149,6 +149,7 @@ model Commande {
   fraisLivraison    Float           @default(0)
   regionLivraisonId String?
   livreurId         String?
+  modeReception     ModeReception   @default(LIVRAISON)
   client            Client          @relation(fields: [clientId], references: [id], onDelete: Cascade)
   livreurs          livreurs?       @relation(fields: [livreurId], references: [id])
   regions           regions?        @relation(fields: [regionLivraisonId], references: [id])
@@ -156,6 +157,11 @@ model Commande {
   panierProduits    PanierProduit[]
 
   @@map("commandes")
+}
+
+enum ModeReception {
+  LIVRAISON
+  RETRAIT
 }
 
 model Paiement {
@@ -232,6 +238,26 @@ model regions {
   commandes             Commande[]
   gies                  GIE[]
   livreurs              livreurs[]
+}
+
+model PasswordResetCode {
+  id        String   @id @default(cuid())
+  email     String
+  userType  UserType
+  code      String
+  verified  Boolean  @default(false)
+  used      Boolean  @default(false)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([email, code])
+  @@map("password_reset_codes")
+}
+
+enum UserType {
+  ADMIN
+  CLIENT
+  GIE
 }
 
 enum Role {

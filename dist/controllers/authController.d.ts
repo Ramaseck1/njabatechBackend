@@ -7,12 +7,9 @@ export declare class AuthController {
     static registerGIE(req: Request, res: Response): Promise<void>;
     static registerClient(req: Request, res: Response): Promise<void>;
     static verifyToken(req: Request, res: Response): Promise<void>;
-    static resetPasswordByPhone(req: Request, res: Response): Promise<void>;
-    static resetPasswordByEmail(req: Request, res: Response): Promise<void>;
-    static changePassword(req: Request, res: Response): Promise<void>;
-    static forgotPasswordGIE(req: Request, res: Response): Promise<void>;
-    static verifyResetCodeGIE(req: Request, res: Response): Promise<void>;
-    static resetPasswordGIE(req: Request, res: Response): Promise<void>;
+    static requestPasswordReset(req: Request, res: Response): Promise<void>;
+    static verifyResetCode(req: Request, res: Response): Promise<void>;
+    static resetPasswordWithCode(req: Request, res: Response): Promise<void>;
     static getUser(req: Request, res: Response): Promise<void>;
     static updateUser(req: Request, res: Response): Promise<void>;
 }

@@ -4,9 +4,8 @@ exports.AuthController = void 0;
 const auth_1 = require("../utils/auth");
 const administrateurService_1 = require("../services/administrateurService");
 const clientService_1 = require("../services/clientService");
+const passwordResetService_1 = require("../services/passwordResetService");
 const gieService_1 = require("../services/gieService");
-const emailService_1 = require("../utils/emailService");
-const resetCodeStore_1 = require("../utils/resetCodeStore");
 class AuthController {
     static async loginAdmin(req, res) {
         try {
@@ -244,283 +243,46 @@ class AuthController {
             res.status(401).json({ success: false, message: 'Token invalide' });
         }
     }
-    static async resetPasswordByPhone(req, res) {
+    static async requestPasswordReset(req, res) {
         try {
-            const { telephone, currentPassword, newPassword } = req.body;
-            if (!telephone || !currentPassword || !newPassword) {
-                res.status(400).json({
-                    success: false,
-                    message: 'Numéro de téléphone, ancien mot de passe et nouveau mot de passe requis'
-                });
+            const { email, userType } = req.body;
+            if (!email || !userType) {
+                res.status(400).json({ success: false, message: "Email et type d'utilisateur requis" });
                 return;
             }
-            if (newPassword.length < 6) {
-                res.status(400).json({
-                    success: false,
-                    message: 'Le nouveau mot de passe doit contenir au moins 6 caractères'
-                });
-                return;
-            }
-            const gie = await gieService_1.GIEService.findByPhone(telephone);
-            if (!gie) {
-                res.status(404).json({
-                    success: false,
-                    message: 'Aucun utilisateur trouvé avec ce numéro de téléphone'
-                });
-                return;
-            }
-            await gieService_1.GIEService.changePassword(gie.id, currentPassword, newPassword);
-            res.json({
-                success: true,
-                message: 'Mot de passe modifié avec succès',
-                data: { message: 'Vous pouvez maintenant vous connecter avec votre nouveau mot de passe' }
-            });
+            const result = await (0, passwordResetService_1.requestPasswordResetService)(email, userType);
+            res.json({ success: true, ...result });
         }
         catch (error) {
-            let errorMessage = 'Erreur lors de la modification du mot de passe';
-            let statusCode = 500;
-            if (error.message.includes('incorrect') || error.message.includes('Mot de passe actuel incorrect')) {
-                errorMessage = 'Ancien mot de passe incorrect';
-                statusCode = 400;
-            }
-            else if (error.message.includes('6 caractères')) {
-                errorMessage = 'Le nouveau mot de passe doit contenir au moins 6 caractères';
-                statusCode = 400;
-            }
-            res.status(statusCode).json({
-                success: false,
-                message: errorMessage,
-                error: process.env.NODE_ENV === 'development' ? error.message : undefined
-            });
+            res.status(400).json({ success: false, message: error.message });
         }
     }
-    static async resetPasswordByEmail(req, res) {
+    static async verifyResetCode(req, res) {
         try {
-            const { email, currentPassword, newPassword, userType } = req.body;
-            if (!email || !currentPassword || !newPassword || !userType) {
-                res.status(400).json({
-                    success: false,
-                    message: "Email, ancien mot de passe, nouveau mot de passe et type d'utilisateur requis"
-                });
+            const { email, code, userType } = req.body;
+            if (!email || !code || !userType) {
+                res.status(400).json({ success: false, message: "Email, code et type d'utilisateur requis" });
                 return;
             }
-            if (newPassword.length < 6) {
-                res.status(400).json({
-                    success: false,
-                    message: 'Le nouveau mot de passe doit contenir au moins 6 caractères'
-                });
-                return;
-            }
-            let user = null;
-            switch (userType.toUpperCase()) {
-                case 'ADMIN':
-                case 'ADMINISTRATEUR':
-                    user = await administrateurService_1.AdministrateurService.findByEmail(email);
-                    if (user)
-                        await administrateurService_1.AdministrateurService.changePassword(user.id, currentPassword, newPassword);
-                    break;
-                case 'CLIENT':
-                    user = await clientService_1.ClientService.findByEmail(email);
-                    if (user)
-                        await clientService_1.ClientService.changePassword(user.id, currentPassword, newPassword);
-                    break;
-                default:
-                    res.status(400).json({
-                        success: false,
-                        message: "Type d'utilisateur non valide. Utilisez ADMIN ou CLIENT"
-                    });
-                    return;
-            }
-            if (!user) {
-                res.status(404).json({ success: false, message: 'Aucun utilisateur trouvé avec cet email' });
-                return;
-            }
-            res.json({
-                success: true,
-                message: 'Mot de passe modifié avec succès',
-                data: { message: 'Vous pouvez maintenant vous connecter avec votre nouveau mot de passe' }
-            });
+            const result = await (0, passwordResetService_1.verifyResetCodeService)(email, code, userType);
+            res.json({ success: true, ...result });
         }
         catch (error) {
-            let errorMessage = 'Erreur lors de la modification du mot de passe';
-            let statusCode = 500;
-            if (error.message.includes('incorrect') || error.message.includes('Mot de passe actuel incorrect')) {
-                errorMessage = 'Ancien mot de passe incorrect';
-                statusCode = 400;
-            }
-            else if (error.message.includes('6 caractères')) {
-                errorMessage = 'Le nouveau mot de passe doit contenir au moins 6 caractères';
-                statusCode = 400;
-            }
-            res.status(statusCode).json({
-                success: false,
-                message: errorMessage,
-                error: process.env.NODE_ENV === 'development' ? error.message : undefined
-            });
+            res.status(400).json({ success: false, message: error.message });
         }
     }
-    static async changePassword(req, res) {
+    static async resetPasswordWithCode(req, res) {
         try {
-            const { currentPassword, newPassword } = req.body;
-            const userId = req.user.id;
-            const userRole = req.user.role;
-            if (!currentPassword || !newPassword) {
-                res.status(400).json({
-                    success: false,
-                    message: 'Ancien et nouveau mot de passe requis'
-                });
+            const { email, newPassword, confirmPassword, userType } = req.body;
+            if (!email || !newPassword || !confirmPassword || !userType) {
+                res.status(400).json({ success: false, message: "Tous les champs sont requis" });
                 return;
             }
-            let user;
-            switch (userRole) {
-                case 'ADMIN':
-                case 'SUPER_ADMIN':
-                    user = await administrateurService_1.AdministrateurService.findById(userId);
-                    if (!user) {
-                        res.status(404).json({ success: false, message: 'Administrateur non trouvé' });
-                        return;
-                    }
-                    await administrateurService_1.AdministrateurService.changePassword(userId, currentPassword, newPassword);
-                    break;
-                case 'GIE':
-                    user = await gieService_1.GIEService.findById(userId);
-                    if (!user) {
-                        res.status(404).json({ success: false, message: 'GIE non trouvé' });
-                        return;
-                    }
-                    await gieService_1.GIEService.changePassword(userId, currentPassword, newPassword);
-                    break;
-                case 'CLIENT':
-                    user = await clientService_1.ClientService.findById(userId);
-                    if (!user) {
-                        res.status(404).json({ success: false, message: 'Client non trouvé' });
-                        return;
-                    }
-                    await clientService_1.ClientService.changePassword(userId, currentPassword, newPassword);
-                    break;
-                default:
-                    res.status(400).json({ success: false, message: "Type d'utilisateur non reconnu" });
-                    return;
-            }
-            res.json({ success: true, message: 'Mot de passe modifié avec succès' });
+            const result = await (0, passwordResetService_1.resetPasswordService)(email, newPassword, confirmPassword, userType);
+            res.json({ success: true, ...result });
         }
         catch (error) {
-            let errorMessage = 'Erreur lors de la modification du mot de passe';
-            let statusCode = 500;
-            if (error.message.includes('incorrect') || error.message.includes('Mot de passe actuel incorrect')) {
-                errorMessage = 'Mot de passe actuel incorrect';
-                statusCode = 400;
-            }
-            else if (error.message.includes('6 caractères')) {
-                errorMessage = 'Le nouveau mot de passe doit contenir au moins 6 caractères';
-                statusCode = 400;
-            }
-            else if (error.message.includes('non trouvé')) {
-                errorMessage = 'Utilisateur non trouvé';
-                statusCode = 404;
-            }
-            res.status(statusCode).json({
-                success: false,
-                message: errorMessage,
-                ...(process.env.NODE_ENV === 'development' && { error: error.message })
-            });
-        }
-    }
-    static async forgotPasswordGIE(req, res) {
-        try {
-            const { email } = req.body;
-            if (!email) {
-                res.status(400).json({ success: false, message: 'Email requis' });
-                return;
-            }
-            const gie = await gieService_1.GIEService.findByEmail(email);
-            if (gie) {
-                const code = resetCodeStore_1.ResetCodeStore.create(gie.id, email);
-                await emailService_1.EmailService.sendResetCode(email, gie.nom, code);
-            }
-            res.json({
-                success: true,
-                message: 'Si un compte GIE correspond à cet email, un code de vérification a été envoyé.'
-            });
-        }
-        catch (error) {
-            res.status(500).json({
-                success: false,
-                message: "Erreur lors de l'envoi du code",
-                error: process.env.NODE_ENV === 'development' ? error.message : undefined
-            });
-        }
-    }
-    static async verifyResetCodeGIE(req, res) {
-        try {
-            const { email, code } = req.body;
-            if (!email || !code) {
-                res.status(400).json({ success: false, message: 'Email et code requis' });
-                return;
-            }
-            const entry = resetCodeStore_1.ResetCodeStore.verify(email, code);
-            if (!entry) {
-                res.status(400).json({
-                    success: false,
-                    message: 'Code invalide ou expiré. Veuillez faire une nouvelle demande.'
-                });
-                return;
-            }
-            res.json({
-                success: true,
-                message: 'Code vérifié. Vous pouvez maintenant définir votre nouveau mot de passe.'
-            });
-        }
-        catch (error) {
-            res.status(500).json({
-                success: false,
-                message: 'Erreur lors de la vérification du code',
-                error: process.env.NODE_ENV === 'development' ? error.message : undefined
-            });
-        }
-    }
-    static async resetPasswordGIE(req, res) {
-        try {
-            const { email, newPassword, confirmPassword } = req.body;
-            if (!email || !newPassword || !confirmPassword) {
-                res.status(400).json({
-                    success: false,
-                    message: 'Email, nouveau mot de passe et confirmation requis'
-                });
-                return;
-            }
-            if (newPassword !== confirmPassword) {
-                res.status(400).json({ success: false, message: 'Les mots de passe ne correspondent pas' });
-                return;
-            }
-            if (newPassword.length < 6) {
-                res.status(400).json({
-                    success: false,
-                    message: 'Le mot de passe doit contenir au moins 6 caractères'
-                });
-                return;
-            }
-            const entry = resetCodeStore_1.ResetCodeStore.canReset(email);
-            if (!entry) {
-                res.status(400).json({
-                    success: false,
-                    message: 'Session expirée ou code non vérifié. Veuillez recommencer.'
-                });
-                return;
-            }
-            await gieService_1.GIEService.resetPassword(entry.gieId, newPassword);
-            resetCodeStore_1.ResetCodeStore.delete(email);
-            res.json({
-                success: true,
-                message: 'Mot de passe réinitialisé avec succès. Vous pouvez vous connecter.'
-            });
-        }
-        catch (error) {
-            res.status(500).json({
-                success: false,
-                message: 'Erreur lors de la réinitialisation du mot de passe',
-                error: process.env.NODE_ENV === 'development' ? error.message : undefined
-            });
+            res.status(400).json({ success: false, message: error.message });
         }
     }
     static async getUser(req, res) {

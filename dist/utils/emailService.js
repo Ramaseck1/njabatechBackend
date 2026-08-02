@@ -15,7 +15,7 @@ const transporter = nodemailer_1.default.createTransport({
 exports.EmailService = {
     async sendResetCode(to, nomGIE, code) {
         await transporter.sendMail({
-            from: `"Support GIE" <${process.env.GMAIL_USER}>`,
+            from: `"Njabatech" <${process.env.GMAIL_USER}>`,
             to,
             subject: 'Code de réinitialisation de mot de passe',
             html: `
