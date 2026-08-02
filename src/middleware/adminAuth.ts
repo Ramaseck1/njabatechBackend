@@ -78,7 +78,13 @@ export const requireLivreurOrAdminAuth = (req: Request, res: Response, next: Nex
     const token = authHeader.substring(7);
     const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key') as any;
     
-    const livreurId = req.params.id || req.body.livreurId;
+    // CORRIGÉ : la route paramétrée est /:livreurId/commandes, donc le
+    // paramètre s'appelle `livreurId`, pas `id`. Avec l'ancien code
+    // (req.params.id || req.body.livreurId), livreurId valait toujours
+    // undefined sur une requête GET /:livreurId/commandes -> un livreur
+    // connecté se voyait refuser l'accès à ses propres commandes (403).
+    // On garde req.params.id en repli pour les anciennes routes /:id.
+    const livreurId = req.params.livreurId || req.params.id || req.body.livreurId;
     
     // Permettre l'accès si c'est un admin
     if (decoded.role === 'ADMIN' || decoded.role === 'SUPER_ADMIN') {
