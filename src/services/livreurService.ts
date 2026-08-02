@@ -1,4 +1,4 @@
-import bcrypt from 'bcryptjs';
+import bcryptjs from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { ILivreur, CreateLivreurDto, UpdateLivreurDto, LoginLivreurDto, StatutLivreur } from '../types';
 import { prisma } from '../config/database';
@@ -18,7 +18,7 @@ export class LivreurService {
     }
 
     // Hasher le mot de passe
-    const hashedPassword = await bcrypt.hash(data.password, 10);
+    const hashedPassword = await bcryptjs.hash(data.password, 10);
 
     // Vérifier la région si fournie
     if (data.regionId) {
@@ -166,7 +166,7 @@ export class LivreurService {
       throw new Error('Email ou mot de passe incorrect');
     }
 
-    const isPasswordValid = await bcrypt.compare(credentials.password, livreur.password);
+    const isPasswordValid = await bcryptjs.compare(credentials.password, livreur.password);
     if (!isPasswordValid) {
       throw new Error('Email ou mot de passe incorrect');
     }
@@ -278,7 +278,7 @@ export class LivreurService {
       throw new Error('Livreur introuvable');
     }
 
-    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    const hashedPassword = await bcryptjs.hash(newPassword, 10);
 
     await prisma.$transaction([
       prisma.livreurs.update({
