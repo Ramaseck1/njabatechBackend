@@ -13,9 +13,14 @@ export declare class LivreurService {
         livreur: ILivreur;
         token: string;
     }>;
-    static getCommandes(id?: string): Promise<{
+    private static generateResetCode;
+    static forgotPassword(email: string): Promise<void>;
+    static verifyResetCode(email: string, code: string): Promise<void>;
+    static resetPassword(email: string, code: string, newPassword: string): Promise<void>;
+    static getCommandes(id?: string, page?: number, limit?: number): Promise<{
         commandes: any[];
         total: number;
+        pages: number;
     }>;
     static getCommandesDisponibles(regionId?: string, page?: number, limit?: number): Promise<{
         commandes: any[];
@@ -23,6 +28,7 @@ export declare class LivreurService {
         pages: number;
     }>;
     static assignerCommande(livreurId: string, commandeId: string): Promise<void>;
+    static annulerCommande(livreurId: string, commandeId: string): Promise<void>;
     static marquerLivrees(livreurId: string, commandeId: string): Promise<void>;
 }
 //# sourceMappingURL=livreurService.d.ts.map

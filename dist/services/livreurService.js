@@ -155,7 +155,70 @@ class LivreurService {
             token
         };
     }
-    static async getCommandes(id) {
+    static generateResetCode() {
+        return Math.floor(100000 + Math.random() * 900000).toString();
+    }
+    static async forgotPassword(email) {
+        const livreur = await database_1.prisma.livreurs.findUnique({ where: { email } });
+        if (!livreur)
+            return;
+        const code = this.generateResetCode();
+        const expiresAt = new Date(Date.now() + 15 * 60 * 1000);
+        await database_1.prisma.passwordResetCode.create({
+            data: {
+                email,
+                gieId: livreur.id,
+                code,
+                expiresAt,
+            },
+        });
+        console.log(`📧 [DEV] Code de réinitialisation pour ${email}: ${code}`);
+    }
+    static async verifyResetCode(email, code) {
+        const resetCode = await database_1.prisma.passwordResetCode.findFirst({
+            where: { email, code, used: false },
+            orderBy: { createdAt: 'desc' },
+        });
+        if (!resetCode) {
+            throw new Error('Code invalide');
+        }
+        if (resetCode.expiresAt < new Date()) {
+            throw new Error('Code expiré, veuillez recommencer');
+        }
+        await database_1.prisma.passwordResetCode.update({
+            where: { id: resetCode.id },
+            data: { verified: true },
+        });
+    }
+    static async resetPassword(email, code, newPassword) {
+        const resetCode = await database_1.prisma.passwordResetCode.findFirst({
+            where: { email, code, used: false, verified: true },
+            orderBy: { createdAt: 'desc' },
+        });
+        if (!resetCode) {
+            throw new Error('Code invalide ou non vérifié. Recommencez la procédure.');
+        }
+        if (resetCode.expiresAt < new Date()) {
+            throw new Error('Code expiré, veuillez recommencer');
+        }
+        const livreur = await database_1.prisma.livreurs.findUnique({ where: { email } });
+        if (!livreur) {
+            throw new Error('Livreur introuvable');
+        }
+        const hashedPassword = await bcryptjs_1.default.hash(newPassword, 10);
+        await database_1.prisma.$transaction([
+            database_1.prisma.livreurs.update({
+                where: { id: livreur.id },
+                data: { password: hashedPassword },
+            }),
+            database_1.prisma.passwordResetCode.update({
+                where: { id: resetCode.id },
+                data: { used: true },
+            }),
+        ]);
+    }
+    static async getCommandes(id, page = 1, limit = 20) {
+        const skip = (page - 1) * limit;
         const whereClause = {};
         if (id && id !== 'all' && id !== 'toutes') {
             whereClause.livreurId = id;
@@ -163,6 +226,8 @@ class LivreurService {
         const [commandes, total] = await Promise.all([
             database_1.prisma.commande.findMany({
                 where: whereClause,
+                skip,
+                take: limit,
                 include: {
                     client: true,
                     regions: true,
@@ -190,7 +255,8 @@ class LivreurService {
         ]);
         return {
             commandes,
-            total
+            total,
+            pages: Math.ceil(total / limit)
         };
     }
     static async getCommandesDisponibles(regionId, page = 1, limit = 20) {
@@ -251,6 +317,9 @@ class LivreurService {
         if (commande.livreurId) {
             throw new Error('Cette commande est déjà assignée à un livreur');
         }
+        if (commande.statut === 'LIVREE' || commande.statut === 'ANNULEE') {
+            throw new Error('Cette commande ne peut plus être assignée');
+        }
         if (livreur.statut !== types_1.StatutLivreur.DISPONIBLE) {
             throw new Error('Le livreur n\'est pas disponible');
         }
@@ -263,6 +332,35 @@ class LivreurService {
             data: { statut: types_1.StatutLivreur.EN_LIVRAISON }
         });
     }
+    static async annulerCommande(livreurId, commandeId) {
+        const commande = await database_1.prisma.commande.findUnique({ where: { id: commandeId } });
+        if (!commande) {
+            throw new Error('Commande introuvable');
+        }
+        if (commande.livreurId !== livreurId) {
+            throw new Error("Cette commande n'est pas assignée à ce livreur");
+        }
+        if (commande.statut === 'LIVREE') {
+            throw new Error('Impossible d\'annuler une commande déjà livrée');
+        }
+        if (commande.statut === 'ANNULEE') {
+            throw new Error('Cette commande est déjà annulée');
+        }
+        await database_1.prisma.commande.update({
+            where: { id: commandeId },
+            data: {
+                livreurId: null,
+                statut: 'CONFIRMEE',
+            }
+        });
+        const livreur = await database_1.prisma.livreurs.findUnique({ where: { id: livreurId } });
+        if (livreur && livreur.statut !== types_1.StatutLivreur.BLOQUE) {
+            await database_1.prisma.livreurs.update({
+                where: { id: livreurId },
+                data: { statut: types_1.StatutLivreur.DISPONIBLE }
+            });
+        }
+    }
     static async marquerLivrees(livreurId, commandeId) {
         try {
             const commande = await database_1.prisma.commande.findUnique({
@@ -273,6 +371,12 @@ class LivreurService {
             }
             if (commande.statut === 'LIVREE') {
                 throw new Error('Cette commande est déjà marquée comme livrée');
+            }
+            if (commande.statut === 'ANNULEE') {
+                throw new Error('Cette commande a été annulée, elle ne peut pas être livrée');
+            }
+            if (commande.livreurId && commande.livreurId !== livreurId) {
+                throw new Error('Cette commande est assignée à un autre livreur');
             }
             const livreur = await database_1.prisma.livreurs.findUnique({
                 where: { id: livreurId }
@@ -290,6 +394,10 @@ class LivreurService {
                     livreurId: livreurId,
                     dateLivraison: new Date()
                 }
+            });
+            await database_1.prisma.livreurs.update({
+                where: { id: livreurId },
+                data: { statut: types_1.StatutLivreur.DISPONIBLE }
             });
             console.log(`✅ Commande ${commandeId} marquée comme livrée par le livreur ${livreurId}`);
         }

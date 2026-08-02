@@ -191,7 +191,7 @@ info:
     url: https://opensource.org/licenses/MIT
 
 servers:
-  - url: https://api.njabatech.com/api
+  - url: http://localhost:3003/api
     description: Serveur de production
   
 
