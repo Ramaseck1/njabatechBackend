@@ -14,9 +14,9 @@ router.post('/verify-token', AuthController.verifyToken);
 
 // Réinitialisation mot de passe GIE (3 étapes)
 // Réinitialisation mot de passe par code (Admin, Client, GIE)
-router.post('/forgot-password',   AuthController.requestPasswordReset);
-router.post('/verify-reset-code', AuthController.verifyResetCode);
-router.post('/reset-password',    AuthController.resetPasswordWithCode);
+router.post('/gie/forgot-password',   AuthController.requestPasswordReset);
+router.post('/gie/verify-reset-code', AuthController.verifyResetCode);
+router.post('/gie/reset-password',    AuthController.resetPasswordWithCode);
 // ── Routes protégées ──────────────────────────────────────────────────────────
 router.post('/admin/register', authenticateToken, requireSuperAdmin, AuthController.registerAdmin);
 router.post('/gie/register',   authenticateToken, requireAdmin,      AuthController.registerGIE);
