@@ -243,7 +243,7 @@ model regions {
 model PasswordResetCode {
   id        String   @id @default(cuid())
   email     String
-  userType  UserType
+  gieId     String
   code      String
   verified  Boolean  @default(false)
   used      Boolean  @default(false)

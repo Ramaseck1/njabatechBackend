@@ -13,14 +13,19 @@ router.post('/client/register', PasswordValidationMiddleware.validateRegistratio
 router.post('/verify-token', AuthController.verifyToken);
 
 // Réinitialisation mot de passe GIE (3 étapes)
-// Réinitialisation mot de passe par code (Admin, Client, GIE)
-router.post('/gie/forgot-password',   AuthController.requestPasswordReset);
-router.post('/gie/verify-reset-code', AuthController.verifyResetCode);
-router.post('/gie/reset-password',    AuthController.resetPasswordWithCode);
+router.post('/gie/forgot-password',   AuthController.forgotPasswordGIE);      // 1. Envoi code
+router.post('/gie/verify-reset-code', AuthController.verifyResetCodeGIE);     // 2. Vérif code
+router.post('/gie/reset-password',    AuthController.resetPasswordGIE);       // 3. Nouveau mdp
+
+// Ancien reset par téléphone/email (conservé)
+router.post('/reset-password-phone', AuthController.resetPasswordByPhone);
+router.post('/reset-password-email', AuthController.resetPasswordByEmail);
+
 // ── Routes protégées ──────────────────────────────────────────────────────────
 router.post('/admin/register', authenticateToken, requireSuperAdmin, AuthController.registerAdmin);
 router.post('/gie/register',   authenticateToken, requireAdmin,      AuthController.registerGIE);
- router.get('/me',  authenticateToken, AuthController.getUser);
+router.post('/change-password', authenticateToken, AuthController.changePassword);
+router.get('/me',  authenticateToken, AuthController.getUser);
 router.patch('/me', authenticateToken, AuthController.updateUser);
 
 export default router;

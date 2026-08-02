@@ -18061,7 +18061,7 @@ export namespace Prisma {
   export type PasswordResetCodeMinAggregateOutputType = {
     id: string | null
     email: string | null
-    userType: $Enums.UserType | null
+    gieId: string | null
     code: string | null
     verified: boolean | null
     used: boolean | null
@@ -18072,7 +18072,7 @@ export namespace Prisma {
   export type PasswordResetCodeMaxAggregateOutputType = {
     id: string | null
     email: string | null
-    userType: $Enums.UserType | null
+    gieId: string | null
     code: string | null
     verified: boolean | null
     used: boolean | null
@@ -18083,7 +18083,7 @@ export namespace Prisma {
   export type PasswordResetCodeCountAggregateOutputType = {
     id: number
     email: number
-    userType: number
+    gieId: number
     code: number
     verified: number
     used: number
@@ -18096,7 +18096,7 @@ export namespace Prisma {
   export type PasswordResetCodeMinAggregateInputType = {
     id?: true
     email?: true
-    userType?: true
+    gieId?: true
     code?: true
     verified?: true
     used?: true
@@ -18107,7 +18107,7 @@ export namespace Prisma {
   export type PasswordResetCodeMaxAggregateInputType = {
     id?: true
     email?: true
-    userType?: true
+    gieId?: true
     code?: true
     verified?: true
     used?: true
@@ -18118,7 +18118,7 @@ export namespace Prisma {
   export type PasswordResetCodeCountAggregateInputType = {
     id?: true
     email?: true
-    userType?: true
+    gieId?: true
     code?: true
     verified?: true
     used?: true
@@ -18202,7 +18202,7 @@ export namespace Prisma {
   export type PasswordResetCodeGroupByOutputType = {
     id: string
     email: string
-    userType: $Enums.UserType
+    gieId: string
     code: string
     verified: boolean
     used: boolean
@@ -18230,7 +18230,7 @@ export namespace Prisma {
   export type PasswordResetCodeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     email?: boolean
-    userType?: boolean
+    gieId?: boolean
     code?: boolean
     verified?: boolean
     used?: boolean
@@ -18241,7 +18241,7 @@ export namespace Prisma {
   export type PasswordResetCodeSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     email?: boolean
-    userType?: boolean
+    gieId?: boolean
     code?: boolean
     verified?: boolean
     used?: boolean
@@ -18252,7 +18252,7 @@ export namespace Prisma {
   export type PasswordResetCodeSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     email?: boolean
-    userType?: boolean
+    gieId?: boolean
     code?: boolean
     verified?: boolean
     used?: boolean
@@ -18263,7 +18263,7 @@ export namespace Prisma {
   export type PasswordResetCodeSelectScalar = {
     id?: boolean
     email?: boolean
-    userType?: boolean
+    gieId?: boolean
     code?: boolean
     verified?: boolean
     used?: boolean
@@ -18271,7 +18271,7 @@ export namespace Prisma {
     createdAt?: boolean
   }
 
-  export type PasswordResetCodeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "userType" | "code" | "verified" | "used" | "expiresAt" | "createdAt", ExtArgs["result"]["passwordResetCode"]>
+  export type PasswordResetCodeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "gieId" | "code" | "verified" | "used" | "expiresAt" | "createdAt", ExtArgs["result"]["passwordResetCode"]>
 
   export type $PasswordResetCodePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "PasswordResetCode"
@@ -18279,7 +18279,7 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: string
       email: string
-      userType: $Enums.UserType
+      gieId: string
       code: string
       verified: boolean
       used: boolean
@@ -18710,7 +18710,7 @@ export namespace Prisma {
   interface PasswordResetCodeFieldRefs {
     readonly id: FieldRef<"PasswordResetCode", 'String'>
     readonly email: FieldRef<"PasswordResetCode", 'String'>
-    readonly userType: FieldRef<"PasswordResetCode", 'UserType'>
+    readonly gieId: FieldRef<"PasswordResetCode", 'String'>
     readonly code: FieldRef<"PasswordResetCode", 'String'>
     readonly verified: FieldRef<"PasswordResetCode", 'Boolean'>
     readonly used: FieldRef<"PasswordResetCode", 'Boolean'>
@@ -19311,7 +19311,7 @@ export namespace Prisma {
   export const PasswordResetCodeScalarFieldEnum: {
     id: 'id',
     email: 'email',
-    userType: 'userType',
+    gieId: 'gieId',
     code: 'code',
     verified: 'verified',
     used: 'used',
@@ -19544,20 +19544,6 @@ export namespace Prisma {
    * Reference to a field of type 'StatutLivreur[]'
    */
   export type ListEnumStatutLivreurFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'StatutLivreur[]'>
-    
-
-
-  /**
-   * Reference to a field of type 'UserType'
-   */
-  export type EnumUserTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserType'>
-    
-
-
-  /**
-   * Reference to a field of type 'UserType[]'
-   */
-  export type ListEnumUserTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserType[]'>
     
 
 
@@ -20688,7 +20674,7 @@ export namespace Prisma {
     NOT?: PasswordResetCodeWhereInput | PasswordResetCodeWhereInput[]
     id?: StringFilter<"PasswordResetCode"> | string
     email?: StringFilter<"PasswordResetCode"> | string
-    userType?: EnumUserTypeFilter<"PasswordResetCode"> | $Enums.UserType
+    gieId?: StringFilter<"PasswordResetCode"> | string
     code?: StringFilter<"PasswordResetCode"> | string
     verified?: BoolFilter<"PasswordResetCode"> | boolean
     used?: BoolFilter<"PasswordResetCode"> | boolean
@@ -20699,7 +20685,7 @@ export namespace Prisma {
   export type PasswordResetCodeOrderByWithRelationInput = {
     id?: SortOrder
     email?: SortOrder
-    userType?: SortOrder
+    gieId?: SortOrder
     code?: SortOrder
     verified?: SortOrder
     used?: SortOrder
@@ -20713,7 +20699,7 @@ export namespace Prisma {
     OR?: PasswordResetCodeWhereInput[]
     NOT?: PasswordResetCodeWhereInput | PasswordResetCodeWhereInput[]
     email?: StringFilter<"PasswordResetCode"> | string
-    userType?: EnumUserTypeFilter<"PasswordResetCode"> | $Enums.UserType
+    gieId?: StringFilter<"PasswordResetCode"> | string
     code?: StringFilter<"PasswordResetCode"> | string
     verified?: BoolFilter<"PasswordResetCode"> | boolean
     used?: BoolFilter<"PasswordResetCode"> | boolean
@@ -20724,7 +20710,7 @@ export namespace Prisma {
   export type PasswordResetCodeOrderByWithAggregationInput = {
     id?: SortOrder
     email?: SortOrder
-    userType?: SortOrder
+    gieId?: SortOrder
     code?: SortOrder
     verified?: SortOrder
     used?: SortOrder
@@ -20741,7 +20727,7 @@ export namespace Prisma {
     NOT?: PasswordResetCodeScalarWhereWithAggregatesInput | PasswordResetCodeScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"PasswordResetCode"> | string
     email?: StringWithAggregatesFilter<"PasswordResetCode"> | string
-    userType?: EnumUserTypeWithAggregatesFilter<"PasswordResetCode"> | $Enums.UserType
+    gieId?: StringWithAggregatesFilter<"PasswordResetCode"> | string
     code?: StringWithAggregatesFilter<"PasswordResetCode"> | string
     verified?: BoolWithAggregatesFilter<"PasswordResetCode"> | boolean
     used?: BoolWithAggregatesFilter<"PasswordResetCode"> | boolean
@@ -21976,7 +21962,7 @@ export namespace Prisma {
   export type PasswordResetCodeCreateInput = {
     id?: string
     email: string
-    userType: $Enums.UserType
+    gieId: string
     code: string
     verified?: boolean
     used?: boolean
@@ -21987,7 +21973,7 @@ export namespace Prisma {
   export type PasswordResetCodeUncheckedCreateInput = {
     id?: string
     email: string
-    userType: $Enums.UserType
+    gieId: string
     code: string
     verified?: boolean
     used?: boolean
@@ -21998,7 +21984,7 @@ export namespace Prisma {
   export type PasswordResetCodeUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    userType?: EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
+    gieId?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
     verified?: BoolFieldUpdateOperationsInput | boolean
     used?: BoolFieldUpdateOperationsInput | boolean
@@ -22009,7 +21995,7 @@ export namespace Prisma {
   export type PasswordResetCodeUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    userType?: EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
+    gieId?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
     verified?: BoolFieldUpdateOperationsInput | boolean
     used?: BoolFieldUpdateOperationsInput | boolean
@@ -22020,7 +22006,7 @@ export namespace Prisma {
   export type PasswordResetCodeCreateManyInput = {
     id?: string
     email: string
-    userType: $Enums.UserType
+    gieId: string
     code: string
     verified?: boolean
     used?: boolean
@@ -22031,7 +22017,7 @@ export namespace Prisma {
   export type PasswordResetCodeUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    userType?: EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
+    gieId?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
     verified?: BoolFieldUpdateOperationsInput | boolean
     used?: BoolFieldUpdateOperationsInput | boolean
@@ -22042,7 +22028,7 @@ export namespace Prisma {
   export type PasswordResetCodeUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    userType?: EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
+    gieId?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
     verified?: BoolFieldUpdateOperationsInput | boolean
     used?: BoolFieldUpdateOperationsInput | boolean
@@ -23157,13 +23143,6 @@ export namespace Prisma {
     fraisLivraisonExterne?: SortOrder
   }
 
-  export type EnumUserTypeFilter<$PrismaModel = never> = {
-    equals?: $Enums.UserType | EnumUserTypeFieldRefInput<$PrismaModel>
-    in?: $Enums.UserType[] | ListEnumUserTypeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.UserType[] | ListEnumUserTypeFieldRefInput<$PrismaModel>
-    not?: NestedEnumUserTypeFilter<$PrismaModel> | $Enums.UserType
-  }
-
   export type BoolFilter<$PrismaModel = never> = {
     equals?: boolean | BooleanFieldRefInput<$PrismaModel>
     not?: NestedBoolFilter<$PrismaModel> | boolean
@@ -23172,7 +23151,7 @@ export namespace Prisma {
   export type PasswordResetCodeCountOrderByAggregateInput = {
     id?: SortOrder
     email?: SortOrder
-    userType?: SortOrder
+    gieId?: SortOrder
     code?: SortOrder
     verified?: SortOrder
     used?: SortOrder
@@ -23183,7 +23162,7 @@ export namespace Prisma {
   export type PasswordResetCodeMaxOrderByAggregateInput = {
     id?: SortOrder
     email?: SortOrder
-    userType?: SortOrder
+    gieId?: SortOrder
     code?: SortOrder
     verified?: SortOrder
     used?: SortOrder
@@ -23194,22 +23173,12 @@ export namespace Prisma {
   export type PasswordResetCodeMinOrderByAggregateInput = {
     id?: SortOrder
     email?: SortOrder
-    userType?: SortOrder
+    gieId?: SortOrder
     code?: SortOrder
     verified?: SortOrder
     used?: SortOrder
     expiresAt?: SortOrder
     createdAt?: SortOrder
-  }
-
-  export type EnumUserTypeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.UserType | EnumUserTypeFieldRefInput<$PrismaModel>
-    in?: $Enums.UserType[] | ListEnumUserTypeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.UserType[] | ListEnumUserTypeFieldRefInput<$PrismaModel>
-    not?: NestedEnumUserTypeWithAggregatesFilter<$PrismaModel> | $Enums.UserType
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumUserTypeFilter<$PrismaModel>
-    _max?: NestedEnumUserTypeFilter<$PrismaModel>
   }
 
   export type BoolWithAggregatesFilter<$PrismaModel = never> = {
@@ -24196,10 +24165,6 @@ export namespace Prisma {
     deleteMany?: livreursScalarWhereInput | livreursScalarWhereInput[]
   }
 
-  export type EnumUserTypeFieldUpdateOperationsInput = {
-    set?: $Enums.UserType
-  }
-
   export type BoolFieldUpdateOperationsInput = {
     set?: boolean
   }
@@ -24578,26 +24543,9 @@ export namespace Prisma {
     _max?: NestedEnumStatutLivreurFilter<$PrismaModel>
   }
 
-  export type NestedEnumUserTypeFilter<$PrismaModel = never> = {
-    equals?: $Enums.UserType | EnumUserTypeFieldRefInput<$PrismaModel>
-    in?: $Enums.UserType[] | ListEnumUserTypeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.UserType[] | ListEnumUserTypeFieldRefInput<$PrismaModel>
-    not?: NestedEnumUserTypeFilter<$PrismaModel> | $Enums.UserType
-  }
-
   export type NestedBoolFilter<$PrismaModel = never> = {
     equals?: boolean | BooleanFieldRefInput<$PrismaModel>
     not?: NestedBoolFilter<$PrismaModel> | boolean
-  }
-
-  export type NestedEnumUserTypeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.UserType | EnumUserTypeFieldRefInput<$PrismaModel>
-    in?: $Enums.UserType[] | ListEnumUserTypeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.UserType[] | ListEnumUserTypeFieldRefInput<$PrismaModel>
-    not?: NestedEnumUserTypeWithAggregatesFilter<$PrismaModel> | $Enums.UserType
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumUserTypeFilter<$PrismaModel>
-    _max?: NestedEnumUserTypeFilter<$PrismaModel>
   }
 
   export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {

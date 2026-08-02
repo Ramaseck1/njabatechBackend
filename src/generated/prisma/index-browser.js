@@ -291,7 +291,7 @@ exports.Prisma.RegionsScalarFieldEnum = {
 exports.Prisma.PasswordResetCodeScalarFieldEnum = {
   id: 'id',
   email: 'email',
-  userType: 'userType',
+  gieId: 'gieId',
   code: 'code',
   verified: 'verified',
   used: 'used',
@@ -379,12 +379,6 @@ exports.StatutLivreur = exports.$Enums.StatutLivreur = {
   EN_LIVRAISON: 'EN_LIVRAISON',
   INDISPONIBLE: 'INDISPONIBLE',
   BLOQUE: 'BLOQUE'
-};
-
-exports.UserType = exports.$Enums.UserType = {
-  ADMIN: 'ADMIN',
-  CLIENT: 'CLIENT',
-  GIE: 'GIE'
 };
 
 exports.Prisma.ModelName = {

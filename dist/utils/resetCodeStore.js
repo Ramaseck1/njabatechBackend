@@ -1,42 +1,65 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ResetCodeStore = void 0;
-const store = new Map();
+const database_1 = require("../config/database");
 const CODE_TTL_MS = 10 * 60 * 1000;
 exports.ResetCodeStore = {
-    create(gieId, email) {
+    async create(gieId, email) {
         const code = Math.floor(100000 + Math.random() * 900000).toString();
-        store.set(email.toLowerCase(), {
-            code,
-            gieId,
-            email: email.toLowerCase(),
-            expiresAt: Date.now() + CODE_TTL_MS,
-            verified: false,
+        const cleanEmail = email.toLowerCase();
+        await database_1.prisma.passwordResetCode.updateMany({
+            where: { email: cleanEmail, used: false },
+            data: { used: true },
+        });
+        await database_1.prisma.passwordResetCode.create({
+            data: {
+                email: cleanEmail,
+                gieId,
+                code,
+                expiresAt: new Date(Date.now() + CODE_TTL_MS),
+            },
         });
         return code;
     },
-    verify(email, code) {
-        const entry = store.get(email.toLowerCase());
+    async verify(email, code) {
+        const cleanEmail = email.toLowerCase();
+        const entry = await database_1.prisma.passwordResetCode.findFirst({
+            where: {
+                email: cleanEmail,
+                code,
+                used: false,
+                expiresAt: { gt: new Date() },
+            },
+            orderBy: { createdAt: 'desc' },
+        });
         if (!entry)
             return null;
-        if (Date.now() > entry.expiresAt) {
-            store.delete(email.toLowerCase());
-            return null;
-        }
-        if (entry.code !== code)
-            return null;
-        entry.verified = true;
-        store.set(email.toLowerCase(), entry);
-        return entry;
+        await database_1.prisma.passwordResetCode.update({
+            where: { id: entry.id },
+            data: { verified: true },
+        });
+        return { gieId: entry.gieId, email: entry.email };
     },
-    canReset(email) {
-        const entry = store.get(email.toLowerCase());
-        if (!entry || !entry.verified || Date.now() > entry.expiresAt)
+    async canReset(email) {
+        const cleanEmail = email.toLowerCase();
+        const entry = await database_1.prisma.passwordResetCode.findFirst({
+            where: {
+                email: cleanEmail,
+                verified: true,
+                used: false,
+                expiresAt: { gt: new Date() },
+            },
+            orderBy: { createdAt: 'desc' },
+        });
+        if (!entry)
             return null;
-        return entry;
+        return { gieId: entry.gieId, email: entry.email };
     },
-    delete(email) {
-        store.delete(email.toLowerCase());
+    async delete(email) {
+        await database_1.prisma.passwordResetCode.updateMany({
+            where: { email: email.toLowerCase(), used: false },
+            data: { used: true },
+        });
     },
 };
 //# sourceMappingURL=resetCodeStore.js.map

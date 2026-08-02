@@ -1,55 +1,83 @@
-interface ResetEntry {
-  code: string;
-  gieId: string;
-  email: string;
-  expiresAt: number;
-  verified: boolean; // true après vérification du code → autorise le reset
-}
-
-// Map en mémoire : email → entrée
-const store = new Map<string, ResetEntry>();
+import { prisma } from '../config/database';
 
 const CODE_TTL_MS = 10 * 60 * 1000; // 10 minutes
 
+interface ResetEntry {
+  gieId: string;
+  email: string;
+}
+
 export const ResetCodeStore = {
   /** Génère et stocke un code à 6 chiffres */
-  create(gieId: string, email: string): string {
+  async create(gieId: string, email: string): Promise<string> {
     const code = Math.floor(100000 + Math.random() * 900000).toString();
-    store.set(email.toLowerCase(), {
-      code,
-      gieId,
-      email: email.toLowerCase(),
-      expiresAt: Date.now() + CODE_TTL_MS,
-      verified: false,
+    const cleanEmail = email.toLowerCase();
+
+    // Invalider les anciens codes non utilisés pour cet email
+    await prisma.passwordResetCode.updateMany({
+      where: { email: cleanEmail, used: false },
+      data: { used: true },
     });
+
+    await prisma.passwordResetCode.create({
+      data: {
+        email: cleanEmail,
+        gieId,
+        code,
+        expiresAt: new Date(Date.now() + CODE_TTL_MS),
+      },
+    });
+
     return code;
   },
 
   /** Vérifie le code. Retourne l'entrée si valide, null sinon */
-  verify(email: string, code: string): ResetEntry | null {
-    const entry = store.get(email.toLowerCase());
-    if (!entry) return null;
-    if (Date.now() > entry.expiresAt) {
-      store.delete(email.toLowerCase());
-      return null;
-    }
-    if (entry.code !== code) return null;
+  async verify(email: string, code: string): Promise<ResetEntry | null> {
+    const cleanEmail = email.toLowerCase();
 
-    // Marquer comme vérifié (autorise l'étape reset)
-    entry.verified = true;
-    store.set(email.toLowerCase(), entry);
-    return entry;
+    const entry = await prisma.passwordResetCode.findFirst({
+      where: {
+        email: cleanEmail,
+        code,
+        used: false,
+        expiresAt: { gt: new Date() },
+      },
+      orderBy: { createdAt: 'desc' },
+    });
+
+    if (!entry) return null;
+
+    await prisma.passwordResetCode.update({
+      where: { id: entry.id },
+      data: { verified: true },
+    });
+
+    return { gieId: entry.gieId, email: entry.email };
   },
 
   /** Vérifie qu'un token de reset est autorisé avant d'appliquer le nouveau mdp */
-  canReset(email: string): ResetEntry | null {
-    const entry = store.get(email.toLowerCase());
-    if (!entry || !entry.verified || Date.now() > entry.expiresAt) return null;
-    return entry;
+  async canReset(email: string): Promise<ResetEntry | null> {
+    const cleanEmail = email.toLowerCase();
+
+    const entry = await prisma.passwordResetCode.findFirst({
+      where: {
+        email: cleanEmail,
+        verified: true,
+        used: false,
+        expiresAt: { gt: new Date() },
+      },
+      orderBy: { createdAt: 'desc' },
+    });
+
+    if (!entry) return null;
+    return { gieId: entry.gieId, email: entry.email };
   },
 
-  /** Supprime l'entrée après utilisation */
-  delete(email: string): void {
-    store.delete(email.toLowerCase());
+  /** Supprime (marque comme utilisée) l'entrée après usage */
+  async delete(email: string): Promise<void> {
+    await prisma.passwordResetCode.updateMany({
+      where: { email: email.toLowerCase(), used: false },
+      data: { used: true },
+    });
   },
 };

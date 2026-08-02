@@ -5,7 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.resetPasswordService = exports.verifyResetCodeService = exports.requestPasswordResetService = void 0;
 const database_1 = require("../config/database");
-const bcrypt_1 = __importDefault(require("bcrypt"));
+const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const crypto_1 = __importDefault(require("crypto"));
 const nodemailer_1 = __importDefault(require("nodemailer"));
 const transporter = nodemailer_1.default.createTransport({
@@ -113,7 +113,7 @@ const resetPasswordService = async (email, newPassword, confirmPassword, userTyp
         where: { id: resetEntry.id },
         data: { used: true },
     });
-    const hashed = await bcrypt_1.default.hash(newPassword, 10);
+    const hashed = await bcryptjs_1.default.hash(newPassword, 10);
     await updatePasswordByType(user.id, hashed, userType);
     return { message: "Mot de passe modifié avec succès" };
 };
