@@ -1,0 +1,218 @@
+import * as runtime from "@prisma/client/runtime/index-browser";
+export type * from '../models';
+export type * from './prismaNamespace';
+export declare const Decimal: typeof runtime.Decimal;
+export declare const NullTypes: {
+    DbNull: (new (secret: never) => typeof runtime.DbNull);
+    JsonNull: (new (secret: never) => typeof runtime.JsonNull);
+    AnyNull: (new (secret: never) => typeof runtime.AnyNull);
+};
+export declare const DbNull: import("@prisma/client-runtime-utils").DbNullClass;
+export declare const JsonNull: import("@prisma/client-runtime-utils").JsonNullClass;
+export declare const AnyNull: import("@prisma/client-runtime-utils").AnyNullClass;
+export declare const ModelName: {
+    readonly Administrateur: "Administrateur";
+    readonly Avis: "Avis";
+    readonly AvisProduit: "AvisProduit";
+    readonly GIE: "GIE";
+    readonly Client: "Client";
+    readonly Categorie: "Categorie";
+    readonly Produit: "Produit";
+    readonly Commande: "Commande";
+    readonly Paiement: "Paiement";
+    readonly PanierProduit: "PanierProduit";
+    readonly adresses: "adresses";
+    readonly livreurs: "livreurs";
+    readonly regions: "regions";
+};
+export type ModelName = (typeof ModelName)[keyof typeof ModelName];
+export declare const TransactionIsolationLevel: {
+    readonly ReadUncommitted: "ReadUncommitted";
+    readonly ReadCommitted: "ReadCommitted";
+    readonly RepeatableRead: "RepeatableRead";
+    readonly Serializable: "Serializable";
+};
+export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel];
+export declare const AdministrateurScalarFieldEnum: {
+    readonly id: "id";
+    readonly email: "email";
+    readonly password: "password";
+    readonly nom: "nom";
+    readonly prenom: "prenom";
+    readonly telephone: "telephone";
+    readonly role: "role";
+    readonly createdAt: "createdAt";
+    readonly updatedAt: "updatedAt";
+};
+export type AdministrateurScalarFieldEnum = (typeof AdministrateurScalarFieldEnum)[keyof typeof AdministrateurScalarFieldEnum];
+export declare const AvisScalarFieldEnum: {
+    readonly id: "id";
+    readonly clientId: "clientId";
+    readonly nom: "nom";
+    readonly rating: "rating";
+    readonly comment: "comment";
+    readonly createdAt: "createdAt";
+    readonly updatedAt: "updatedAt";
+};
+export type AvisScalarFieldEnum = (typeof AvisScalarFieldEnum)[keyof typeof AvisScalarFieldEnum];
+export declare const AvisProduitScalarFieldEnum: {
+    readonly id: "id";
+    readonly clientId: "clientId";
+    readonly produitId: "produitId";
+    readonly rating: "rating";
+    readonly createdAt: "createdAt";
+    readonly updatedAt: "updatedAt";
+};
+export type AvisProduitScalarFieldEnum = (typeof AvisProduitScalarFieldEnum)[keyof typeof AvisProduitScalarFieldEnum];
+export declare const GIEScalarFieldEnum: {
+    readonly id: "id";
+    readonly nom: "nom";
+    readonly description: "description";
+    readonly adresse: "adresse";
+    readonly telephone: "telephone";
+    readonly email: "email";
+    readonly password: "password";
+    readonly logo: "logo";
+    readonly url: "url";
+    readonly membre: "membre";
+    readonly Annee: "Annee";
+    readonly specialite: "specialite";
+    readonly statut: "statut";
+    readonly createdAt: "createdAt";
+    readonly updatedAt: "updatedAt";
+    readonly administrateurId: "administrateurId";
+    readonly regionId: "regionId";
+};
+export type GIEScalarFieldEnum = (typeof GIEScalarFieldEnum)[keyof typeof GIEScalarFieldEnum];
+export declare const ClientScalarFieldEnum: {
+    readonly id: "id";
+    readonly email: "email";
+    readonly password: "password";
+    readonly nom: "nom";
+    readonly prenom: "prenom";
+    readonly telephone: "telephone";
+    readonly adresse: "adresse";
+    readonly statut: "statut";
+    readonly createdAt: "createdAt";
+    readonly updatedAt: "updatedAt";
+    readonly administrateurId: "administrateurId";
+};
+export type ClientScalarFieldEnum = (typeof ClientScalarFieldEnum)[keyof typeof ClientScalarFieldEnum];
+export declare const CategorieScalarFieldEnum: {
+    readonly id: "id";
+    readonly nom: "nom";
+    readonly description: "description";
+    readonly conservation: "conservation";
+    readonly couleur: "couleur";
+    readonly createdAt: "createdAt";
+    readonly updatedAt: "updatedAt";
+    readonly image: "image";
+};
+export type CategorieScalarFieldEnum = (typeof CategorieScalarFieldEnum)[keyof typeof CategorieScalarFieldEnum];
+export declare const ProduitScalarFieldEnum: {
+    readonly id: "id";
+    readonly nom: "nom";
+    readonly quantite: "quantite";
+    readonly description: "description";
+    readonly prix: "prix";
+    readonly stock: "stock";
+    readonly image: "image";
+    readonly vues: "vues";
+    readonly statut: "statut";
+    readonly createdAt: "createdAt";
+    readonly updatedAt: "updatedAt";
+    readonly gieId: "gieId";
+    readonly categorieId: "categorieId";
+};
+export type ProduitScalarFieldEnum = (typeof ProduitScalarFieldEnum)[keyof typeof ProduitScalarFieldEnum];
+export declare const CommandeScalarFieldEnum: {
+    readonly id: "id";
+    readonly numero: "numero";
+    readonly montant: "montant";
+    readonly statut: "statut";
+    readonly dateCommande: "dateCommande";
+    readonly dateLivraison: "dateLivraison";
+    readonly adresseLivraison: "adresseLivraison";
+    readonly createdAt: "createdAt";
+    readonly updatedAt: "updatedAt";
+    readonly clientId: "clientId";
+    readonly fraisLivraison: "fraisLivraison";
+    readonly regionLivraisonId: "regionLivraisonId";
+    readonly livreurId: "livreurId";
+};
+export type CommandeScalarFieldEnum = (typeof CommandeScalarFieldEnum)[keyof typeof CommandeScalarFieldEnum];
+export declare const PaiementScalarFieldEnum: {
+    readonly id: "id";
+    readonly montant: "montant";
+    readonly methode: "methode";
+    readonly statut: "statut";
+    readonly reference: "reference";
+    readonly datePaiement: "datePaiement";
+    readonly createdAt: "createdAt";
+    readonly updatedAt: "updatedAt";
+    readonly commandeId: "commandeId";
+    readonly fraisLivraison: "fraisLivraison";
+};
+export type PaiementScalarFieldEnum = (typeof PaiementScalarFieldEnum)[keyof typeof PaiementScalarFieldEnum];
+export declare const PanierProduitScalarFieldEnum: {
+    readonly id: "id";
+    readonly quantite: "quantite";
+    readonly prixUnitaire: "prixUnitaire";
+    readonly createdAt: "createdAt";
+    readonly commandeId: "commandeId";
+    readonly produitId: "produitId";
+    readonly statutGIE: "statutGIE";
+    readonly dateConfirmation: "dateConfirmation";
+    readonly updatedAt: "updatedAt";
+};
+export type PanierProduitScalarFieldEnum = (typeof PanierProduitScalarFieldEnum)[keyof typeof PanierProduitScalarFieldEnum];
+export declare const AdressesScalarFieldEnum: {
+    readonly id: "id";
+    readonly nom: "nom";
+    readonly description: "description";
+    readonly codePostal: "codePostal";
+    readonly fraisLivraison: "fraisLivraison";
+    readonly createdAt: "createdAt";
+    readonly updatedAt: "updatedAt";
+    readonly regionId: "regionId";
+};
+export type AdressesScalarFieldEnum = (typeof AdressesScalarFieldEnum)[keyof typeof AdressesScalarFieldEnum];
+export declare const LivreursScalarFieldEnum: {
+    readonly id: "id";
+    readonly nom: "nom";
+    readonly prenom: "prenom";
+    readonly email: "email";
+    readonly telephone: "telephone";
+    readonly password: "password";
+    readonly statut: "statut";
+    readonly regionId: "regionId";
+    readonly createdAt: "createdAt";
+    readonly updatedAt: "updatedAt";
+};
+export type LivreursScalarFieldEnum = (typeof LivreursScalarFieldEnum)[keyof typeof LivreursScalarFieldEnum];
+export declare const RegionsScalarFieldEnum: {
+    readonly id: "id";
+    readonly nom: "nom";
+    readonly description: "description";
+    readonly fraisLivraisonInterne: "fraisLivraisonInterne";
+    readonly fraisLivraisonExterne: "fraisLivraisonExterne";
+    readonly createdAt: "createdAt";
+    readonly updatedAt: "updatedAt";
+};
+export type RegionsScalarFieldEnum = (typeof RegionsScalarFieldEnum)[keyof typeof RegionsScalarFieldEnum];
+export declare const SortOrder: {
+    readonly asc: "asc";
+    readonly desc: "desc";
+};
+export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder];
+export declare const QueryMode: {
+    readonly default: "default";
+    readonly insensitive: "insensitive";
+};
+export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode];
+export declare const NullsOrder: {
+    readonly first: "first";
+    readonly last: "last";
+};
+export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder];
+//# sourceMappingURL=prismaNamespaceBrowser.d.ts.map

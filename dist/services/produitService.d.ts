@@ -48,6 +48,39 @@ export declare class ProduitService {
             pages: number;
         };
     }>;
+    static getTopAchetes(limit?: number): Promise<{
+        totalAchats: number;
+        nombreCommandes: number;
+        categorie: {
+            id: string;
+            nom: string;
+            createdAt: Date;
+            updatedAt: Date;
+            description: string | null;
+            image: string | null;
+            conservation: string | null;
+            couleur: string | null;
+        } | null;
+        gie: {
+            id: string;
+            email: string | null;
+            nom: string;
+        };
+        id: string;
+        nom: string;
+        createdAt: Date;
+        updatedAt: Date;
+        statut: import("@/generated/prisma").$Enums.StatutProduit;
+        description: string | null;
+        quantite: string;
+        prix: number;
+        stock: number;
+        image: string | null;
+        vues: number;
+        gieId: string;
+        categorieId: string | null;
+    }[]>;
+    static incrementerVues(_id: string): Promise<void>;
     static update(id: string, data: Partial<CreateProduitDto>): Promise<IProduit | null>;
     static delete(id: string): Promise<void>;
     static updateStock(id: string, quantite: number): Promise<IProduit | null>;
@@ -60,7 +93,7 @@ export declare class ProduitService {
             pages: number;
         };
     }>;
-    static getByCategory(categorieId: string, page?: number, limit?: number): Promise<{
+    static getByCategory(categorieId: string, page?: number, limit?: number, excludeId?: string): Promise<{
         produits: IProduit[];
         pagination: {
             page: number;

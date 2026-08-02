@@ -9465,11 +9465,13 @@ export namespace Prisma {
   export type ProduitAvgAggregateOutputType = {
     prix: number | null
     stock: number | null
+    vues: number | null
   }
 
   export type ProduitSumAggregateOutputType = {
     prix: number | null
     stock: number | null
+    vues: number | null
   }
 
   export type ProduitMinAggregateOutputType = {
@@ -9480,6 +9482,7 @@ export namespace Prisma {
     prix: number | null
     stock: number | null
     image: string | null
+    vues: number | null
     statut: $Enums.StatutProduit | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -9495,6 +9498,7 @@ export namespace Prisma {
     prix: number | null
     stock: number | null
     image: string | null
+    vues: number | null
     statut: $Enums.StatutProduit | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -9510,6 +9514,7 @@ export namespace Prisma {
     prix: number
     stock: number
     image: number
+    vues: number
     statut: number
     createdAt: number
     updatedAt: number
@@ -9522,11 +9527,13 @@ export namespace Prisma {
   export type ProduitAvgAggregateInputType = {
     prix?: true
     stock?: true
+    vues?: true
   }
 
   export type ProduitSumAggregateInputType = {
     prix?: true
     stock?: true
+    vues?: true
   }
 
   export type ProduitMinAggregateInputType = {
@@ -9537,6 +9544,7 @@ export namespace Prisma {
     prix?: true
     stock?: true
     image?: true
+    vues?: true
     statut?: true
     createdAt?: true
     updatedAt?: true
@@ -9552,6 +9560,7 @@ export namespace Prisma {
     prix?: true
     stock?: true
     image?: true
+    vues?: true
     statut?: true
     createdAt?: true
     updatedAt?: true
@@ -9567,6 +9576,7 @@ export namespace Prisma {
     prix?: true
     stock?: true
     image?: true
+    vues?: true
     statut?: true
     createdAt?: true
     updatedAt?: true
@@ -9669,6 +9679,7 @@ export namespace Prisma {
     prix: number
     stock: number
     image: string | null
+    vues: number
     statut: $Enums.StatutProduit
     createdAt: Date
     updatedAt: Date
@@ -9703,6 +9714,7 @@ export namespace Prisma {
     prix?: boolean
     stock?: boolean
     image?: boolean
+    vues?: boolean
     statut?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -9723,6 +9735,7 @@ export namespace Prisma {
     prix?: boolean
     stock?: boolean
     image?: boolean
+    vues?: boolean
     statut?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -9740,6 +9753,7 @@ export namespace Prisma {
     prix?: boolean
     stock?: boolean
     image?: boolean
+    vues?: boolean
     statut?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -9757,6 +9771,7 @@ export namespace Prisma {
     prix?: boolean
     stock?: boolean
     image?: boolean
+    vues?: boolean
     statut?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -9764,7 +9779,7 @@ export namespace Prisma {
     categorieId?: boolean
   }
 
-  export type ProduitOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "nom" | "quantite" | "description" | "prix" | "stock" | "image" | "statut" | "createdAt" | "updatedAt" | "gieId" | "categorieId", ExtArgs["result"]["produit"]>
+  export type ProduitOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "nom" | "quantite" | "description" | "prix" | "stock" | "image" | "vues" | "statut" | "createdAt" | "updatedAt" | "gieId" | "categorieId", ExtArgs["result"]["produit"]>
   export type ProduitInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     panierProduits?: boolean | Produit$panierProduitsArgs<ExtArgs>
     categorie?: boolean | Produit$categorieArgs<ExtArgs>
@@ -9797,6 +9812,7 @@ export namespace Prisma {
       prix: number
       stock: number
       image: string | null
+      vues: number
       statut: $Enums.StatutProduit
       createdAt: Date
       updatedAt: Date
@@ -10236,6 +10252,7 @@ export namespace Prisma {
     readonly prix: FieldRef<"Produit", 'Float'>
     readonly stock: FieldRef<"Produit", 'Int'>
     readonly image: FieldRef<"Produit", 'String'>
+    readonly vues: FieldRef<"Produit", 'Int'>
     readonly statut: FieldRef<"Produit", 'StatutProduit'>
     readonly createdAt: FieldRef<"Produit", 'DateTime'>
     readonly updatedAt: FieldRef<"Produit", 'DateTime'>
@@ -18018,6 +18035,7 @@ export namespace Prisma {
     prix: 'prix',
     stock: 'stock',
     image: 'image',
+    vues: 'vues',
     statut: 'statut',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
@@ -18843,6 +18861,7 @@ export namespace Prisma {
     prix?: FloatFilter<"Produit"> | number
     stock?: IntFilter<"Produit"> | number
     image?: StringNullableFilter<"Produit"> | string | null
+    vues?: IntFilter<"Produit"> | number
     statut?: EnumStatutProduitFilter<"Produit"> | $Enums.StatutProduit
     createdAt?: DateTimeFilter<"Produit"> | Date | string
     updatedAt?: DateTimeFilter<"Produit"> | Date | string
@@ -18862,6 +18881,7 @@ export namespace Prisma {
     prix?: SortOrder
     stock?: SortOrder
     image?: SortOrderInput | SortOrder
+    vues?: SortOrder
     statut?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -18884,6 +18904,7 @@ export namespace Prisma {
     prix?: FloatFilter<"Produit"> | number
     stock?: IntFilter<"Produit"> | number
     image?: StringNullableFilter<"Produit"> | string | null
+    vues?: IntFilter<"Produit"> | number
     statut?: EnumStatutProduitFilter<"Produit"> | $Enums.StatutProduit
     createdAt?: DateTimeFilter<"Produit"> | Date | string
     updatedAt?: DateTimeFilter<"Produit"> | Date | string
@@ -18903,6 +18924,7 @@ export namespace Prisma {
     prix?: SortOrder
     stock?: SortOrder
     image?: SortOrderInput | SortOrder
+    vues?: SortOrder
     statut?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -18926,6 +18948,7 @@ export namespace Prisma {
     prix?: FloatWithAggregatesFilter<"Produit"> | number
     stock?: IntWithAggregatesFilter<"Produit"> | number
     image?: StringNullableWithAggregatesFilter<"Produit"> | string | null
+    vues?: IntWithAggregatesFilter<"Produit"> | number
     statut?: EnumStatutProduitWithAggregatesFilter<"Produit"> | $Enums.StatutProduit
     createdAt?: DateTimeWithAggregatesFilter<"Produit"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Produit"> | Date | string
@@ -19998,6 +20021,7 @@ export namespace Prisma {
     prix: number
     stock?: number
     image?: string | null
+    vues?: number
     statut?: $Enums.StatutProduit
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -20015,6 +20039,7 @@ export namespace Prisma {
     prix: number
     stock?: number
     image?: string | null
+    vues?: number
     statut?: $Enums.StatutProduit
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -20032,6 +20057,7 @@ export namespace Prisma {
     prix?: FloatFieldUpdateOperationsInput | number
     stock?: IntFieldUpdateOperationsInput | number
     image?: NullableStringFieldUpdateOperationsInput | string | null
+    vues?: IntFieldUpdateOperationsInput | number
     statut?: EnumStatutProduitFieldUpdateOperationsInput | $Enums.StatutProduit
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -20049,6 +20075,7 @@ export namespace Prisma {
     prix?: FloatFieldUpdateOperationsInput | number
     stock?: IntFieldUpdateOperationsInput | number
     image?: NullableStringFieldUpdateOperationsInput | string | null
+    vues?: IntFieldUpdateOperationsInput | number
     statut?: EnumStatutProduitFieldUpdateOperationsInput | $Enums.StatutProduit
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -20066,6 +20093,7 @@ export namespace Prisma {
     prix: number
     stock?: number
     image?: string | null
+    vues?: number
     statut?: $Enums.StatutProduit
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -20081,6 +20109,7 @@ export namespace Prisma {
     prix?: FloatFieldUpdateOperationsInput | number
     stock?: IntFieldUpdateOperationsInput | number
     image?: NullableStringFieldUpdateOperationsInput | string | null
+    vues?: IntFieldUpdateOperationsInput | number
     statut?: EnumStatutProduitFieldUpdateOperationsInput | $Enums.StatutProduit
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -20094,6 +20123,7 @@ export namespace Prisma {
     prix?: FloatFieldUpdateOperationsInput | number
     stock?: IntFieldUpdateOperationsInput | number
     image?: NullableStringFieldUpdateOperationsInput | string | null
+    vues?: IntFieldUpdateOperationsInput | number
     statut?: EnumStatutProduitFieldUpdateOperationsInput | $Enums.StatutProduit
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -21252,6 +21282,7 @@ export namespace Prisma {
     prix?: SortOrder
     stock?: SortOrder
     image?: SortOrder
+    vues?: SortOrder
     statut?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -21262,6 +21293,7 @@ export namespace Prisma {
   export type ProduitAvgOrderByAggregateInput = {
     prix?: SortOrder
     stock?: SortOrder
+    vues?: SortOrder
   }
 
   export type ProduitMaxOrderByAggregateInput = {
@@ -21272,6 +21304,7 @@ export namespace Prisma {
     prix?: SortOrder
     stock?: SortOrder
     image?: SortOrder
+    vues?: SortOrder
     statut?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -21287,6 +21320,7 @@ export namespace Prisma {
     prix?: SortOrder
     stock?: SortOrder
     image?: SortOrder
+    vues?: SortOrder
     statut?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -21297,6 +21331,7 @@ export namespace Prisma {
   export type ProduitSumOrderByAggregateInput = {
     prix?: SortOrder
     stock?: SortOrder
+    vues?: SortOrder
   }
 
   export type FloatWithAggregatesFilter<$PrismaModel = never> = {
@@ -23346,6 +23381,7 @@ export namespace Prisma {
     prix: number
     stock?: number
     image?: string | null
+    vues?: number
     statut?: $Enums.StatutProduit
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -23362,6 +23398,7 @@ export namespace Prisma {
     prix: number
     stock?: number
     image?: string | null
+    vues?: number
     statut?: $Enums.StatutProduit
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -23437,6 +23474,7 @@ export namespace Prisma {
     prix?: FloatFieldUpdateOperationsInput | number
     stock?: IntFieldUpdateOperationsInput | number
     image?: NullableStringFieldUpdateOperationsInput | string | null
+    vues?: IntFieldUpdateOperationsInput | number
     statut?: EnumStatutProduitFieldUpdateOperationsInput | $Enums.StatutProduit
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -23453,6 +23491,7 @@ export namespace Prisma {
     prix?: FloatFieldUpdateOperationsInput | number
     stock?: IntFieldUpdateOperationsInput | number
     image?: NullableStringFieldUpdateOperationsInput | string | null
+    vues?: IntFieldUpdateOperationsInput | number
     statut?: EnumStatutProduitFieldUpdateOperationsInput | $Enums.StatutProduit
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -23531,6 +23570,7 @@ export namespace Prisma {
     prix: number
     stock?: number
     image?: string | null
+    vues?: number
     statut?: $Enums.StatutProduit
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -23547,6 +23587,7 @@ export namespace Prisma {
     prix: number
     stock?: number
     image?: string | null
+    vues?: number
     statut?: $Enums.StatutProduit
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -23666,6 +23707,7 @@ export namespace Prisma {
     prix?: FloatFilter<"Produit"> | number
     stock?: IntFilter<"Produit"> | number
     image?: StringNullableFilter<"Produit"> | string | null
+    vues?: IntFilter<"Produit"> | number
     statut?: EnumStatutProduitFilter<"Produit"> | $Enums.StatutProduit
     createdAt?: DateTimeFilter<"Produit"> | Date | string
     updatedAt?: DateTimeFilter<"Produit"> | Date | string
@@ -23939,6 +23981,7 @@ export namespace Prisma {
     prix: number
     stock?: number
     image?: string | null
+    vues?: number
     statut?: $Enums.StatutProduit
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -23955,6 +23998,7 @@ export namespace Prisma {
     prix: number
     stock?: number
     image?: string | null
+    vues?: number
     statut?: $Enums.StatutProduit
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -24709,6 +24753,7 @@ export namespace Prisma {
     prix: number
     stock?: number
     image?: string | null
+    vues?: number
     statut?: $Enums.StatutProduit
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -24725,6 +24770,7 @@ export namespace Prisma {
     prix: number
     stock?: number
     image?: string | null
+    vues?: number
     statut?: $Enums.StatutProduit
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -24802,6 +24848,7 @@ export namespace Prisma {
     prix?: FloatFieldUpdateOperationsInput | number
     stock?: IntFieldUpdateOperationsInput | number
     image?: NullableStringFieldUpdateOperationsInput | string | null
+    vues?: IntFieldUpdateOperationsInput | number
     statut?: EnumStatutProduitFieldUpdateOperationsInput | $Enums.StatutProduit
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -24818,6 +24865,7 @@ export namespace Prisma {
     prix?: FloatFieldUpdateOperationsInput | number
     stock?: IntFieldUpdateOperationsInput | number
     image?: NullableStringFieldUpdateOperationsInput | string | null
+    vues?: IntFieldUpdateOperationsInput | number
     statut?: EnumStatutProduitFieldUpdateOperationsInput | $Enums.StatutProduit
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -25420,6 +25468,7 @@ export namespace Prisma {
     prix: number
     stock?: number
     image?: string | null
+    vues?: number
     statut?: $Enums.StatutProduit
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -25434,6 +25483,7 @@ export namespace Prisma {
     prix?: FloatFieldUpdateOperationsInput | number
     stock?: IntFieldUpdateOperationsInput | number
     image?: NullableStringFieldUpdateOperationsInput | string | null
+    vues?: IntFieldUpdateOperationsInput | number
     statut?: EnumStatutProduitFieldUpdateOperationsInput | $Enums.StatutProduit
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -25450,6 +25500,7 @@ export namespace Prisma {
     prix?: FloatFieldUpdateOperationsInput | number
     stock?: IntFieldUpdateOperationsInput | number
     image?: NullableStringFieldUpdateOperationsInput | string | null
+    vues?: IntFieldUpdateOperationsInput | number
     statut?: EnumStatutProduitFieldUpdateOperationsInput | $Enums.StatutProduit
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -25466,6 +25517,7 @@ export namespace Prisma {
     prix?: FloatFieldUpdateOperationsInput | number
     stock?: IntFieldUpdateOperationsInput | number
     image?: NullableStringFieldUpdateOperationsInput | string | null
+    vues?: IntFieldUpdateOperationsInput | number
     statut?: EnumStatutProduitFieldUpdateOperationsInput | $Enums.StatutProduit
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -25612,6 +25664,7 @@ export namespace Prisma {
     prix: number
     stock?: number
     image?: string | null
+    vues?: number
     statut?: $Enums.StatutProduit
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -25626,6 +25679,7 @@ export namespace Prisma {
     prix?: FloatFieldUpdateOperationsInput | number
     stock?: IntFieldUpdateOperationsInput | number
     image?: NullableStringFieldUpdateOperationsInput | string | null
+    vues?: IntFieldUpdateOperationsInput | number
     statut?: EnumStatutProduitFieldUpdateOperationsInput | $Enums.StatutProduit
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -25642,6 +25696,7 @@ export namespace Prisma {
     prix?: FloatFieldUpdateOperationsInput | number
     stock?: IntFieldUpdateOperationsInput | number
     image?: NullableStringFieldUpdateOperationsInput | string | null
+    vues?: IntFieldUpdateOperationsInput | number
     statut?: EnumStatutProduitFieldUpdateOperationsInput | $Enums.StatutProduit
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -25658,6 +25713,7 @@ export namespace Prisma {
     prix?: FloatFieldUpdateOperationsInput | number
     stock?: IntFieldUpdateOperationsInput | number
     image?: NullableStringFieldUpdateOperationsInput | string | null
+    vues?: IntFieldUpdateOperationsInput | number
     statut?: EnumStatutProduitFieldUpdateOperationsInput | $Enums.StatutProduit
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string

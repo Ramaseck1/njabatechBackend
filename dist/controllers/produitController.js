@@ -54,7 +54,7 @@ class ProduitController {
     static async getAll(req, res) {
         try {
             const page = parseInt(req.query.page) || 1;
-            const limit = parseInt(req.query.limit) || 10;
+            const limit = parseInt(req.query.limit) || 100000000;
             const gieId = req.query.gieId;
             const result = await produitService_1.ProduitService.findAll(page, limit, gieId);
             res.json({
@@ -247,7 +247,7 @@ class ProduitController {
         try {
             const { q } = req.query;
             const page = parseInt(req.query.page) || 1;
-            const limit = parseInt(req.query.limit) || 10;
+            const limit = parseInt(req.query.limit) || 100000;
             if (!q) {
                 res.status(400).json({
                     success: false,
@@ -301,8 +301,9 @@ class ProduitController {
         try {
             const { categorieId } = req.params;
             const page = parseInt(req.query.page) || 1;
-            const limit = parseInt(req.query.limit) || 10;
-            const result = await produitService_1.ProduitService.getByCategory(categorieId, page, limit);
+            const limit = parseInt(req.query.limit) || 50;
+            const excludeId = req.query.excludeId;
+            const result = await produitService_1.ProduitService.getByCategory(categorieId, page, limit, excludeId);
             res.json({
                 success: true,
                 message: 'Produits récupérés avec succès',
@@ -320,7 +321,7 @@ class ProduitController {
     static async getOutOfStock(req, res) {
         try {
             const page = parseInt(req.query.page) || 1;
-            const limit = parseInt(req.query.limit) || 10;
+            const limit = parseInt(req.query.limit) || 50;
             const result = await produitService_1.ProduitService.getOutOfStock(page, limit);
             res.json({
                 success: true,
@@ -366,6 +367,34 @@ class ProduitController {
                 message: 'Erreur lors de la récupération des produits',
                 error: error.message
             });
+        }
+    }
+    static async getTopAchetes(req, res) {
+        try {
+            const limit = parseInt(req.query.limit) || 5;
+            const produits = await produitService_1.ProduitService.getTopAchetes(limit);
+            res.json({
+                success: true,
+                message: 'Top produits les plus achetés (min. 2 commandes)',
+                data: produits
+            });
+        }
+        catch (error) {
+            res.status(500).json({
+                success: false,
+                message: 'Erreur lors de la récupération',
+                error: error.message
+            });
+        }
+    }
+    static async incrementerVues(req, res) {
+        try {
+            const { id } = req.params;
+            await produitService_1.ProduitService.incrementerVues(id);
+            res.json({ success: true, message: 'Vue enregistrée' });
+        }
+        catch (error) {
+            res.status(500).json({ success: false, message: error.message });
         }
     }
 }

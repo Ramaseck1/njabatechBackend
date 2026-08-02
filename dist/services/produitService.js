@@ -99,6 +99,41 @@ class ProduitService {
             }
         };
     }
+    static async getTopAchetes(limit = 5) {
+        const topProduits = await database_1.prisma.panierProduit.groupBy({
+            by: ['produitId'],
+            _sum: { quantite: true },
+            _count: { produitId: true },
+            having: {
+                produitId: {
+                    _count: {
+                        gte: 2
+                    }
+                }
+            },
+            orderBy: { _sum: { quantite: 'desc' } },
+            take: limit
+        });
+        const produits = await Promise.all(topProduits.map(async (item) => {
+            const produit = await database_1.prisma.produit.findUnique({
+                where: { id: item.produitId },
+                include: {
+                    gie: { select: { id: true, nom: true, email: true } },
+                    categorie: true
+                }
+            });
+            return produit
+                ? {
+                    ...produit,
+                    totalAchats: item._sum.quantite ?? 0,
+                    nombreCommandes: item._count.produitId
+                }
+                : null;
+        }));
+        return produits.filter((p) => p !== null);
+    }
+    static async incrementerVues(_id) {
+    }
     static async update(id, data) {
         const existingProduit = await database_1.prisma.produit.findUnique({
             where: { id }
@@ -199,11 +234,15 @@ class ProduitService {
             }
         };
     }
-    static async getByCategory(categorieId, page = 1, limit = 10) {
+    static async getByCategory(categorieId, page = 1, limit = 10, excludeId) {
         const skip = (page - 1) * limit;
+        const where = { categorieId };
+        if (excludeId) {
+            where.id = { not: excludeId };
+        }
         const [produits, total] = await Promise.all([
             database_1.prisma.produit.findMany({
-                where: { categorieId },
+                where,
                 skip,
                 take: limit,
                 include: {
@@ -218,9 +257,7 @@ class ProduitService {
                 },
                 orderBy: { createdAt: 'desc' }
             }),
-            database_1.prisma.produit.count({
-                where: { categorieId }
-            })
+            database_1.prisma.produit.count({ where })
         ]);
         return {
             produits: produits,

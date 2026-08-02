@@ -204,6 +204,7 @@ exports.Prisma.ProduitScalarFieldEnum = {
   prix: 'prix',
   stock: 'stock',
   image: 'image',
+  vues: 'vues',
   statut: 'statut',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
@@ -224,7 +225,8 @@ exports.Prisma.CommandeScalarFieldEnum = {
   clientId: 'clientId',
   fraisLivraison: 'fraisLivraison',
   regionLivraisonId: 'regionLivraisonId',
-  livreurId: 'livreurId'
+  livreurId: 'livreurId',
+  modeReception: 'modeReception'
 };
 
 exports.Prisma.PaiementScalarFieldEnum = {
@@ -286,6 +288,17 @@ exports.Prisma.RegionsScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.PasswordResetCodeScalarFieldEnum = {
+  id: 'id',
+  email: 'email',
+  userType: 'userType',
+  code: 'code',
+  verified: 'verified',
+  used: 'used',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -332,6 +345,11 @@ exports.StatutCommande = exports.$Enums.StatutCommande = {
   ANNULEE: 'ANNULEE'
 };
 
+exports.ModeReception = exports.$Enums.ModeReception = {
+  LIVRAISON: 'LIVRAISON',
+  RETRAIT: 'RETRAIT'
+};
+
 exports.MethodePaiement = exports.$Enums.MethodePaiement = {
   CARTE_BANCAIRE: 'CARTE_BANCAIRE',
   VIREMENT: 'VIREMENT',
@@ -363,6 +381,12 @@ exports.StatutLivreur = exports.$Enums.StatutLivreur = {
   BLOQUE: 'BLOQUE'
 };
 
+exports.UserType = exports.$Enums.UserType = {
+  ADMIN: 'ADMIN',
+  CLIENT: 'CLIENT',
+  GIE: 'GIE'
+};
+
 exports.Prisma.ModelName = {
   Administrateur: 'Administrateur',
   Avis: 'Avis',
@@ -376,7 +400,8 @@ exports.Prisma.ModelName = {
   PanierProduit: 'PanierProduit',
   adresses: 'adresses',
   livreurs: 'livreurs',
-  regions: 'regions'
+  regions: 'regions',
+  PasswordResetCode: 'PasswordResetCode'
 };
 
 /**

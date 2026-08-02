@@ -14,5 +14,7 @@ export declare class ProduitController {
     static getByCategory(req: Request, res: Response): Promise<void>;
     static getOutOfStock(req: Request, res: Response): Promise<void>;
     static getMyProducts(req: Request, res: Response): Promise<void>;
+    static getTopAchetes(req: Request, res: Response): Promise<void>;
+    static incrementerVues(req: Request, res: Response): Promise<void>;
 }
 //# sourceMappingURL=produitController.d.ts.map

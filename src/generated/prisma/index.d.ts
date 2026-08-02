@@ -78,12 +78,34 @@ export type livreurs = $Result.DefaultSelection<Prisma.$livreursPayload>
  * 
  */
 export type regions = $Result.DefaultSelection<Prisma.$regionsPayload>
+/**
+ * Model PasswordResetCode
+ * 
+ */
+export type PasswordResetCode = $Result.DefaultSelection<Prisma.$PasswordResetCodePayload>
 
 /**
  * Enums
  */
 export namespace $Enums {
-  export const Role: {
+  export const ModeReception: {
+  LIVRAISON: 'LIVRAISON',
+  RETRAIT: 'RETRAIT'
+};
+
+export type ModeReception = (typeof ModeReception)[keyof typeof ModeReception]
+
+
+export const UserType: {
+  ADMIN: 'ADMIN',
+  CLIENT: 'CLIENT',
+  GIE: 'GIE'
+};
+
+export type UserType = (typeof UserType)[keyof typeof UserType]
+
+
+export const Role: {
   ADMIN: 'ADMIN',
   SUPER_ADMIN: 'SUPER_ADMIN'
 };
@@ -173,6 +195,14 @@ export const StatutLivreur: {
 export type StatutLivreur = (typeof StatutLivreur)[keyof typeof StatutLivreur]
 
 }
+
+export type ModeReception = $Enums.ModeReception
+
+export const ModeReception: typeof $Enums.ModeReception
+
+export type UserType = $Enums.UserType
+
+export const UserType: typeof $Enums.UserType
 
 export type Role = $Enums.Role
 
@@ -460,6 +490,16 @@ export class PrismaClient<
     * ```
     */
   get regions(): Prisma.regionsDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.passwordResetCode`: Exposes CRUD operations for the **PasswordResetCode** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more PasswordResetCodes
+    * const passwordResetCodes = await prisma.passwordResetCode.findMany()
+    * ```
+    */
+  get passwordResetCode(): Prisma.PasswordResetCodeDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -906,7 +946,8 @@ export namespace Prisma {
     PanierProduit: 'PanierProduit',
     adresses: 'adresses',
     livreurs: 'livreurs',
-    regions: 'regions'
+    regions: 'regions',
+    PasswordResetCode: 'PasswordResetCode'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -922,7 +963,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "administrateur" | "avis" | "avisProduit" | "gIE" | "client" | "categorie" | "produit" | "commande" | "paiement" | "panierProduit" | "adresses" | "livreurs" | "regions"
+      modelProps: "administrateur" | "avis" | "avisProduit" | "gIE" | "client" | "categorie" | "produit" | "commande" | "paiement" | "panierProduit" | "adresses" | "livreurs" | "regions" | "passwordResetCode"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1888,6 +1929,80 @@ export namespace Prisma {
           }
         }
       }
+      PasswordResetCode: {
+        payload: Prisma.$PasswordResetCodePayload<ExtArgs>
+        fields: Prisma.PasswordResetCodeFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.PasswordResetCodeFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PasswordResetCodePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.PasswordResetCodeFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PasswordResetCodePayload>
+          }
+          findFirst: {
+            args: Prisma.PasswordResetCodeFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PasswordResetCodePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.PasswordResetCodeFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PasswordResetCodePayload>
+          }
+          findMany: {
+            args: Prisma.PasswordResetCodeFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PasswordResetCodePayload>[]
+          }
+          create: {
+            args: Prisma.PasswordResetCodeCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PasswordResetCodePayload>
+          }
+          createMany: {
+            args: Prisma.PasswordResetCodeCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.PasswordResetCodeCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PasswordResetCodePayload>[]
+          }
+          delete: {
+            args: Prisma.PasswordResetCodeDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PasswordResetCodePayload>
+          }
+          update: {
+            args: Prisma.PasswordResetCodeUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PasswordResetCodePayload>
+          }
+          deleteMany: {
+            args: Prisma.PasswordResetCodeDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.PasswordResetCodeUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.PasswordResetCodeUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PasswordResetCodePayload>[]
+          }
+          upsert: {
+            args: Prisma.PasswordResetCodeUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PasswordResetCodePayload>
+          }
+          aggregate: {
+            args: Prisma.PasswordResetCodeAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePasswordResetCode>
+          }
+          groupBy: {
+            args: Prisma.PasswordResetCodeGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PasswordResetCodeGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.PasswordResetCodeCountArgs<ExtArgs>
+            result: $Utils.Optional<PasswordResetCodeCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -2009,6 +2124,7 @@ export namespace Prisma {
     adresses?: adressesOmit
     livreurs?: livreursOmit
     regions?: regionsOmit
+    passwordResetCode?: PasswordResetCodeOmit
   }
 
   /* Types for Logging */
@@ -9465,11 +9581,13 @@ export namespace Prisma {
   export type ProduitAvgAggregateOutputType = {
     prix: number | null
     stock: number | null
+    vues: number | null
   }
 
   export type ProduitSumAggregateOutputType = {
     prix: number | null
     stock: number | null
+    vues: number | null
   }
 
   export type ProduitMinAggregateOutputType = {
@@ -9480,6 +9598,7 @@ export namespace Prisma {
     prix: number | null
     stock: number | null
     image: string | null
+    vues: number | null
     statut: $Enums.StatutProduit | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -9495,6 +9614,7 @@ export namespace Prisma {
     prix: number | null
     stock: number | null
     image: string | null
+    vues: number | null
     statut: $Enums.StatutProduit | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -9510,6 +9630,7 @@ export namespace Prisma {
     prix: number
     stock: number
     image: number
+    vues: number
     statut: number
     createdAt: number
     updatedAt: number
@@ -9522,11 +9643,13 @@ export namespace Prisma {
   export type ProduitAvgAggregateInputType = {
     prix?: true
     stock?: true
+    vues?: true
   }
 
   export type ProduitSumAggregateInputType = {
     prix?: true
     stock?: true
+    vues?: true
   }
 
   export type ProduitMinAggregateInputType = {
@@ -9537,6 +9660,7 @@ export namespace Prisma {
     prix?: true
     stock?: true
     image?: true
+    vues?: true
     statut?: true
     createdAt?: true
     updatedAt?: true
@@ -9552,6 +9676,7 @@ export namespace Prisma {
     prix?: true
     stock?: true
     image?: true
+    vues?: true
     statut?: true
     createdAt?: true
     updatedAt?: true
@@ -9567,6 +9692,7 @@ export namespace Prisma {
     prix?: true
     stock?: true
     image?: true
+    vues?: true
     statut?: true
     createdAt?: true
     updatedAt?: true
@@ -9669,6 +9795,7 @@ export namespace Prisma {
     prix: number
     stock: number
     image: string | null
+    vues: number
     statut: $Enums.StatutProduit
     createdAt: Date
     updatedAt: Date
@@ -9703,6 +9830,7 @@ export namespace Prisma {
     prix?: boolean
     stock?: boolean
     image?: boolean
+    vues?: boolean
     statut?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -9723,6 +9851,7 @@ export namespace Prisma {
     prix?: boolean
     stock?: boolean
     image?: boolean
+    vues?: boolean
     statut?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -9740,6 +9869,7 @@ export namespace Prisma {
     prix?: boolean
     stock?: boolean
     image?: boolean
+    vues?: boolean
     statut?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -9757,6 +9887,7 @@ export namespace Prisma {
     prix?: boolean
     stock?: boolean
     image?: boolean
+    vues?: boolean
     statut?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -9764,7 +9895,7 @@ export namespace Prisma {
     categorieId?: boolean
   }
 
-  export type ProduitOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "nom" | "quantite" | "description" | "prix" | "stock" | "image" | "statut" | "createdAt" | "updatedAt" | "gieId" | "categorieId", ExtArgs["result"]["produit"]>
+  export type ProduitOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "nom" | "quantite" | "description" | "prix" | "stock" | "image" | "vues" | "statut" | "createdAt" | "updatedAt" | "gieId" | "categorieId", ExtArgs["result"]["produit"]>
   export type ProduitInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     panierProduits?: boolean | Produit$panierProduitsArgs<ExtArgs>
     categorie?: boolean | Produit$categorieArgs<ExtArgs>
@@ -9797,6 +9928,7 @@ export namespace Prisma {
       prix: number
       stock: number
       image: string | null
+      vues: number
       statut: $Enums.StatutProduit
       createdAt: Date
       updatedAt: Date
@@ -10236,6 +10368,7 @@ export namespace Prisma {
     readonly prix: FieldRef<"Produit", 'Float'>
     readonly stock: FieldRef<"Produit", 'Int'>
     readonly image: FieldRef<"Produit", 'String'>
+    readonly vues: FieldRef<"Produit", 'Int'>
     readonly statut: FieldRef<"Produit", 'StatutProduit'>
     readonly createdAt: FieldRef<"Produit", 'DateTime'>
     readonly updatedAt: FieldRef<"Produit", 'DateTime'>
@@ -10763,6 +10896,7 @@ export namespace Prisma {
     fraisLivraison: number | null
     regionLivraisonId: string | null
     livreurId: string | null
+    modeReception: $Enums.ModeReception | null
   }
 
   export type CommandeMaxAggregateOutputType = {
@@ -10779,6 +10913,7 @@ export namespace Prisma {
     fraisLivraison: number | null
     regionLivraisonId: string | null
     livreurId: string | null
+    modeReception: $Enums.ModeReception | null
   }
 
   export type CommandeCountAggregateOutputType = {
@@ -10795,6 +10930,7 @@ export namespace Prisma {
     fraisLivraison: number
     regionLivraisonId: number
     livreurId: number
+    modeReception: number
     _all: number
   }
 
@@ -10823,6 +10959,7 @@ export namespace Prisma {
     fraisLivraison?: true
     regionLivraisonId?: true
     livreurId?: true
+    modeReception?: true
   }
 
   export type CommandeMaxAggregateInputType = {
@@ -10839,6 +10976,7 @@ export namespace Prisma {
     fraisLivraison?: true
     regionLivraisonId?: true
     livreurId?: true
+    modeReception?: true
   }
 
   export type CommandeCountAggregateInputType = {
@@ -10855,6 +10993,7 @@ export namespace Prisma {
     fraisLivraison?: true
     regionLivraisonId?: true
     livreurId?: true
+    modeReception?: true
     _all?: true
   }
 
@@ -10958,6 +11097,7 @@ export namespace Prisma {
     fraisLivraison: number
     regionLivraisonId: string | null
     livreurId: string | null
+    modeReception: $Enums.ModeReception
     _count: CommandeCountAggregateOutputType | null
     _avg: CommandeAvgAggregateOutputType | null
     _sum: CommandeSumAggregateOutputType | null
@@ -10993,6 +11133,7 @@ export namespace Prisma {
     fraisLivraison?: boolean
     regionLivraisonId?: boolean
     livreurId?: boolean
+    modeReception?: boolean
     client?: boolean | ClientDefaultArgs<ExtArgs>
     livreurs?: boolean | Commande$livreursArgs<ExtArgs>
     regions?: boolean | Commande$regionsArgs<ExtArgs>
@@ -11015,6 +11156,7 @@ export namespace Prisma {
     fraisLivraison?: boolean
     regionLivraisonId?: boolean
     livreurId?: boolean
+    modeReception?: boolean
     client?: boolean | ClientDefaultArgs<ExtArgs>
     livreurs?: boolean | Commande$livreursArgs<ExtArgs>
     regions?: boolean | Commande$regionsArgs<ExtArgs>
@@ -11034,6 +11176,7 @@ export namespace Prisma {
     fraisLivraison?: boolean
     regionLivraisonId?: boolean
     livreurId?: boolean
+    modeReception?: boolean
     client?: boolean | ClientDefaultArgs<ExtArgs>
     livreurs?: boolean | Commande$livreursArgs<ExtArgs>
     regions?: boolean | Commande$regionsArgs<ExtArgs>
@@ -11053,9 +11196,10 @@ export namespace Prisma {
     fraisLivraison?: boolean
     regionLivraisonId?: boolean
     livreurId?: boolean
+    modeReception?: boolean
   }
 
-  export type CommandeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "numero" | "montant" | "statut" | "dateCommande" | "dateLivraison" | "adresseLivraison" | "createdAt" | "updatedAt" | "clientId" | "fraisLivraison" | "regionLivraisonId" | "livreurId", ExtArgs["result"]["commande"]>
+  export type CommandeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "numero" | "montant" | "statut" | "dateCommande" | "dateLivraison" | "adresseLivraison" | "createdAt" | "updatedAt" | "clientId" | "fraisLivraison" | "regionLivraisonId" | "livreurId" | "modeReception", ExtArgs["result"]["commande"]>
   export type CommandeInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     client?: boolean | ClientDefaultArgs<ExtArgs>
     livreurs?: boolean | Commande$livreursArgs<ExtArgs>
@@ -11098,6 +11242,7 @@ export namespace Prisma {
       fraisLivraison: number
       regionLivraisonId: string | null
       livreurId: string | null
+      modeReception: $Enums.ModeReception
     }, ExtArgs["result"]["commande"]>
     composites: {}
   }
@@ -11539,6 +11684,7 @@ export namespace Prisma {
     readonly fraisLivraison: FieldRef<"Commande", 'Float'>
     readonly regionLivraisonId: FieldRef<"Commande", 'String'>
     readonly livreurId: FieldRef<"Commande", 'String'>
+    readonly modeReception: FieldRef<"Commande", 'ModeReception'>
   }
     
 
@@ -17903,6 +18049,1045 @@ export namespace Prisma {
 
 
   /**
+   * Model PasswordResetCode
+   */
+
+  export type AggregatePasswordResetCode = {
+    _count: PasswordResetCodeCountAggregateOutputType | null
+    _min: PasswordResetCodeMinAggregateOutputType | null
+    _max: PasswordResetCodeMaxAggregateOutputType | null
+  }
+
+  export type PasswordResetCodeMinAggregateOutputType = {
+    id: string | null
+    email: string | null
+    userType: $Enums.UserType | null
+    code: string | null
+    verified: boolean | null
+    used: boolean | null
+    expiresAt: Date | null
+    createdAt: Date | null
+  }
+
+  export type PasswordResetCodeMaxAggregateOutputType = {
+    id: string | null
+    email: string | null
+    userType: $Enums.UserType | null
+    code: string | null
+    verified: boolean | null
+    used: boolean | null
+    expiresAt: Date | null
+    createdAt: Date | null
+  }
+
+  export type PasswordResetCodeCountAggregateOutputType = {
+    id: number
+    email: number
+    userType: number
+    code: number
+    verified: number
+    used: number
+    expiresAt: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type PasswordResetCodeMinAggregateInputType = {
+    id?: true
+    email?: true
+    userType?: true
+    code?: true
+    verified?: true
+    used?: true
+    expiresAt?: true
+    createdAt?: true
+  }
+
+  export type PasswordResetCodeMaxAggregateInputType = {
+    id?: true
+    email?: true
+    userType?: true
+    code?: true
+    verified?: true
+    used?: true
+    expiresAt?: true
+    createdAt?: true
+  }
+
+  export type PasswordResetCodeCountAggregateInputType = {
+    id?: true
+    email?: true
+    userType?: true
+    code?: true
+    verified?: true
+    used?: true
+    expiresAt?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type PasswordResetCodeAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PasswordResetCode to aggregate.
+     */
+    where?: PasswordResetCodeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PasswordResetCodes to fetch.
+     */
+    orderBy?: PasswordResetCodeOrderByWithRelationInput | PasswordResetCodeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PasswordResetCodeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PasswordResetCodes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PasswordResetCodes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned PasswordResetCodes
+    **/
+    _count?: true | PasswordResetCodeCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PasswordResetCodeMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PasswordResetCodeMaxAggregateInputType
+  }
+
+  export type GetPasswordResetCodeAggregateType<T extends PasswordResetCodeAggregateArgs> = {
+        [P in keyof T & keyof AggregatePasswordResetCode]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePasswordResetCode[P]>
+      : GetScalarType<T[P], AggregatePasswordResetCode[P]>
+  }
+
+
+
+
+  export type PasswordResetCodeGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PasswordResetCodeWhereInput
+    orderBy?: PasswordResetCodeOrderByWithAggregationInput | PasswordResetCodeOrderByWithAggregationInput[]
+    by: PasswordResetCodeScalarFieldEnum[] | PasswordResetCodeScalarFieldEnum
+    having?: PasswordResetCodeScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PasswordResetCodeCountAggregateInputType | true
+    _min?: PasswordResetCodeMinAggregateInputType
+    _max?: PasswordResetCodeMaxAggregateInputType
+  }
+
+  export type PasswordResetCodeGroupByOutputType = {
+    id: string
+    email: string
+    userType: $Enums.UserType
+    code: string
+    verified: boolean
+    used: boolean
+    expiresAt: Date
+    createdAt: Date
+    _count: PasswordResetCodeCountAggregateOutputType | null
+    _min: PasswordResetCodeMinAggregateOutputType | null
+    _max: PasswordResetCodeMaxAggregateOutputType | null
+  }
+
+  type GetPasswordResetCodeGroupByPayload<T extends PasswordResetCodeGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<PasswordResetCodeGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PasswordResetCodeGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PasswordResetCodeGroupByOutputType[P]>
+            : GetScalarType<T[P], PasswordResetCodeGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PasswordResetCodeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    email?: boolean
+    userType?: boolean
+    code?: boolean
+    verified?: boolean
+    used?: boolean
+    expiresAt?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["passwordResetCode"]>
+
+  export type PasswordResetCodeSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    email?: boolean
+    userType?: boolean
+    code?: boolean
+    verified?: boolean
+    used?: boolean
+    expiresAt?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["passwordResetCode"]>
+
+  export type PasswordResetCodeSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    email?: boolean
+    userType?: boolean
+    code?: boolean
+    verified?: boolean
+    used?: boolean
+    expiresAt?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["passwordResetCode"]>
+
+  export type PasswordResetCodeSelectScalar = {
+    id?: boolean
+    email?: boolean
+    userType?: boolean
+    code?: boolean
+    verified?: boolean
+    used?: boolean
+    expiresAt?: boolean
+    createdAt?: boolean
+  }
+
+  export type PasswordResetCodeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "userType" | "code" | "verified" | "used" | "expiresAt" | "createdAt", ExtArgs["result"]["passwordResetCode"]>
+
+  export type $PasswordResetCodePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "PasswordResetCode"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      email: string
+      userType: $Enums.UserType
+      code: string
+      verified: boolean
+      used: boolean
+      expiresAt: Date
+      createdAt: Date
+    }, ExtArgs["result"]["passwordResetCode"]>
+    composites: {}
+  }
+
+  type PasswordResetCodeGetPayload<S extends boolean | null | undefined | PasswordResetCodeDefaultArgs> = $Result.GetResult<Prisma.$PasswordResetCodePayload, S>
+
+  type PasswordResetCodeCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<PasswordResetCodeFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: PasswordResetCodeCountAggregateInputType | true
+    }
+
+  export interface PasswordResetCodeDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['PasswordResetCode'], meta: { name: 'PasswordResetCode' } }
+    /**
+     * Find zero or one PasswordResetCode that matches the filter.
+     * @param {PasswordResetCodeFindUniqueArgs} args - Arguments to find a PasswordResetCode
+     * @example
+     * // Get one PasswordResetCode
+     * const passwordResetCode = await prisma.passwordResetCode.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends PasswordResetCodeFindUniqueArgs>(args: SelectSubset<T, PasswordResetCodeFindUniqueArgs<ExtArgs>>): Prisma__PasswordResetCodeClient<$Result.GetResult<Prisma.$PasswordResetCodePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one PasswordResetCode that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {PasswordResetCodeFindUniqueOrThrowArgs} args - Arguments to find a PasswordResetCode
+     * @example
+     * // Get one PasswordResetCode
+     * const passwordResetCode = await prisma.passwordResetCode.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends PasswordResetCodeFindUniqueOrThrowArgs>(args: SelectSubset<T, PasswordResetCodeFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PasswordResetCodeClient<$Result.GetResult<Prisma.$PasswordResetCodePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PasswordResetCode that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PasswordResetCodeFindFirstArgs} args - Arguments to find a PasswordResetCode
+     * @example
+     * // Get one PasswordResetCode
+     * const passwordResetCode = await prisma.passwordResetCode.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends PasswordResetCodeFindFirstArgs>(args?: SelectSubset<T, PasswordResetCodeFindFirstArgs<ExtArgs>>): Prisma__PasswordResetCodeClient<$Result.GetResult<Prisma.$PasswordResetCodePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PasswordResetCode that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PasswordResetCodeFindFirstOrThrowArgs} args - Arguments to find a PasswordResetCode
+     * @example
+     * // Get one PasswordResetCode
+     * const passwordResetCode = await prisma.passwordResetCode.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends PasswordResetCodeFindFirstOrThrowArgs>(args?: SelectSubset<T, PasswordResetCodeFindFirstOrThrowArgs<ExtArgs>>): Prisma__PasswordResetCodeClient<$Result.GetResult<Prisma.$PasswordResetCodePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more PasswordResetCodes that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PasswordResetCodeFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all PasswordResetCodes
+     * const passwordResetCodes = await prisma.passwordResetCode.findMany()
+     * 
+     * // Get first 10 PasswordResetCodes
+     * const passwordResetCodes = await prisma.passwordResetCode.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const passwordResetCodeWithIdOnly = await prisma.passwordResetCode.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends PasswordResetCodeFindManyArgs>(args?: SelectSubset<T, PasswordResetCodeFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PasswordResetCodePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a PasswordResetCode.
+     * @param {PasswordResetCodeCreateArgs} args - Arguments to create a PasswordResetCode.
+     * @example
+     * // Create one PasswordResetCode
+     * const PasswordResetCode = await prisma.passwordResetCode.create({
+     *   data: {
+     *     // ... data to create a PasswordResetCode
+     *   }
+     * })
+     * 
+     */
+    create<T extends PasswordResetCodeCreateArgs>(args: SelectSubset<T, PasswordResetCodeCreateArgs<ExtArgs>>): Prisma__PasswordResetCodeClient<$Result.GetResult<Prisma.$PasswordResetCodePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many PasswordResetCodes.
+     * @param {PasswordResetCodeCreateManyArgs} args - Arguments to create many PasswordResetCodes.
+     * @example
+     * // Create many PasswordResetCodes
+     * const passwordResetCode = await prisma.passwordResetCode.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends PasswordResetCodeCreateManyArgs>(args?: SelectSubset<T, PasswordResetCodeCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many PasswordResetCodes and returns the data saved in the database.
+     * @param {PasswordResetCodeCreateManyAndReturnArgs} args - Arguments to create many PasswordResetCodes.
+     * @example
+     * // Create many PasswordResetCodes
+     * const passwordResetCode = await prisma.passwordResetCode.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many PasswordResetCodes and only return the `id`
+     * const passwordResetCodeWithIdOnly = await prisma.passwordResetCode.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends PasswordResetCodeCreateManyAndReturnArgs>(args?: SelectSubset<T, PasswordResetCodeCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PasswordResetCodePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a PasswordResetCode.
+     * @param {PasswordResetCodeDeleteArgs} args - Arguments to delete one PasswordResetCode.
+     * @example
+     * // Delete one PasswordResetCode
+     * const PasswordResetCode = await prisma.passwordResetCode.delete({
+     *   where: {
+     *     // ... filter to delete one PasswordResetCode
+     *   }
+     * })
+     * 
+     */
+    delete<T extends PasswordResetCodeDeleteArgs>(args: SelectSubset<T, PasswordResetCodeDeleteArgs<ExtArgs>>): Prisma__PasswordResetCodeClient<$Result.GetResult<Prisma.$PasswordResetCodePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one PasswordResetCode.
+     * @param {PasswordResetCodeUpdateArgs} args - Arguments to update one PasswordResetCode.
+     * @example
+     * // Update one PasswordResetCode
+     * const passwordResetCode = await prisma.passwordResetCode.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends PasswordResetCodeUpdateArgs>(args: SelectSubset<T, PasswordResetCodeUpdateArgs<ExtArgs>>): Prisma__PasswordResetCodeClient<$Result.GetResult<Prisma.$PasswordResetCodePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more PasswordResetCodes.
+     * @param {PasswordResetCodeDeleteManyArgs} args - Arguments to filter PasswordResetCodes to delete.
+     * @example
+     * // Delete a few PasswordResetCodes
+     * const { count } = await prisma.passwordResetCode.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends PasswordResetCodeDeleteManyArgs>(args?: SelectSubset<T, PasswordResetCodeDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PasswordResetCodes.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PasswordResetCodeUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many PasswordResetCodes
+     * const passwordResetCode = await prisma.passwordResetCode.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends PasswordResetCodeUpdateManyArgs>(args: SelectSubset<T, PasswordResetCodeUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PasswordResetCodes and returns the data updated in the database.
+     * @param {PasswordResetCodeUpdateManyAndReturnArgs} args - Arguments to update many PasswordResetCodes.
+     * @example
+     * // Update many PasswordResetCodes
+     * const passwordResetCode = await prisma.passwordResetCode.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more PasswordResetCodes and only return the `id`
+     * const passwordResetCodeWithIdOnly = await prisma.passwordResetCode.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends PasswordResetCodeUpdateManyAndReturnArgs>(args: SelectSubset<T, PasswordResetCodeUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PasswordResetCodePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one PasswordResetCode.
+     * @param {PasswordResetCodeUpsertArgs} args - Arguments to update or create a PasswordResetCode.
+     * @example
+     * // Update or create a PasswordResetCode
+     * const passwordResetCode = await prisma.passwordResetCode.upsert({
+     *   create: {
+     *     // ... data to create a PasswordResetCode
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the PasswordResetCode we want to update
+     *   }
+     * })
+     */
+    upsert<T extends PasswordResetCodeUpsertArgs>(args: SelectSubset<T, PasswordResetCodeUpsertArgs<ExtArgs>>): Prisma__PasswordResetCodeClient<$Result.GetResult<Prisma.$PasswordResetCodePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of PasswordResetCodes.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PasswordResetCodeCountArgs} args - Arguments to filter PasswordResetCodes to count.
+     * @example
+     * // Count the number of PasswordResetCodes
+     * const count = await prisma.passwordResetCode.count({
+     *   where: {
+     *     // ... the filter for the PasswordResetCodes we want to count
+     *   }
+     * })
+    **/
+    count<T extends PasswordResetCodeCountArgs>(
+      args?: Subset<T, PasswordResetCodeCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PasswordResetCodeCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a PasswordResetCode.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PasswordResetCodeAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PasswordResetCodeAggregateArgs>(args: Subset<T, PasswordResetCodeAggregateArgs>): Prisma.PrismaPromise<GetPasswordResetCodeAggregateType<T>>
+
+    /**
+     * Group by PasswordResetCode.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PasswordResetCodeGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PasswordResetCodeGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PasswordResetCodeGroupByArgs['orderBy'] }
+        : { orderBy?: PasswordResetCodeGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PasswordResetCodeGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPasswordResetCodeGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the PasswordResetCode model
+   */
+  readonly fields: PasswordResetCodeFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for PasswordResetCode.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__PasswordResetCodeClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the PasswordResetCode model
+   */
+  interface PasswordResetCodeFieldRefs {
+    readonly id: FieldRef<"PasswordResetCode", 'String'>
+    readonly email: FieldRef<"PasswordResetCode", 'String'>
+    readonly userType: FieldRef<"PasswordResetCode", 'UserType'>
+    readonly code: FieldRef<"PasswordResetCode", 'String'>
+    readonly verified: FieldRef<"PasswordResetCode", 'Boolean'>
+    readonly used: FieldRef<"PasswordResetCode", 'Boolean'>
+    readonly expiresAt: FieldRef<"PasswordResetCode", 'DateTime'>
+    readonly createdAt: FieldRef<"PasswordResetCode", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * PasswordResetCode findUnique
+   */
+  export type PasswordResetCodeFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PasswordResetCode
+     */
+    select?: PasswordResetCodeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PasswordResetCode
+     */
+    omit?: PasswordResetCodeOmit<ExtArgs> | null
+    /**
+     * Filter, which PasswordResetCode to fetch.
+     */
+    where: PasswordResetCodeWhereUniqueInput
+  }
+
+  /**
+   * PasswordResetCode findUniqueOrThrow
+   */
+  export type PasswordResetCodeFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PasswordResetCode
+     */
+    select?: PasswordResetCodeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PasswordResetCode
+     */
+    omit?: PasswordResetCodeOmit<ExtArgs> | null
+    /**
+     * Filter, which PasswordResetCode to fetch.
+     */
+    where: PasswordResetCodeWhereUniqueInput
+  }
+
+  /**
+   * PasswordResetCode findFirst
+   */
+  export type PasswordResetCodeFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PasswordResetCode
+     */
+    select?: PasswordResetCodeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PasswordResetCode
+     */
+    omit?: PasswordResetCodeOmit<ExtArgs> | null
+    /**
+     * Filter, which PasswordResetCode to fetch.
+     */
+    where?: PasswordResetCodeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PasswordResetCodes to fetch.
+     */
+    orderBy?: PasswordResetCodeOrderByWithRelationInput | PasswordResetCodeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PasswordResetCodes.
+     */
+    cursor?: PasswordResetCodeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PasswordResetCodes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PasswordResetCodes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PasswordResetCodes.
+     */
+    distinct?: PasswordResetCodeScalarFieldEnum | PasswordResetCodeScalarFieldEnum[]
+  }
+
+  /**
+   * PasswordResetCode findFirstOrThrow
+   */
+  export type PasswordResetCodeFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PasswordResetCode
+     */
+    select?: PasswordResetCodeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PasswordResetCode
+     */
+    omit?: PasswordResetCodeOmit<ExtArgs> | null
+    /**
+     * Filter, which PasswordResetCode to fetch.
+     */
+    where?: PasswordResetCodeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PasswordResetCodes to fetch.
+     */
+    orderBy?: PasswordResetCodeOrderByWithRelationInput | PasswordResetCodeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PasswordResetCodes.
+     */
+    cursor?: PasswordResetCodeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PasswordResetCodes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PasswordResetCodes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PasswordResetCodes.
+     */
+    distinct?: PasswordResetCodeScalarFieldEnum | PasswordResetCodeScalarFieldEnum[]
+  }
+
+  /**
+   * PasswordResetCode findMany
+   */
+  export type PasswordResetCodeFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PasswordResetCode
+     */
+    select?: PasswordResetCodeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PasswordResetCode
+     */
+    omit?: PasswordResetCodeOmit<ExtArgs> | null
+    /**
+     * Filter, which PasswordResetCodes to fetch.
+     */
+    where?: PasswordResetCodeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PasswordResetCodes to fetch.
+     */
+    orderBy?: PasswordResetCodeOrderByWithRelationInput | PasswordResetCodeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing PasswordResetCodes.
+     */
+    cursor?: PasswordResetCodeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PasswordResetCodes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PasswordResetCodes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PasswordResetCodes.
+     */
+    distinct?: PasswordResetCodeScalarFieldEnum | PasswordResetCodeScalarFieldEnum[]
+  }
+
+  /**
+   * PasswordResetCode create
+   */
+  export type PasswordResetCodeCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PasswordResetCode
+     */
+    select?: PasswordResetCodeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PasswordResetCode
+     */
+    omit?: PasswordResetCodeOmit<ExtArgs> | null
+    /**
+     * The data needed to create a PasswordResetCode.
+     */
+    data: XOR<PasswordResetCodeCreateInput, PasswordResetCodeUncheckedCreateInput>
+  }
+
+  /**
+   * PasswordResetCode createMany
+   */
+  export type PasswordResetCodeCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many PasswordResetCodes.
+     */
+    data: PasswordResetCodeCreateManyInput | PasswordResetCodeCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * PasswordResetCode createManyAndReturn
+   */
+  export type PasswordResetCodeCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PasswordResetCode
+     */
+    select?: PasswordResetCodeSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PasswordResetCode
+     */
+    omit?: PasswordResetCodeOmit<ExtArgs> | null
+    /**
+     * The data used to create many PasswordResetCodes.
+     */
+    data: PasswordResetCodeCreateManyInput | PasswordResetCodeCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * PasswordResetCode update
+   */
+  export type PasswordResetCodeUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PasswordResetCode
+     */
+    select?: PasswordResetCodeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PasswordResetCode
+     */
+    omit?: PasswordResetCodeOmit<ExtArgs> | null
+    /**
+     * The data needed to update a PasswordResetCode.
+     */
+    data: XOR<PasswordResetCodeUpdateInput, PasswordResetCodeUncheckedUpdateInput>
+    /**
+     * Choose, which PasswordResetCode to update.
+     */
+    where: PasswordResetCodeWhereUniqueInput
+  }
+
+  /**
+   * PasswordResetCode updateMany
+   */
+  export type PasswordResetCodeUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update PasswordResetCodes.
+     */
+    data: XOR<PasswordResetCodeUpdateManyMutationInput, PasswordResetCodeUncheckedUpdateManyInput>
+    /**
+     * Filter which PasswordResetCodes to update
+     */
+    where?: PasswordResetCodeWhereInput
+    /**
+     * Limit how many PasswordResetCodes to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * PasswordResetCode updateManyAndReturn
+   */
+  export type PasswordResetCodeUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PasswordResetCode
+     */
+    select?: PasswordResetCodeSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PasswordResetCode
+     */
+    omit?: PasswordResetCodeOmit<ExtArgs> | null
+    /**
+     * The data used to update PasswordResetCodes.
+     */
+    data: XOR<PasswordResetCodeUpdateManyMutationInput, PasswordResetCodeUncheckedUpdateManyInput>
+    /**
+     * Filter which PasswordResetCodes to update
+     */
+    where?: PasswordResetCodeWhereInput
+    /**
+     * Limit how many PasswordResetCodes to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * PasswordResetCode upsert
+   */
+  export type PasswordResetCodeUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PasswordResetCode
+     */
+    select?: PasswordResetCodeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PasswordResetCode
+     */
+    omit?: PasswordResetCodeOmit<ExtArgs> | null
+    /**
+     * The filter to search for the PasswordResetCode to update in case it exists.
+     */
+    where: PasswordResetCodeWhereUniqueInput
+    /**
+     * In case the PasswordResetCode found by the `where` argument doesn't exist, create a new PasswordResetCode with this data.
+     */
+    create: XOR<PasswordResetCodeCreateInput, PasswordResetCodeUncheckedCreateInput>
+    /**
+     * In case the PasswordResetCode was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<PasswordResetCodeUpdateInput, PasswordResetCodeUncheckedUpdateInput>
+  }
+
+  /**
+   * PasswordResetCode delete
+   */
+  export type PasswordResetCodeDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PasswordResetCode
+     */
+    select?: PasswordResetCodeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PasswordResetCode
+     */
+    omit?: PasswordResetCodeOmit<ExtArgs> | null
+    /**
+     * Filter which PasswordResetCode to delete.
+     */
+    where: PasswordResetCodeWhereUniqueInput
+  }
+
+  /**
+   * PasswordResetCode deleteMany
+   */
+  export type PasswordResetCodeDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PasswordResetCodes to delete
+     */
+    where?: PasswordResetCodeWhereInput
+    /**
+     * Limit how many PasswordResetCodes to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * PasswordResetCode without action
+   */
+  export type PasswordResetCodeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PasswordResetCode
+     */
+    select?: PasswordResetCodeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PasswordResetCode
+     */
+    omit?: PasswordResetCodeOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -18018,6 +19203,7 @@ export namespace Prisma {
     prix: 'prix',
     stock: 'stock',
     image: 'image',
+    vues: 'vues',
     statut: 'statut',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
@@ -18041,7 +19227,8 @@ export namespace Prisma {
     clientId: 'clientId',
     fraisLivraison: 'fraisLivraison',
     regionLivraisonId: 'regionLivraisonId',
-    livreurId: 'livreurId'
+    livreurId: 'livreurId',
+    modeReception: 'modeReception'
   };
 
   export type CommandeScalarFieldEnum = (typeof CommandeScalarFieldEnum)[keyof typeof CommandeScalarFieldEnum]
@@ -18119,6 +19306,20 @@ export namespace Prisma {
   };
 
   export type RegionsScalarFieldEnum = (typeof RegionsScalarFieldEnum)[keyof typeof RegionsScalarFieldEnum]
+
+
+  export const PasswordResetCodeScalarFieldEnum: {
+    id: 'id',
+    email: 'email',
+    userType: 'userType',
+    code: 'code',
+    verified: 'verified',
+    used: 'used',
+    expiresAt: 'expiresAt',
+    createdAt: 'createdAt'
+  };
+
+  export type PasswordResetCodeScalarFieldEnum = (typeof PasswordResetCodeScalarFieldEnum)[keyof typeof PasswordResetCodeScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -18277,6 +19478,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'ModeReception'
+   */
+  export type EnumModeReceptionFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ModeReception'>
+    
+
+
+  /**
+   * Reference to a field of type 'ModeReception[]'
+   */
+  export type ListEnumModeReceptionFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ModeReception[]'>
+    
+
+
+  /**
    * Reference to a field of type 'MethodePaiement'
    */
   export type EnumMethodePaiementFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MethodePaiement'>
@@ -18329,6 +19544,27 @@ export namespace Prisma {
    * Reference to a field of type 'StatutLivreur[]'
    */
   export type ListEnumStatutLivreurFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'StatutLivreur[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'UserType'
+   */
+  export type EnumUserTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserType'>
+    
+
+
+  /**
+   * Reference to a field of type 'UserType[]'
+   */
+  export type ListEnumUserTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserType[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'Boolean'
+   */
+  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
   /**
    * Deep Input Types
@@ -18843,6 +20079,7 @@ export namespace Prisma {
     prix?: FloatFilter<"Produit"> | number
     stock?: IntFilter<"Produit"> | number
     image?: StringNullableFilter<"Produit"> | string | null
+    vues?: IntFilter<"Produit"> | number
     statut?: EnumStatutProduitFilter<"Produit"> | $Enums.StatutProduit
     createdAt?: DateTimeFilter<"Produit"> | Date | string
     updatedAt?: DateTimeFilter<"Produit"> | Date | string
@@ -18862,6 +20099,7 @@ export namespace Prisma {
     prix?: SortOrder
     stock?: SortOrder
     image?: SortOrderInput | SortOrder
+    vues?: SortOrder
     statut?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -18884,6 +20122,7 @@ export namespace Prisma {
     prix?: FloatFilter<"Produit"> | number
     stock?: IntFilter<"Produit"> | number
     image?: StringNullableFilter<"Produit"> | string | null
+    vues?: IntFilter<"Produit"> | number
     statut?: EnumStatutProduitFilter<"Produit"> | $Enums.StatutProduit
     createdAt?: DateTimeFilter<"Produit"> | Date | string
     updatedAt?: DateTimeFilter<"Produit"> | Date | string
@@ -18903,6 +20142,7 @@ export namespace Prisma {
     prix?: SortOrder
     stock?: SortOrder
     image?: SortOrderInput | SortOrder
+    vues?: SortOrder
     statut?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -18926,6 +20166,7 @@ export namespace Prisma {
     prix?: FloatWithAggregatesFilter<"Produit"> | number
     stock?: IntWithAggregatesFilter<"Produit"> | number
     image?: StringNullableWithAggregatesFilter<"Produit"> | string | null
+    vues?: IntWithAggregatesFilter<"Produit"> | number
     statut?: EnumStatutProduitWithAggregatesFilter<"Produit"> | $Enums.StatutProduit
     createdAt?: DateTimeWithAggregatesFilter<"Produit"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Produit"> | Date | string
@@ -18950,6 +20191,7 @@ export namespace Prisma {
     fraisLivraison?: FloatFilter<"Commande"> | number
     regionLivraisonId?: StringNullableFilter<"Commande"> | string | null
     livreurId?: StringNullableFilter<"Commande"> | string | null
+    modeReception?: EnumModeReceptionFilter<"Commande"> | $Enums.ModeReception
     client?: XOR<ClientScalarRelationFilter, ClientWhereInput>
     livreurs?: XOR<LivreursNullableScalarRelationFilter, livreursWhereInput> | null
     regions?: XOR<RegionsNullableScalarRelationFilter, regionsWhereInput> | null
@@ -18971,6 +20213,7 @@ export namespace Prisma {
     fraisLivraison?: SortOrder
     regionLivraisonId?: SortOrderInput | SortOrder
     livreurId?: SortOrderInput | SortOrder
+    modeReception?: SortOrder
     client?: ClientOrderByWithRelationInput
     livreurs?: livreursOrderByWithRelationInput
     regions?: regionsOrderByWithRelationInput
@@ -18995,6 +20238,7 @@ export namespace Prisma {
     fraisLivraison?: FloatFilter<"Commande"> | number
     regionLivraisonId?: StringNullableFilter<"Commande"> | string | null
     livreurId?: StringNullableFilter<"Commande"> | string | null
+    modeReception?: EnumModeReceptionFilter<"Commande"> | $Enums.ModeReception
     client?: XOR<ClientScalarRelationFilter, ClientWhereInput>
     livreurs?: XOR<LivreursNullableScalarRelationFilter, livreursWhereInput> | null
     regions?: XOR<RegionsNullableScalarRelationFilter, regionsWhereInput> | null
@@ -19016,6 +20260,7 @@ export namespace Prisma {
     fraisLivraison?: SortOrder
     regionLivraisonId?: SortOrderInput | SortOrder
     livreurId?: SortOrderInput | SortOrder
+    modeReception?: SortOrder
     _count?: CommandeCountOrderByAggregateInput
     _avg?: CommandeAvgOrderByAggregateInput
     _max?: CommandeMaxOrderByAggregateInput
@@ -19040,6 +20285,7 @@ export namespace Prisma {
     fraisLivraison?: FloatWithAggregatesFilter<"Commande"> | number
     regionLivraisonId?: StringNullableWithAggregatesFilter<"Commande"> | string | null
     livreurId?: StringNullableWithAggregatesFilter<"Commande"> | string | null
+    modeReception?: EnumModeReceptionWithAggregatesFilter<"Commande"> | $Enums.ModeReception
   }
 
   export type PaiementWhereInput = {
@@ -19434,6 +20680,73 @@ export namespace Prisma {
     fraisLivraisonExterne?: FloatWithAggregatesFilter<"regions"> | number
     createdAt?: DateTimeWithAggregatesFilter<"regions"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"regions"> | Date | string
+  }
+
+  export type PasswordResetCodeWhereInput = {
+    AND?: PasswordResetCodeWhereInput | PasswordResetCodeWhereInput[]
+    OR?: PasswordResetCodeWhereInput[]
+    NOT?: PasswordResetCodeWhereInput | PasswordResetCodeWhereInput[]
+    id?: StringFilter<"PasswordResetCode"> | string
+    email?: StringFilter<"PasswordResetCode"> | string
+    userType?: EnumUserTypeFilter<"PasswordResetCode"> | $Enums.UserType
+    code?: StringFilter<"PasswordResetCode"> | string
+    verified?: BoolFilter<"PasswordResetCode"> | boolean
+    used?: BoolFilter<"PasswordResetCode"> | boolean
+    expiresAt?: DateTimeFilter<"PasswordResetCode"> | Date | string
+    createdAt?: DateTimeFilter<"PasswordResetCode"> | Date | string
+  }
+
+  export type PasswordResetCodeOrderByWithRelationInput = {
+    id?: SortOrder
+    email?: SortOrder
+    userType?: SortOrder
+    code?: SortOrder
+    verified?: SortOrder
+    used?: SortOrder
+    expiresAt?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type PasswordResetCodeWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: PasswordResetCodeWhereInput | PasswordResetCodeWhereInput[]
+    OR?: PasswordResetCodeWhereInput[]
+    NOT?: PasswordResetCodeWhereInput | PasswordResetCodeWhereInput[]
+    email?: StringFilter<"PasswordResetCode"> | string
+    userType?: EnumUserTypeFilter<"PasswordResetCode"> | $Enums.UserType
+    code?: StringFilter<"PasswordResetCode"> | string
+    verified?: BoolFilter<"PasswordResetCode"> | boolean
+    used?: BoolFilter<"PasswordResetCode"> | boolean
+    expiresAt?: DateTimeFilter<"PasswordResetCode"> | Date | string
+    createdAt?: DateTimeFilter<"PasswordResetCode"> | Date | string
+  }, "id">
+
+  export type PasswordResetCodeOrderByWithAggregationInput = {
+    id?: SortOrder
+    email?: SortOrder
+    userType?: SortOrder
+    code?: SortOrder
+    verified?: SortOrder
+    used?: SortOrder
+    expiresAt?: SortOrder
+    createdAt?: SortOrder
+    _count?: PasswordResetCodeCountOrderByAggregateInput
+    _max?: PasswordResetCodeMaxOrderByAggregateInput
+    _min?: PasswordResetCodeMinOrderByAggregateInput
+  }
+
+  export type PasswordResetCodeScalarWhereWithAggregatesInput = {
+    AND?: PasswordResetCodeScalarWhereWithAggregatesInput | PasswordResetCodeScalarWhereWithAggregatesInput[]
+    OR?: PasswordResetCodeScalarWhereWithAggregatesInput[]
+    NOT?: PasswordResetCodeScalarWhereWithAggregatesInput | PasswordResetCodeScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"PasswordResetCode"> | string
+    email?: StringWithAggregatesFilter<"PasswordResetCode"> | string
+    userType?: EnumUserTypeWithAggregatesFilter<"PasswordResetCode"> | $Enums.UserType
+    code?: StringWithAggregatesFilter<"PasswordResetCode"> | string
+    verified?: BoolWithAggregatesFilter<"PasswordResetCode"> | boolean
+    used?: BoolWithAggregatesFilter<"PasswordResetCode"> | boolean
+    expiresAt?: DateTimeWithAggregatesFilter<"PasswordResetCode"> | Date | string
+    createdAt?: DateTimeWithAggregatesFilter<"PasswordResetCode"> | Date | string
   }
 
   export type AdministrateurCreateInput = {
@@ -19998,6 +21311,7 @@ export namespace Prisma {
     prix: number
     stock?: number
     image?: string | null
+    vues?: number
     statut?: $Enums.StatutProduit
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -20015,6 +21329,7 @@ export namespace Prisma {
     prix: number
     stock?: number
     image?: string | null
+    vues?: number
     statut?: $Enums.StatutProduit
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -20032,6 +21347,7 @@ export namespace Prisma {
     prix?: FloatFieldUpdateOperationsInput | number
     stock?: IntFieldUpdateOperationsInput | number
     image?: NullableStringFieldUpdateOperationsInput | string | null
+    vues?: IntFieldUpdateOperationsInput | number
     statut?: EnumStatutProduitFieldUpdateOperationsInput | $Enums.StatutProduit
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -20049,6 +21365,7 @@ export namespace Prisma {
     prix?: FloatFieldUpdateOperationsInput | number
     stock?: IntFieldUpdateOperationsInput | number
     image?: NullableStringFieldUpdateOperationsInput | string | null
+    vues?: IntFieldUpdateOperationsInput | number
     statut?: EnumStatutProduitFieldUpdateOperationsInput | $Enums.StatutProduit
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -20066,6 +21383,7 @@ export namespace Prisma {
     prix: number
     stock?: number
     image?: string | null
+    vues?: number
     statut?: $Enums.StatutProduit
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -20081,6 +21399,7 @@ export namespace Prisma {
     prix?: FloatFieldUpdateOperationsInput | number
     stock?: IntFieldUpdateOperationsInput | number
     image?: NullableStringFieldUpdateOperationsInput | string | null
+    vues?: IntFieldUpdateOperationsInput | number
     statut?: EnumStatutProduitFieldUpdateOperationsInput | $Enums.StatutProduit
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -20094,6 +21413,7 @@ export namespace Prisma {
     prix?: FloatFieldUpdateOperationsInput | number
     stock?: IntFieldUpdateOperationsInput | number
     image?: NullableStringFieldUpdateOperationsInput | string | null
+    vues?: IntFieldUpdateOperationsInput | number
     statut?: EnumStatutProduitFieldUpdateOperationsInput | $Enums.StatutProduit
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -20112,6 +21432,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     fraisLivraison?: number
+    modeReception?: $Enums.ModeReception
     client: ClientCreateNestedOneWithoutCommandesInput
     livreurs?: livreursCreateNestedOneWithoutCommandesInput
     regions?: regionsCreateNestedOneWithoutCommandesInput
@@ -20133,6 +21454,7 @@ export namespace Prisma {
     fraisLivraison?: number
     regionLivraisonId?: string | null
     livreurId?: string | null
+    modeReception?: $Enums.ModeReception
     paiement?: PaiementUncheckedCreateNestedOneWithoutCommandeInput
     panierProduits?: PanierProduitUncheckedCreateNestedManyWithoutCommandeInput
   }
@@ -20148,6 +21470,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     fraisLivraison?: FloatFieldUpdateOperationsInput | number
+    modeReception?: EnumModeReceptionFieldUpdateOperationsInput | $Enums.ModeReception
     client?: ClientUpdateOneRequiredWithoutCommandesNestedInput
     livreurs?: livreursUpdateOneWithoutCommandesNestedInput
     regions?: regionsUpdateOneWithoutCommandesNestedInput
@@ -20169,6 +21492,7 @@ export namespace Prisma {
     fraisLivraison?: FloatFieldUpdateOperationsInput | number
     regionLivraisonId?: NullableStringFieldUpdateOperationsInput | string | null
     livreurId?: NullableStringFieldUpdateOperationsInput | string | null
+    modeReception?: EnumModeReceptionFieldUpdateOperationsInput | $Enums.ModeReception
     paiement?: PaiementUncheckedUpdateOneWithoutCommandeNestedInput
     panierProduits?: PanierProduitUncheckedUpdateManyWithoutCommandeNestedInput
   }
@@ -20187,6 +21511,7 @@ export namespace Prisma {
     fraisLivraison?: number
     regionLivraisonId?: string | null
     livreurId?: string | null
+    modeReception?: $Enums.ModeReception
   }
 
   export type CommandeUpdateManyMutationInput = {
@@ -20200,6 +21525,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     fraisLivraison?: FloatFieldUpdateOperationsInput | number
+    modeReception?: EnumModeReceptionFieldUpdateOperationsInput | $Enums.ModeReception
   }
 
   export type CommandeUncheckedUpdateManyInput = {
@@ -20216,6 +21542,7 @@ export namespace Prisma {
     fraisLivraison?: FloatFieldUpdateOperationsInput | number
     regionLivraisonId?: NullableStringFieldUpdateOperationsInput | string | null
     livreurId?: NullableStringFieldUpdateOperationsInput | string | null
+    modeReception?: EnumModeReceptionFieldUpdateOperationsInput | $Enums.ModeReception
   }
 
   export type PaiementCreateInput = {
@@ -20644,6 +21971,83 @@ export namespace Prisma {
     fraisLivraisonExterne?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PasswordResetCodeCreateInput = {
+    id?: string
+    email: string
+    userType: $Enums.UserType
+    code: string
+    verified?: boolean
+    used?: boolean
+    expiresAt: Date | string
+    createdAt?: Date | string
+  }
+
+  export type PasswordResetCodeUncheckedCreateInput = {
+    id?: string
+    email: string
+    userType: $Enums.UserType
+    code: string
+    verified?: boolean
+    used?: boolean
+    expiresAt: Date | string
+    createdAt?: Date | string
+  }
+
+  export type PasswordResetCodeUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    userType?: EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
+    code?: StringFieldUpdateOperationsInput | string
+    verified?: BoolFieldUpdateOperationsInput | boolean
+    used?: BoolFieldUpdateOperationsInput | boolean
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PasswordResetCodeUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    userType?: EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
+    code?: StringFieldUpdateOperationsInput | string
+    verified?: BoolFieldUpdateOperationsInput | boolean
+    used?: BoolFieldUpdateOperationsInput | boolean
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PasswordResetCodeCreateManyInput = {
+    id?: string
+    email: string
+    userType: $Enums.UserType
+    code: string
+    verified?: boolean
+    used?: boolean
+    expiresAt: Date | string
+    createdAt?: Date | string
+  }
+
+  export type PasswordResetCodeUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    userType?: EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
+    code?: StringFieldUpdateOperationsInput | string
+    verified?: BoolFieldUpdateOperationsInput | boolean
+    used?: BoolFieldUpdateOperationsInput | boolean
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PasswordResetCodeUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    userType?: EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
+    code?: StringFieldUpdateOperationsInput | string
+    verified?: BoolFieldUpdateOperationsInput | boolean
+    used?: BoolFieldUpdateOperationsInput | boolean
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type StringFilter<$PrismaModel = never> = {
@@ -21252,6 +22656,7 @@ export namespace Prisma {
     prix?: SortOrder
     stock?: SortOrder
     image?: SortOrder
+    vues?: SortOrder
     statut?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -21262,6 +22667,7 @@ export namespace Prisma {
   export type ProduitAvgOrderByAggregateInput = {
     prix?: SortOrder
     stock?: SortOrder
+    vues?: SortOrder
   }
 
   export type ProduitMaxOrderByAggregateInput = {
@@ -21272,6 +22678,7 @@ export namespace Prisma {
     prix?: SortOrder
     stock?: SortOrder
     image?: SortOrder
+    vues?: SortOrder
     statut?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -21287,6 +22694,7 @@ export namespace Prisma {
     prix?: SortOrder
     stock?: SortOrder
     image?: SortOrder
+    vues?: SortOrder
     statut?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -21297,6 +22705,7 @@ export namespace Prisma {
   export type ProduitSumOrderByAggregateInput = {
     prix?: SortOrder
     stock?: SortOrder
+    vues?: SortOrder
   }
 
   export type FloatWithAggregatesFilter<$PrismaModel = never> = {
@@ -21332,6 +22741,13 @@ export namespace Prisma {
     not?: NestedEnumStatutCommandeFilter<$PrismaModel> | $Enums.StatutCommande
   }
 
+  export type EnumModeReceptionFilter<$PrismaModel = never> = {
+    equals?: $Enums.ModeReception | EnumModeReceptionFieldRefInput<$PrismaModel>
+    in?: $Enums.ModeReception[] | ListEnumModeReceptionFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ModeReception[] | ListEnumModeReceptionFieldRefInput<$PrismaModel>
+    not?: NestedEnumModeReceptionFilter<$PrismaModel> | $Enums.ModeReception
+  }
+
   export type LivreursNullableScalarRelationFilter = {
     is?: livreursWhereInput | null
     isNot?: livreursWhereInput | null
@@ -21356,6 +22772,7 @@ export namespace Prisma {
     fraisLivraison?: SortOrder
     regionLivraisonId?: SortOrder
     livreurId?: SortOrder
+    modeReception?: SortOrder
   }
 
   export type CommandeAvgOrderByAggregateInput = {
@@ -21377,6 +22794,7 @@ export namespace Prisma {
     fraisLivraison?: SortOrder
     regionLivraisonId?: SortOrder
     livreurId?: SortOrder
+    modeReception?: SortOrder
   }
 
   export type CommandeMinOrderByAggregateInput = {
@@ -21393,6 +22811,7 @@ export namespace Prisma {
     fraisLivraison?: SortOrder
     regionLivraisonId?: SortOrder
     livreurId?: SortOrder
+    modeReception?: SortOrder
   }
 
   export type CommandeSumOrderByAggregateInput = {
@@ -21408,6 +22827,16 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumStatutCommandeFilter<$PrismaModel>
     _max?: NestedEnumStatutCommandeFilter<$PrismaModel>
+  }
+
+  export type EnumModeReceptionWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ModeReception | EnumModeReceptionFieldRefInput<$PrismaModel>
+    in?: $Enums.ModeReception[] | ListEnumModeReceptionFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ModeReception[] | ListEnumModeReceptionFieldRefInput<$PrismaModel>
+    not?: NestedEnumModeReceptionWithAggregatesFilter<$PrismaModel> | $Enums.ModeReception
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumModeReceptionFilter<$PrismaModel>
+    _max?: NestedEnumModeReceptionFilter<$PrismaModel>
   }
 
   export type EnumMethodePaiementFilter<$PrismaModel = never> = {
@@ -21726,6 +23155,69 @@ export namespace Prisma {
   export type regionsSumOrderByAggregateInput = {
     fraisLivraisonInterne?: SortOrder
     fraisLivraisonExterne?: SortOrder
+  }
+
+  export type EnumUserTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.UserType | EnumUserTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.UserType[] | ListEnumUserTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.UserType[] | ListEnumUserTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumUserTypeFilter<$PrismaModel> | $Enums.UserType
+  }
+
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
+  export type PasswordResetCodeCountOrderByAggregateInput = {
+    id?: SortOrder
+    email?: SortOrder
+    userType?: SortOrder
+    code?: SortOrder
+    verified?: SortOrder
+    used?: SortOrder
+    expiresAt?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type PasswordResetCodeMaxOrderByAggregateInput = {
+    id?: SortOrder
+    email?: SortOrder
+    userType?: SortOrder
+    code?: SortOrder
+    verified?: SortOrder
+    used?: SortOrder
+    expiresAt?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type PasswordResetCodeMinOrderByAggregateInput = {
+    id?: SortOrder
+    email?: SortOrder
+    userType?: SortOrder
+    code?: SortOrder
+    verified?: SortOrder
+    used?: SortOrder
+    expiresAt?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type EnumUserTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.UserType | EnumUserTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.UserType[] | ListEnumUserTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.UserType[] | ListEnumUserTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumUserTypeWithAggregatesFilter<$PrismaModel> | $Enums.UserType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumUserTypeFilter<$PrismaModel>
+    _max?: NestedEnumUserTypeFilter<$PrismaModel>
+  }
+
+  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type ClientCreateNestedManyWithoutAdministrateurInput = {
@@ -22326,6 +23818,10 @@ export namespace Prisma {
     set?: $Enums.StatutCommande
   }
 
+  export type EnumModeReceptionFieldUpdateOperationsInput = {
+    set?: $Enums.ModeReception
+  }
+
   export type ClientUpdateOneRequiredWithoutCommandesNestedInput = {
     create?: XOR<ClientCreateWithoutCommandesInput, ClientUncheckedCreateWithoutCommandesInput>
     connectOrCreate?: ClientCreateOrConnectWithoutCommandesInput
@@ -22700,6 +24196,14 @@ export namespace Prisma {
     deleteMany?: livreursScalarWhereInput | livreursScalarWhereInput[]
   }
 
+  export type EnumUserTypeFieldUpdateOperationsInput = {
+    set?: $Enums.UserType
+  }
+
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
+  }
+
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -22979,6 +24483,13 @@ export namespace Prisma {
     not?: NestedEnumStatutCommandeFilter<$PrismaModel> | $Enums.StatutCommande
   }
 
+  export type NestedEnumModeReceptionFilter<$PrismaModel = never> = {
+    equals?: $Enums.ModeReception | EnumModeReceptionFieldRefInput<$PrismaModel>
+    in?: $Enums.ModeReception[] | ListEnumModeReceptionFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ModeReception[] | ListEnumModeReceptionFieldRefInput<$PrismaModel>
+    not?: NestedEnumModeReceptionFilter<$PrismaModel> | $Enums.ModeReception
+  }
+
   export type NestedEnumStatutCommandeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.StatutCommande | EnumStatutCommandeFieldRefInput<$PrismaModel>
     in?: $Enums.StatutCommande[] | ListEnumStatutCommandeFieldRefInput<$PrismaModel>
@@ -22987,6 +24498,16 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumStatutCommandeFilter<$PrismaModel>
     _max?: NestedEnumStatutCommandeFilter<$PrismaModel>
+  }
+
+  export type NestedEnumModeReceptionWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ModeReception | EnumModeReceptionFieldRefInput<$PrismaModel>
+    in?: $Enums.ModeReception[] | ListEnumModeReceptionFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ModeReception[] | ListEnumModeReceptionFieldRefInput<$PrismaModel>
+    not?: NestedEnumModeReceptionWithAggregatesFilter<$PrismaModel> | $Enums.ModeReception
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumModeReceptionFilter<$PrismaModel>
+    _max?: NestedEnumModeReceptionFilter<$PrismaModel>
   }
 
   export type NestedEnumMethodePaiementFilter<$PrismaModel = never> = {
@@ -23055,6 +24576,36 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumStatutLivreurFilter<$PrismaModel>
     _max?: NestedEnumStatutLivreurFilter<$PrismaModel>
+  }
+
+  export type NestedEnumUserTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.UserType | EnumUserTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.UserType[] | ListEnumUserTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.UserType[] | ListEnumUserTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumUserTypeFilter<$PrismaModel> | $Enums.UserType
+  }
+
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
+  export type NestedEnumUserTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.UserType | EnumUserTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.UserType[] | ListEnumUserTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.UserType[] | ListEnumUserTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumUserTypeWithAggregatesFilter<$PrismaModel> | $Enums.UserType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumUserTypeFilter<$PrismaModel>
+    _max?: NestedEnumUserTypeFilter<$PrismaModel>
+  }
+
+  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type ClientCreateWithoutAdministrateurInput = {
@@ -23346,6 +24897,7 @@ export namespace Prisma {
     prix: number
     stock?: number
     image?: string | null
+    vues?: number
     statut?: $Enums.StatutProduit
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -23362,6 +24914,7 @@ export namespace Prisma {
     prix: number
     stock?: number
     image?: string | null
+    vues?: number
     statut?: $Enums.StatutProduit
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -23437,6 +24990,7 @@ export namespace Prisma {
     prix?: FloatFieldUpdateOperationsInput | number
     stock?: IntFieldUpdateOperationsInput | number
     image?: NullableStringFieldUpdateOperationsInput | string | null
+    vues?: IntFieldUpdateOperationsInput | number
     statut?: EnumStatutProduitFieldUpdateOperationsInput | $Enums.StatutProduit
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -23453,6 +25007,7 @@ export namespace Prisma {
     prix?: FloatFieldUpdateOperationsInput | number
     stock?: IntFieldUpdateOperationsInput | number
     image?: NullableStringFieldUpdateOperationsInput | string | null
+    vues?: IntFieldUpdateOperationsInput | number
     statut?: EnumStatutProduitFieldUpdateOperationsInput | $Enums.StatutProduit
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -23531,6 +25086,7 @@ export namespace Prisma {
     prix: number
     stock?: number
     image?: string | null
+    vues?: number
     statut?: $Enums.StatutProduit
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -23547,6 +25103,7 @@ export namespace Prisma {
     prix: number
     stock?: number
     image?: string | null
+    vues?: number
     statut?: $Enums.StatutProduit
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -23666,6 +25223,7 @@ export namespace Prisma {
     prix?: FloatFilter<"Produit"> | number
     stock?: IntFilter<"Produit"> | number
     image?: StringNullableFilter<"Produit"> | string | null
+    vues?: IntFilter<"Produit"> | number
     statut?: EnumStatutProduitFilter<"Produit"> | $Enums.StatutProduit
     createdAt?: DateTimeFilter<"Produit"> | Date | string
     updatedAt?: DateTimeFilter<"Produit"> | Date | string
@@ -23715,6 +25273,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     fraisLivraison?: number
+    modeReception?: $Enums.ModeReception
     livreurs?: livreursCreateNestedOneWithoutCommandesInput
     regions?: regionsCreateNestedOneWithoutCommandesInput
     paiement?: PaiementCreateNestedOneWithoutCommandeInput
@@ -23734,6 +25293,7 @@ export namespace Prisma {
     fraisLivraison?: number
     regionLivraisonId?: string | null
     livreurId?: string | null
+    modeReception?: $Enums.ModeReception
     paiement?: PaiementUncheckedCreateNestedOneWithoutCommandeInput
     panierProduits?: PanierProduitUncheckedCreateNestedManyWithoutCommandeInput
   }
@@ -23872,6 +25432,7 @@ export namespace Prisma {
     fraisLivraison?: FloatFilter<"Commande"> | number
     regionLivraisonId?: StringNullableFilter<"Commande"> | string | null
     livreurId?: StringNullableFilter<"Commande"> | string | null
+    modeReception?: EnumModeReceptionFilter<"Commande"> | $Enums.ModeReception
   }
 
   export type AvisUpsertWithWhereUniqueWithoutClientInput = {
@@ -23939,6 +25500,7 @@ export namespace Prisma {
     prix: number
     stock?: number
     image?: string | null
+    vues?: number
     statut?: $Enums.StatutProduit
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -23955,6 +25517,7 @@ export namespace Prisma {
     prix: number
     stock?: number
     image?: string | null
+    vues?: number
     statut?: $Enums.StatutProduit
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -24589,6 +26152,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     fraisLivraison?: number
+    modeReception?: $Enums.ModeReception
     client: ClientCreateNestedOneWithoutCommandesInput
     livreurs?: livreursCreateNestedOneWithoutCommandesInput
     regions?: regionsCreateNestedOneWithoutCommandesInput
@@ -24609,6 +26173,7 @@ export namespace Prisma {
     fraisLivraison?: number
     regionLivraisonId?: string | null
     livreurId?: string | null
+    modeReception?: $Enums.ModeReception
     panierProduits?: PanierProduitUncheckedCreateNestedManyWithoutCommandeInput
   }
 
@@ -24639,6 +26204,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     fraisLivraison?: FloatFieldUpdateOperationsInput | number
+    modeReception?: EnumModeReceptionFieldUpdateOperationsInput | $Enums.ModeReception
     client?: ClientUpdateOneRequiredWithoutCommandesNestedInput
     livreurs?: livreursUpdateOneWithoutCommandesNestedInput
     regions?: regionsUpdateOneWithoutCommandesNestedInput
@@ -24659,6 +26225,7 @@ export namespace Prisma {
     fraisLivraison?: FloatFieldUpdateOperationsInput | number
     regionLivraisonId?: NullableStringFieldUpdateOperationsInput | string | null
     livreurId?: NullableStringFieldUpdateOperationsInput | string | null
+    modeReception?: EnumModeReceptionFieldUpdateOperationsInput | $Enums.ModeReception
     panierProduits?: PanierProduitUncheckedUpdateManyWithoutCommandeNestedInput
   }
 
@@ -24673,6 +26240,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     fraisLivraison?: number
+    modeReception?: $Enums.ModeReception
     client: ClientCreateNestedOneWithoutCommandesInput
     livreurs?: livreursCreateNestedOneWithoutCommandesInput
     regions?: regionsCreateNestedOneWithoutCommandesInput
@@ -24693,6 +26261,7 @@ export namespace Prisma {
     fraisLivraison?: number
     regionLivraisonId?: string | null
     livreurId?: string | null
+    modeReception?: $Enums.ModeReception
     paiement?: PaiementUncheckedCreateNestedOneWithoutCommandeInput
   }
 
@@ -24709,6 +26278,7 @@ export namespace Prisma {
     prix: number
     stock?: number
     image?: string | null
+    vues?: number
     statut?: $Enums.StatutProduit
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -24725,6 +26295,7 @@ export namespace Prisma {
     prix: number
     stock?: number
     image?: string | null
+    vues?: number
     statut?: $Enums.StatutProduit
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -24760,6 +26331,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     fraisLivraison?: FloatFieldUpdateOperationsInput | number
+    modeReception?: EnumModeReceptionFieldUpdateOperationsInput | $Enums.ModeReception
     client?: ClientUpdateOneRequiredWithoutCommandesNestedInput
     livreurs?: livreursUpdateOneWithoutCommandesNestedInput
     regions?: regionsUpdateOneWithoutCommandesNestedInput
@@ -24780,6 +26352,7 @@ export namespace Prisma {
     fraisLivraison?: FloatFieldUpdateOperationsInput | number
     regionLivraisonId?: NullableStringFieldUpdateOperationsInput | string | null
     livreurId?: NullableStringFieldUpdateOperationsInput | string | null
+    modeReception?: EnumModeReceptionFieldUpdateOperationsInput | $Enums.ModeReception
     paiement?: PaiementUncheckedUpdateOneWithoutCommandeNestedInput
   }
 
@@ -24802,6 +26375,7 @@ export namespace Prisma {
     prix?: FloatFieldUpdateOperationsInput | number
     stock?: IntFieldUpdateOperationsInput | number
     image?: NullableStringFieldUpdateOperationsInput | string | null
+    vues?: IntFieldUpdateOperationsInput | number
     statut?: EnumStatutProduitFieldUpdateOperationsInput | $Enums.StatutProduit
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -24818,6 +26392,7 @@ export namespace Prisma {
     prix?: FloatFieldUpdateOperationsInput | number
     stock?: IntFieldUpdateOperationsInput | number
     image?: NullableStringFieldUpdateOperationsInput | string | null
+    vues?: IntFieldUpdateOperationsInput | number
     statut?: EnumStatutProduitFieldUpdateOperationsInput | $Enums.StatutProduit
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -24905,6 +26480,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     fraisLivraison?: number
+    modeReception?: $Enums.ModeReception
     client: ClientCreateNestedOneWithoutCommandesInput
     regions?: regionsCreateNestedOneWithoutCommandesInput
     paiement?: PaiementCreateNestedOneWithoutCommandeInput
@@ -24924,6 +26500,7 @@ export namespace Prisma {
     clientId: string
     fraisLivraison?: number
     regionLivraisonId?: string | null
+    modeReception?: $Enums.ModeReception
     paiement?: PaiementUncheckedCreateNestedOneWithoutCommandeInput
     panierProduits?: PanierProduitUncheckedCreateNestedManyWithoutCommandeInput
   }
@@ -25063,6 +26640,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     fraisLivraison?: number
+    modeReception?: $Enums.ModeReception
     client: ClientCreateNestedOneWithoutCommandesInput
     livreurs?: livreursCreateNestedOneWithoutCommandesInput
     paiement?: PaiementCreateNestedOneWithoutCommandeInput
@@ -25082,6 +26660,7 @@ export namespace Prisma {
     clientId: string
     fraisLivraison?: number
     livreurId?: string | null
+    modeReception?: $Enums.ModeReception
     paiement?: PaiementUncheckedCreateNestedOneWithoutCommandeInput
     panierProduits?: PanierProduitUncheckedCreateNestedManyWithoutCommandeInput
   }
@@ -25420,6 +26999,7 @@ export namespace Prisma {
     prix: number
     stock?: number
     image?: string | null
+    vues?: number
     statut?: $Enums.StatutProduit
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -25434,6 +27014,7 @@ export namespace Prisma {
     prix?: FloatFieldUpdateOperationsInput | number
     stock?: IntFieldUpdateOperationsInput | number
     image?: NullableStringFieldUpdateOperationsInput | string | null
+    vues?: IntFieldUpdateOperationsInput | number
     statut?: EnumStatutProduitFieldUpdateOperationsInput | $Enums.StatutProduit
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -25450,6 +27031,7 @@ export namespace Prisma {
     prix?: FloatFieldUpdateOperationsInput | number
     stock?: IntFieldUpdateOperationsInput | number
     image?: NullableStringFieldUpdateOperationsInput | string | null
+    vues?: IntFieldUpdateOperationsInput | number
     statut?: EnumStatutProduitFieldUpdateOperationsInput | $Enums.StatutProduit
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -25466,6 +27048,7 @@ export namespace Prisma {
     prix?: FloatFieldUpdateOperationsInput | number
     stock?: IntFieldUpdateOperationsInput | number
     image?: NullableStringFieldUpdateOperationsInput | string | null
+    vues?: IntFieldUpdateOperationsInput | number
     statut?: EnumStatutProduitFieldUpdateOperationsInput | $Enums.StatutProduit
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -25485,6 +27068,7 @@ export namespace Prisma {
     fraisLivraison?: number
     regionLivraisonId?: string | null
     livreurId?: string | null
+    modeReception?: $Enums.ModeReception
   }
 
   export type AvisCreateManyClientInput = {
@@ -25515,6 +27099,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     fraisLivraison?: FloatFieldUpdateOperationsInput | number
+    modeReception?: EnumModeReceptionFieldUpdateOperationsInput | $Enums.ModeReception
     livreurs?: livreursUpdateOneWithoutCommandesNestedInput
     regions?: regionsUpdateOneWithoutCommandesNestedInput
     paiement?: PaiementUpdateOneWithoutCommandeNestedInput
@@ -25534,6 +27119,7 @@ export namespace Prisma {
     fraisLivraison?: FloatFieldUpdateOperationsInput | number
     regionLivraisonId?: NullableStringFieldUpdateOperationsInput | string | null
     livreurId?: NullableStringFieldUpdateOperationsInput | string | null
+    modeReception?: EnumModeReceptionFieldUpdateOperationsInput | $Enums.ModeReception
     paiement?: PaiementUncheckedUpdateOneWithoutCommandeNestedInput
     panierProduits?: PanierProduitUncheckedUpdateManyWithoutCommandeNestedInput
   }
@@ -25551,6 +27137,7 @@ export namespace Prisma {
     fraisLivraison?: FloatFieldUpdateOperationsInput | number
     regionLivraisonId?: NullableStringFieldUpdateOperationsInput | string | null
     livreurId?: NullableStringFieldUpdateOperationsInput | string | null
+    modeReception?: EnumModeReceptionFieldUpdateOperationsInput | $Enums.ModeReception
   }
 
   export type AvisUpdateWithoutClientInput = {
@@ -25612,6 +27199,7 @@ export namespace Prisma {
     prix: number
     stock?: number
     image?: string | null
+    vues?: number
     statut?: $Enums.StatutProduit
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -25626,6 +27214,7 @@ export namespace Prisma {
     prix?: FloatFieldUpdateOperationsInput | number
     stock?: IntFieldUpdateOperationsInput | number
     image?: NullableStringFieldUpdateOperationsInput | string | null
+    vues?: IntFieldUpdateOperationsInput | number
     statut?: EnumStatutProduitFieldUpdateOperationsInput | $Enums.StatutProduit
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -25642,6 +27231,7 @@ export namespace Prisma {
     prix?: FloatFieldUpdateOperationsInput | number
     stock?: IntFieldUpdateOperationsInput | number
     image?: NullableStringFieldUpdateOperationsInput | string | null
+    vues?: IntFieldUpdateOperationsInput | number
     statut?: EnumStatutProduitFieldUpdateOperationsInput | $Enums.StatutProduit
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -25658,6 +27248,7 @@ export namespace Prisma {
     prix?: FloatFieldUpdateOperationsInput | number
     stock?: IntFieldUpdateOperationsInput | number
     image?: NullableStringFieldUpdateOperationsInput | string | null
+    vues?: IntFieldUpdateOperationsInput | number
     statut?: EnumStatutProduitFieldUpdateOperationsInput | $Enums.StatutProduit
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -25797,6 +27388,7 @@ export namespace Prisma {
     clientId: string
     fraisLivraison?: number
     regionLivraisonId?: string | null
+    modeReception?: $Enums.ModeReception
   }
 
   export type CommandeUpdateWithoutLivreursInput = {
@@ -25810,6 +27402,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     fraisLivraison?: FloatFieldUpdateOperationsInput | number
+    modeReception?: EnumModeReceptionFieldUpdateOperationsInput | $Enums.ModeReception
     client?: ClientUpdateOneRequiredWithoutCommandesNestedInput
     regions?: regionsUpdateOneWithoutCommandesNestedInput
     paiement?: PaiementUpdateOneWithoutCommandeNestedInput
@@ -25829,6 +27422,7 @@ export namespace Prisma {
     clientId?: StringFieldUpdateOperationsInput | string
     fraisLivraison?: FloatFieldUpdateOperationsInput | number
     regionLivraisonId?: NullableStringFieldUpdateOperationsInput | string | null
+    modeReception?: EnumModeReceptionFieldUpdateOperationsInput | $Enums.ModeReception
     paiement?: PaiementUncheckedUpdateOneWithoutCommandeNestedInput
     panierProduits?: PanierProduitUncheckedUpdateManyWithoutCommandeNestedInput
   }
@@ -25846,6 +27440,7 @@ export namespace Prisma {
     clientId?: StringFieldUpdateOperationsInput | string
     fraisLivraison?: FloatFieldUpdateOperationsInput | number
     regionLivraisonId?: NullableStringFieldUpdateOperationsInput | string | null
+    modeReception?: EnumModeReceptionFieldUpdateOperationsInput | $Enums.ModeReception
   }
 
   export type adressesCreateManyRegionsInput = {
@@ -25871,6 +27466,7 @@ export namespace Prisma {
     clientId: string
     fraisLivraison?: number
     livreurId?: string | null
+    modeReception?: $Enums.ModeReception
   }
 
   export type GIECreateManyRegionsInput = {
@@ -25945,6 +27541,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     fraisLivraison?: FloatFieldUpdateOperationsInput | number
+    modeReception?: EnumModeReceptionFieldUpdateOperationsInput | $Enums.ModeReception
     client?: ClientUpdateOneRequiredWithoutCommandesNestedInput
     livreurs?: livreursUpdateOneWithoutCommandesNestedInput
     paiement?: PaiementUpdateOneWithoutCommandeNestedInput
@@ -25964,6 +27561,7 @@ export namespace Prisma {
     clientId?: StringFieldUpdateOperationsInput | string
     fraisLivraison?: FloatFieldUpdateOperationsInput | number
     livreurId?: NullableStringFieldUpdateOperationsInput | string | null
+    modeReception?: EnumModeReceptionFieldUpdateOperationsInput | $Enums.ModeReception
     paiement?: PaiementUncheckedUpdateOneWithoutCommandeNestedInput
     panierProduits?: PanierProduitUncheckedUpdateManyWithoutCommandeNestedInput
   }
@@ -25981,6 +27579,7 @@ export namespace Prisma {
     clientId?: StringFieldUpdateOperationsInput | string
     fraisLivraison?: FloatFieldUpdateOperationsInput | number
     livreurId?: NullableStringFieldUpdateOperationsInput | string | null
+    modeReception?: EnumModeReceptionFieldUpdateOperationsInput | $Enums.ModeReception
   }
 
   export type GIEUpdateWithoutRegionsInput = {
