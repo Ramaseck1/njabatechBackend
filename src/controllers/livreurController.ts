@@ -1,9 +1,8 @@
 import { Request, Response } from 'express';
 import { LivreurService } from '../services/livreurService';
 import { CreateLivreurDto, UpdateLivreurDto, LoginLivreurDto } from '../types';
-import bcryptjs from 'bcrypt';
-import { PrismaClient } from '@prisma/client';
-const prisma = new PrismaClient();
+import bcryptjs from 'bcryptjs';
+import { prisma } from '../config/database';
 
 export class LivreurController {
   // ========================================
